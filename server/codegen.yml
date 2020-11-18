@@ -1,0 +1,13 @@
+schema: http://localhost:4000/graphql
+generates:
+  ./src/types.d.ts:
+    plugins:
+      - add:
+          content: "import { PubSub } from 'graphql-subscriptions';"
+      - typescript
+      - typescript-resolvers
+    config:
+      contextType: |
+        {
+          pubsub: PubSub
+        }
