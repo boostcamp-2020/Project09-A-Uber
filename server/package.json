@@ -17,6 +17,7 @@
     "@graphql-codegen/typescript-resolvers": "^1.17.11",
     "@types/compression": "^1.7.0",
     "@types/hpp": "^0.2.1",
+    "@types/mongoose": "^5.10.1",
     "@types/morgan": "^1.9.2",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
@@ -43,6 +44,7 @@
     "graphql-tools": "^7.0.1",
     "helmet": "^4.2.0",
     "hpp": "^0.2.3",
+    "mongoose": "^5.10.15",
     "morgan": "^1.10.0",
     "subscriptions-transport-ws": "^0.9.18"
   }
