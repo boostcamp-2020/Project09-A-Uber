@@ -5,11 +5,16 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register ./src/index.ts",
-    "start": "NODE_ENV=production PORT=3000 pm2 start ts-node -- --type-check -r tsconfig-paths/register ./src/index.ts"
+    "start": "NODE_ENV=production PORT=3000 pm2 start ts-node -- --type-check -r tsconfig-paths/register ./src/index.ts",
+    "types": "graphql-codegen"
   },
   "author": "ikeytax",
   "license": "MIT",
   "devDependencies": {
+    "@graphql-codegen/add": "^2.0.1",
+    "@graphql-codegen/cli": "^1.19.2",
+    "@graphql-codegen/typescript": "^1.17.11",
+    "@graphql-codegen/typescript-resolvers": "^1.17.11",
     "@types/compression": "^1.7.0",
     "@types/hpp": "^0.2.1",
     "@types/morgan": "^1.9.2",
