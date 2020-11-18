@@ -14,6 +14,7 @@ module.exports = {
     'prettier/prettier': 0,
     'import/extensions': 0,
     'no-use-before-define': 0,
+    'import/no-unresolved': 0,
   },
   settings: {
     'import/resolver': {
