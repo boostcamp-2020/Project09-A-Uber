@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "description": "boostcamp uber clone project team A, 'IKEYTAX'",
   "main": "src/index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "nodemon --exec ts-node -r tsconfig-paths/register ./src/index.ts",
+    "start": "NODE_ENV=production PORT=3000 pm2 start ts-node -- --type-check -r tsconfig-paths/register ./src/index.ts"
+  },
   "author": "ikeytax",
   "license": "MIT",
   "devDependencies": {
@@ -15,7 +18,13 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.6",
     "prettier": "^2.1.2",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
