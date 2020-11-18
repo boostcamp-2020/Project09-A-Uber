@@ -1,4 +1,9 @@
 {
+  "eslint.workingDirectories": [
+    {
+      "mode": ["../server", "../client"]
+    }
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },

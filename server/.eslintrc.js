@@ -12,11 +12,22 @@ module.exports = {
     'linebreak-style': 0,
     'import/prefer-default-export': 0,
     'prettier/prettier': 0,
+    'import/no-unresolved': 0,
   },
   settings: {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      alias: {
+        map: [
+          ['@api', './src/api'],
+          ['@auth', './src/auth'],
+          ['@config', './src/config'],
+          ['@models', './src/models'],
+          ['@util', './src/util'],
+          ['@', './src'],
+        ],
       },
     },
   },
