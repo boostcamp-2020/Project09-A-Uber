@@ -1,0 +1,21 @@
+{
+  "name": "ikeytax-server",
+  "version": "0.1.0",
+  "description": "boostcamp uber clone project team A, 'IKEYTAX'",
+  "main": "src/index.js",
+  "scripts": {},
+  "author": "ikeytax",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.5"
+  }
+}
