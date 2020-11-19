@@ -1,7 +1,10 @@
 {
   "eslint.workingDirectories": [
     {
-      "mode": ["../server", "../client"]
+      "mode": [
+        "../server",
+        "../client"
+      ]
     }
   ],
   "editor.codeActionsOnSave": {
