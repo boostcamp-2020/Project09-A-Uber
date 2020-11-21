@@ -9,5 +9,6 @@ generates:
     config:
       contextType: |
         {
+          req: Request,
           pubsub: PubSub
         }
