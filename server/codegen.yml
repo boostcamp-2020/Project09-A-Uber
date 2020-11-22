@@ -4,10 +4,13 @@ generates:
     plugins:
       - add:
           content: "import { PubSub } from 'graphql-subscriptions';"
+      - add:
+          content: "import { Request } from 'express';"
       - typescript
       - typescript-resolvers
     config:
       contextType: |
         {
+          req: Request,
           pubsub: PubSub
         }
