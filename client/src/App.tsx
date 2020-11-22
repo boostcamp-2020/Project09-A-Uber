@@ -11,6 +11,8 @@ import GlobalStyle from 'theme/global';
 import reducer from 'reducers';
 import client from 'apollo';
 
+import 'theme/antd.less';
+
 const store = createStore(reducer);
 
 const App: FC = () => (
