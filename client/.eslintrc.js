@@ -22,6 +22,17 @@ module.exports = {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
+      alias: {
+        map: [
+          ['@', './src'],
+          ['@components', './src/components'],
+          ['@queries', './src/queries'],
+          ['@reducers', './src/reducers'],
+          ['@sagas', './src/sagas'],
+          ['@routes', './src/routes'],
+          ['@theme', './src/theme'],
+        ],
+      },
     },
   },
 };
