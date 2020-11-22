@@ -9,6 +9,6 @@ generates:
     config:
       contextType: |
         {
-          req: Request,
+          req: express.Request,
           pubsub: PubSub
         }
