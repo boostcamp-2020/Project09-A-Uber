@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["src/*"],
+        "@components/*": ["src/components/*"],
+        "@routes/*": ["src/routes/*"],
+        "@queries/*": ["src/queries/*"],
+        "@reducers/*": ["src/reducers/*"],
+        "@sagas/*": ["src/sagas/*"],
+        "@theme/*": ["src/theme/*"]
+      },
+  
+    }
+  }
+  

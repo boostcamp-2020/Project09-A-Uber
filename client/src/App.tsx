@@ -6,14 +6,14 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import Home from 'routes/Home';
-import theme from 'theme';
-import GlobalStyle from 'theme/global';
-import reducer from 'reducers';
-import saga from 'sagas';
-import client from 'apollo';
+import Home from '@routes/Home';
+import theme from '@theme/.';
+import GlobalStyle from '@theme/global';
+import reducer from '@reducers/.';
+import saga from '@sagas/.';
+import client from '@/apollo';
 
-import 'theme/antd.less';
+import '@theme/antd.less';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
