@@ -11,6 +11,7 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   allow?: boolean;
+  type?: 'text' | 'password';
 }
 
 const StyledInput = styled.div`
@@ -48,11 +49,11 @@ const StyledInput = styled.div`
   }
 `;
 
-const Input: FC<Props> = ({ title, placeholder, allow, value, onChange }) => (
+const Input: FC<Props> = ({ title, placeholder, allow, value, onChange, type }) => (
   <StyledInput>
     {title && <h1>{title}</h1>}
     <div>
-      <input type="text" value={value} onChange={onChange} placeholder={placeholder} />
+      <input type={type} value={value} onChange={onChange} placeholder={placeholder} />
       {allow !== undefined &&
         (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
     </div>
@@ -62,6 +63,7 @@ const Input: FC<Props> = ({ title, placeholder, allow, value, onChange }) => (
 Input.defaultProps = {
   title: '',
   placeholder: '',
+  type: 'text',
 };
 
 export default Input;

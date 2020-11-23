@@ -58,12 +58,14 @@ const CommonSignup: FC<Props> = ({
       onChange={onChangePassword}
       title="비밀번호"
       placeholder="비밀번호를 입력해 주세요."
+      type="password"
     />
     <Input
       value={passwordRe}
       onChange={onChangePasswordRe}
       title="비밀번호 재확인"
       placeholder="비밀번호를 한번 더 입력해 주세요."
+      type="password"
     />
     <Input
       value={phone}
