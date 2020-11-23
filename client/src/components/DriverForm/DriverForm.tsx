@@ -4,19 +4,16 @@ import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
 
-const StyledDriverForm = styled.form`
+const StyledDriverForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   height: 612px;
-  position: relative;
 
   & input,
   select {
-    margin-bottom: 1rem;
-  }
-
-  & .am-button {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
+    margin-bottom: 1.2rem;
   }
 `;
 
@@ -46,30 +43,35 @@ const DriverForm: FC = ({ ...common }) => {
   }, []);
 
   return (
-    <StyledDriverForm onSubmit={onSubmit}>
-      <Selector
-        title="차량종류"
-        name="car"
-        items={carTypes}
-        placeholder="차량을 선택해주세요"
-        onChange={onChangeCarType}
-      />
+    <StyledDriverForm>
+      <div>
+        <Selector
+          title="차량종류"
+          name="car"
+          items={carTypes}
+          placeholder="차량을 선택해주세요"
+          onChange={onChangeCarType}
+        />
 
-      <Input
-        title="차량번호"
-        placeholder="차량번호를 입력해주세요."
-        value={carNumber}
-        onChange={onChangeCarNumber}
-      />
+        <Input
+          title="차량번호"
+          placeholder="차량번호를 입력해주세요."
+          value={carNumber}
+          onChange={onChangeCarNumber}
+        />
 
-      <Input
-        title="운전면허 번호"
-        placeholder="운전면허 번호 입력해주세요."
-        value={lisence}
-        onChange={onChangeLisence}
-      />
-
-      <Button type="primary">회원가입</Button>
+        <Input
+          title="운전면허 번호"
+          placeholder="운전면허 번호 입력해주세요."
+          value={lisence}
+          onChange={onChangeLisence}
+        />
+      </div>
+      <div>
+        <Button type="primary" onClick={onSubmit}>
+          회원가입
+        </Button>
+      </div>
     </StyledDriverForm>
   );
 };
