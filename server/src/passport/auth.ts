@@ -24,7 +24,7 @@ const loginAuth: ExpressFunction = async (req, res, next) => {
       const refreshToken = jwt.sign(payload, JWT_SECRET_KEY!, { expiresIn: '14d' });
 
       const userData = await UserModel.findOne({ email: user.email });
-      await UserModel.update({ _id: userData?.get('_id') }, { refreshToken });
+      await UserModel.updateOne({ _id: userData?.get('_id') }, { refreshToken });
 
       res.status(200).json({ result: 'success', accessToken });
     })(req, res, next);
