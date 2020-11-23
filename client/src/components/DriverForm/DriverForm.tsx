@@ -31,19 +31,13 @@ const DriverForm: FC = ({ ...common }) => {
     setCarType(e.target.value);
   }, []);
 
-  const onChangeCarNumber = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCarNumber(e.target.value);
-    },
-    [carNumber],
-  );
+  const onChangeCarNumber = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setCarNumber(e.target.value);
+  }, []);
 
-  const onChangeLisence = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLisence(e.target.value);
-    },
-    [lisence],
-  );
+  const onChangeLisence = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setLisence(e.target.value);
+  }, []);
 
   const onSubmit = useCallback((e: React.FormEvent) => {
     // TODO: 회원가입 요청
