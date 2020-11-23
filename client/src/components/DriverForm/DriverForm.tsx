@@ -3,6 +3,7 @@ import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
+import useChange from '@/hooks/useChange';
 
 const StyledDriverForm = styled.div`
   display: flex;
@@ -20,27 +21,18 @@ const StyledDriverForm = styled.div`
 const carTypes: string[] = ['대형', '중형', '소형'];
 
 const DriverForm: FC = ({ ...common }) => {
-  const [carType, setCarType] = useState('');
-  const [carNumber, setCarNumber] = useState('');
-  const [lisence, setLisence] = useState('');
+  const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
+  const [carNumber, , onChangeCarNumber] = useChange('');
+  const [lisence, , onChangeLisence] = useChange('');
 
-  const onChangeCarType = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCarType(e.target.value);
-  }, []);
-
-  const onChangeCarNumber = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setCarNumber(e.target.value);
-  }, []);
-
-  const onChangeLisence = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setLisence(e.target.value);
-  }, []);
-
-  const onSubmit = useCallback((e: React.FormEvent) => {
-    // TODO: 회원가입 요청
-    e.preventDefault();
-    console.log('api 요청.');
-  }, []);
+  const onSubmit = useCallback(
+    (e: React.FormEvent) => {
+      // TODO: 회원가입 요청
+      e.preventDefault();
+      console.log(carType, carNumber, lisence);
+    },
+    [carType, carNumber, lisence],
+  );
 
   return (
     <StyledDriverForm>
