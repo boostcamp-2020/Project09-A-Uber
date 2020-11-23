@@ -19,6 +19,10 @@ const StyledPaymentInfoForm = styled.form`
   & .payment-information-section > div {
     margin-bottom: 1rem;
   }
+
+  & .small-input {
+    width: 4rem;
+  }
 `;
 
 const Banks = [
@@ -79,17 +83,27 @@ const PaymentInfoForm: FC = () => {
             title="카드 번호"
             value={cardNumber1}
             onChange={cardNumber1OnChange}
-            width="4rem"
+            className="small-input"
           />
-          <Input value={cardNumber2} onChange={cardNumber2OnChange} width="4rem" />
-          <Input value={cardNumber3} onChange={cardNumber3OnChange} width="4rem" />
-          <Input value={cardNumber4} onChange={cardNumber4OnChange} width="4rem" type="password" />
+          <Input value={cardNumber2} onChange={cardNumber2OnChange} className="small-input" />
+          <Input value={cardNumber3} onChange={cardNumber3OnChange} className="small-input" />
+          <Input
+            value={cardNumber4}
+            onChange={cardNumber4OnChange}
+            type="password"
+            className="small-input"
+          />
         </div>
         <div>
-          <Input title="만료일" value={expiryDate} onChange={expiryOnChange} width="4rem" />
+          <Input
+            title="만료일"
+            value={expiryDate}
+            onChange={expiryOnChange}
+            className="small-input"
+          />
         </div>
         <div>
-          <Input title="CVC" value={cvc} onChange={cvcOnChange} width="4rem" type="password" />
+          <Input title="CVC" value={cvc} onChange={cvcOnChange} type="password" />
         </div>
       </section>
       <Button type="primary">회원가입</Button>
