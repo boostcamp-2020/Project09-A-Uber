@@ -3,8 +3,8 @@ interface RegExpDictionary {
 }
 
 const regExp: RegExpDictionary = {
-  carNumber: /^/,
-  license: /^/,
+  carNumber: /\d{1,3}[가-힣]\s\d{4}/,
+  license: /\d{2}-\d{2}-\d{6}-\d{2}/,
 };
 
 export const isCarNumber = (maybeCarNumber: string): boolean => {
