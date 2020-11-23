@@ -15,7 +15,12 @@ const enum message {
 export default () => {
   const connect = () => {
     mongoose
-      .connect(DB_HOST!, { useNewUrlParser: true, useUnifiedTopology: true, dbName: DB_NAME })
+      .connect(DB_HOST!, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        dbName: DB_NAME,
+      })
       .then(() => console.log(message.CONNECT_SUCCEED))
       .catch((err) => console.error(message.CONNECT_ERROR, err));
   };
