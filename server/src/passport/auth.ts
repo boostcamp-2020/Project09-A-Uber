@@ -23,7 +23,7 @@ const loginAuth: ExpressFunction = async (req, res, next) => {
 
       // 리프레시 토큰 서버에 저장 로직 추가 필요
 
-      res.json({ result: 'success', AccessToken });
+      res.status(200).json({ result: 'success', AccessToken });
     })(req, res, next);
   } catch (error) {
     next(error);
