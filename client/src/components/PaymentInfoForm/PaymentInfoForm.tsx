@@ -76,7 +76,6 @@ const PaymentInfoForm: FC = () => {
         <div>
           <Input
             title="만료일"
-            placeholder="예시) 09/21"
             value={expiryDate}
             onChange={onChangeExpiryDate}
             className="small-input"
