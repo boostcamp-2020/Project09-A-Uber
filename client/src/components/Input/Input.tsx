@@ -6,6 +6,7 @@ import allowedImg from '@images/allow.svg';
 import warningImg from '@images/warning.svg';
 
 interface Props {
+  title?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -13,7 +14,15 @@ interface Props {
 }
 
 const StyledInput = styled.div`
-  position: relative;
+  & > div {
+    position: relative;
+  }
+
+  & h1 {
+    font-size: 0.9rem;
+    color: ${({ theme }) => theme.FONT};
+    margin-bottom: 2px;
+  }
 
   & input {
     width: 100%;
@@ -39,15 +48,19 @@ const StyledInput = styled.div`
   }
 `;
 
-const Input: FC<Props> = ({ placeholder, allow, value, onChange }) => (
+const Input: FC<Props> = ({ title, placeholder, allow, value, onChange }) => (
   <StyledInput>
-    <input type="text" value={value} onChange={onChange} placeholder={placeholder} />
-    {allow !== undefined &&
-      (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
+    {title && <h1>{title}</h1>}
+    <div>
+      <input type="text" value={value} onChange={onChange} placeholder={placeholder} />
+      {allow !== undefined &&
+        (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
+    </div>
   </StyledInput>
 );
 
 Input.defaultProps = {
+  title: '',
   placeholder: '',
 };
 
