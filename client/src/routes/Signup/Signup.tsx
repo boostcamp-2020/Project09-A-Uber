@@ -78,9 +78,11 @@ const Signup: FC = () => {
         className={!isNext ? ' focus-section' : ''}
       />
       <NextSignup />
-      <Button type="primary" onClick={!isNext ? onClickNextHandler : undefined}>
-        {isNext ? '회원가입' : '다음'}
-      </Button>
+      {!isNext && (
+        <Button type="primary" onClick={onClickNextHandler}>
+          다음
+        </Button>
+      )}
     </StyledSignup>
   );
 };
