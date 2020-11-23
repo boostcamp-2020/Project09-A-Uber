@@ -31,6 +31,7 @@ module.exports = {
           ['@sagas', './src/sagas'],
           ['@routes', './src/routes'],
           ['@theme', './src/theme'],
+          ['@images', './src/images'],
         ],
       },
     },
