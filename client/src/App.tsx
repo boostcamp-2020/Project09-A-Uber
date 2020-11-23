@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
+import SignIn from '@/routes/SignIn';
 import Home from '@routes/Home';
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
@@ -27,6 +28,7 @@ const App: FC = () => (
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/signin" component={SignIn} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>
