@@ -7,6 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import Home from '@routes/Home';
+import PaymentInfo from '@routes/PaymentInfo';
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
 import reducer from '@reducers/.';
@@ -27,6 +28,7 @@ const App: FC = () => (
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/signup/payment-info" component={PaymentInfo} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>
