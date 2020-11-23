@@ -21,10 +21,10 @@ const StyledSelector = styled.div`
     border: 1px solid ${({ theme }) => theme.BORDER};
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
-  }
-
-  &:focus {
-    border: 1px solid ${({ theme }) => theme.PRIMARY};
+  
+    &:focus {
+      border: 1px solid ${({ theme }) => theme.PRIMARY};
+    }
   }
 `;
 
