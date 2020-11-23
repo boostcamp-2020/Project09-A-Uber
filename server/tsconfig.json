@@ -27,6 +27,8 @@
       "@config/*": ["src/config/*"],
       "@models/*": ["src/models/*"],
       "@util/*": ["src/util/*"],
+      "@passport/*": ["src/passport/*"],
+      "@type/*": ["src/types/*"],
       "@/*": ["src/*"]
     }
   }
