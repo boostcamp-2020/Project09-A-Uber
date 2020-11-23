@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyledSelector } from './style';
+import styled from '@theme/styled';
 
 interface Props {
   name: string;
@@ -8,20 +8,28 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
+const StyledSelector = styled.select`
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.BORDER};
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+
+  &:focus {
+    border: 1px solid ${({ theme }) => theme.PRIMARY};
+  }
+`;
+
 const Selector: FC<Props> = ({ name, items, placeholder, onChange }) => {
   return (
-    <StyledSelector>
-      <select name={name} onChange={onChange}>
-        <option value="" disabled selected className="defaultOption">
-          {placeholder}
+    <StyledSelector name={name} onChange={onChange}>
+      <option value="" disabled selected className="defaultOption">
+        {placeholder}
+      </option>
+      {items.map((item) => (
+        <option key={`${name}_${item}`} value={item}>
+          {item}
         </option>
-        {items &&
-          items.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-      </select>
+      ))}
     </StyledSelector>
   );
 };
