@@ -10,16 +10,14 @@ const StyledPaymentInfoForm = styled.form`
   justify-content: space-between;
   height: 100%;
 
-  & .cardNumber {
+  & .card-number {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
   }
 
-  & .paymentInfoSection {
-    & > div {
-      margin-bottom: 1rem;
-    }
+  & .payment-information-section > div {
+    margin-bottom: 1rem;
   }
 
   & Button {
@@ -71,7 +69,7 @@ const PaymentInfoForm: FC = () => {
 
   return (
     <StyledPaymentInfoForm>
-      <section className="paymentInfoSection">
+      <section className="payment-information-section">
         <div>
           <Selector
             title="카드 회사"
@@ -81,7 +79,7 @@ const PaymentInfoForm: FC = () => {
             items={Banks}
           />
         </div>
-        <div className="cardNumber">
+        <div className="card-number">
           <Input
             title="카드 번호"
             value={cardNumber1}
