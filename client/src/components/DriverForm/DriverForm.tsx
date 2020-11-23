@@ -7,6 +7,7 @@ import Input from '@components/Input';
 const StyledDriverForm = styled.form`
   height: 612px;
   position: relative;
+
   & input,
   select {
     margin-bottom: 1rem;
@@ -26,12 +27,9 @@ const DriverForm: FC = ({ ...common }) => {
   const [carNumber, setCarNumber] = useState('');
   const [lisence, setLisence] = useState('');
 
-  const onChangeCarType = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setCarType(e.target.value);
-    },
-    [carType],
-  );
+  const onChangeCarType = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCarType(e.target.value);
+  }, []);
 
   const onChangeCarNumber = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +75,7 @@ const DriverForm: FC = ({ ...common }) => {
         onChange={onChangeLisence}
       />
 
-      <Button type="primary">클릭</Button>
+      <Button type="primary">회원가입</Button>
     </StyledDriverForm>
   );
 };
