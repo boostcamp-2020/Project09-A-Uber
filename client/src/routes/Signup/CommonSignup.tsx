@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useRef, useCallback } from 'react';
 
 import styled from '@theme/styled';
 import Input from '@components/Input';
+import ProfileUplodaer from '@components/ProfileUploader';
 
 interface Props {
   name: string;
@@ -18,7 +19,7 @@ interface Props {
 }
 
 const StyledCommonSignup = styled.section`
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   transform: translateX(-100vw);
 
   & > div {
@@ -44,6 +45,7 @@ const CommonSignup: FC<Props> = ({
   className,
 }) => (
   <StyledCommonSignup className={className}>
+    <ProfileUplodaer />
     <Input value={name} onChange={onChangeName} title="이름" placeholder="이름을 입력해 주세요." />
     <Input
       value={email}
