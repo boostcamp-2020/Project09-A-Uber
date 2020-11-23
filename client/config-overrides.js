@@ -19,6 +19,7 @@ module.exports = override(
     '@sagas': path.resolve(__dirname, 'src/sagas'),
     '@routes': path.resolve(__dirname, 'src/routes'),
     '@theme': path.resolve(__dirname, 'src/theme'),
+    '@hooks': path.resolve(__dirname, 'src/hooks'),
     '@images': path.resolve(__dirname, 'src/images'),
   }),
 );
