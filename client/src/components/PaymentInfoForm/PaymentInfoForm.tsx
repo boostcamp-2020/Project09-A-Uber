@@ -2,16 +2,29 @@ import React, { FC, useState } from 'react';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
+import { Button } from 'antd-mobile';
 
-const StyledPaymentInfoForm = styled.section`
+const StyledPaymentInfoForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
   & .cardNumber {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
   }
 
-  & > div {
-    margin-bottom: 1rem;
+  & .paymentInfoSection {
+    & > div {
+      margin-bottom: 1rem;
+    }
+  }
+
+  & Button {
+    position: relative;
+    bottom: 0;
   }
 `;
 
@@ -58,27 +71,35 @@ const PaymentInfoForm: FC = () => {
 
   return (
     <StyledPaymentInfoForm>
-      <div>
-        <Selector
-          title="카드 회사"
-          name="bank"
-          placeholder="카드 회사를 선택해 주세요"
-          onChange={onSelectBank}
-          items={Banks}
-        />
-      </div>
-      <div className="cardNumber">
-        <Input title="카드 번호" value={cardNumber1} onChange={cardNumber1OnChange} width="4rem" />
-        <Input value={cardNumber2} onChange={cardNumber2OnChange} width="4rem" />
-        <Input value={cardNumber3} onChange={cardNumber3OnChange} width="4rem" />
-        <Input value={cardNumber4} onChange={cardNumber4OnChange} width="4rem" type="password" />
-      </div>
-      <div>
-        <Input title="만료일" value={expiryDate} onChange={expiryOnChange} width="4rem" />
-      </div>
-      <div>
-        <Input title="CVC" value={cvc} onChange={cvcOnChange} width="4rem" type="password" />
-      </div>
+      <section className="paymentInfoSection">
+        <div>
+          <Selector
+            title="카드 회사"
+            name="bank"
+            placeholder="카드 회사를 선택해 주세요"
+            onChange={onSelectBank}
+            items={Banks}
+          />
+        </div>
+        <div className="cardNumber">
+          <Input
+            title="카드 번호"
+            value={cardNumber1}
+            onChange={cardNumber1OnChange}
+            width="4rem"
+          />
+          <Input value={cardNumber2} onChange={cardNumber2OnChange} width="4rem" />
+          <Input value={cardNumber3} onChange={cardNumber3OnChange} width="4rem" />
+          <Input value={cardNumber4} onChange={cardNumber4OnChange} width="4rem" type="password" />
+        </div>
+        <div>
+          <Input title="만료일" value={expiryDate} onChange={expiryOnChange} width="4rem" />
+        </div>
+        <div>
+          <Input title="CVC" value={cvc} onChange={cvcOnChange} width="4rem" type="password" />
+        </div>
+      </section>
+      <Button type="primary">회원가입</Button>
     </StyledPaymentInfoForm>
   );
 };
