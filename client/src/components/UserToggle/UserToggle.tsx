@@ -33,7 +33,7 @@ const StyledToggle = styled.nav`
   }
 `;
 
-const Toggle: FC<Props> = ({ focus, onClick }) => {
+const UserToggle: FC<Props> = ({ focus, onClick }) => {
   return (
     <StyledToggle>
       <div
@@ -52,4 +52,4 @@ const Toggle: FC<Props> = ({ focus, onClick }) => {
   );
 };
 
-export default Toggle;
+export default UserToggle;
