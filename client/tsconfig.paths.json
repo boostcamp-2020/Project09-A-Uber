@@ -9,6 +9,7 @@
         "@reducers/*": ["src/reducers/*"],
         "@sagas/*": ["src/sagas/*"],
         "@theme/*": ["src/theme/*"],
+        "@hooks/*": ["src/hooks/*"],
         "@images/*": ["src/images/*"]
       },
   

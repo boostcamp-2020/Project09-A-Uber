@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import SignIn from '@/routes/SignIn';
 import Home from '@routes/Home';
+import Signup from '@routes/Signup';
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
 import reducer from '@reducers/.';
@@ -29,6 +30,7 @@ const App: FC = () => (
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/signin" component={SignIn} />
+            <Route exact path="/signup" component={Signup} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>
