@@ -1,4 +1,5 @@
 import React, { FC, useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
 import useChange from '@hooks/useChange';
@@ -28,6 +29,7 @@ const StyledSignup = styled(PageFrame)`
 `;
 
 const Signup: FC = () => {
+  const history = useHistory();
   const [isNext, setIsNext] = useState(false);
   const [signupTarget, setSignupTarget] = useState<ToggleFocus>(FOCUS_USER);
   const [name, , onChangeName] = useChange('');
@@ -53,7 +55,9 @@ const Signup: FC = () => {
   const onClickBackHandler = useCallback(() => {
     if (isNext) {
       setIsNext(false);
+      return;
     }
+    history.push('/signin');
   }, [isNext]);
 
   return (
