@@ -5,7 +5,7 @@ import styled from '@theme/styled';
 import useChange from '@hooks/useChange';
 
 import PageFrame from '@components/PageFrame';
-import Toggle, { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
+import UserToggle, { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
 
 import CommonSignup from './CommonSignup';
 import NextSignup from './NextSingup';
@@ -62,7 +62,7 @@ const Signup: FC = () => {
     <StyledSignup>
       <div className="signup-header">
         <h1>회원가입</h1>
-        <Toggle focus={signupTarget} onClick={onClickToggleHandler} />
+        <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
       </div>
       <CommonSignup
         name={name}
