@@ -11,15 +11,11 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   allow?: boolean;
-  width?: string;
   type?: string;
+  className?: string;
 }
 
-interface StyleProps {
-  width?: string;
-}
-
-const StyledInput = styled.div<StyleProps>`
+const StyledInput = styled.div`
   & > div {
     position: relative;
   }
@@ -31,7 +27,7 @@ const StyledInput = styled.div<StyleProps>`
   }
 
   & input {
-    width: ${(props: StyleProps) => (props.width ? props.width : '100%')};
+    width: 100%;
     border: solid 1px ${({ theme }) => theme.BORDER};
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
@@ -54,11 +50,17 @@ const StyledInput = styled.div<StyleProps>`
   }
 `;
 
-const Input: FC<Props> = ({ title, placeholder, allow, value, onChange, width, type }) => (
-  <StyledInput width={width}>
+const Input: FC<Props> = ({ title, placeholder, allow, value, onChange, type, className }) => (
+  <StyledInput>
     {title && <h1>{title}</h1>}
     <div>
-      <input type={type || 'text'} value={value} onChange={onChange} placeholder={placeholder} />
+      <input
+        type={type || 'text'}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={className}
+      />
       {allow !== undefined &&
         (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
     </div>
