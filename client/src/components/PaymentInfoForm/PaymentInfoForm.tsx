@@ -19,11 +19,6 @@ const StyledPaymentInfoForm = styled.form`
   & .payment-information-section > div {
     margin-bottom: 1rem;
   }
-
-  & Button {
-    position: relative;
-    bottom: 0;
-  }
 `;
 
 const Banks = [
