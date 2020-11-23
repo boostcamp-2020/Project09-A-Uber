@@ -44,8 +44,12 @@
     "graphql-tools": "^7.0.1",
     "helmet": "^4.2.0",
     "hpp": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.15",
     "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "subscriptions-transport-ws": "^0.9.18"
   }
 }
