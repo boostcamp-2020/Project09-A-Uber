@@ -10,6 +10,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 import schema from '@config/schema';
+import loginRouter from '@api/login/index';
 
 dotenv.config();
 
@@ -51,6 +52,8 @@ class App {
       );
     } else {
       this.app.use(morgan('dev'));
+      this.app.use(express.json());
+      this.app.use('/login', loginRouter);
       this.app.use(
         cors({
           origin: true,
