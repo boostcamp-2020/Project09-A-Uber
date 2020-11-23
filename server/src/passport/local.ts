@@ -10,9 +10,9 @@ const mock = {
 
 const authenticate: VerifyFunction = async (email: string, password: string, done) => {
   try {
-    if (mock.email !== email) return done(null, false, { message: Message.InvaildEmail });
+    if (mock.email !== email) return done(null, false, { message: Message.InvalidEmail });
     if (!isComparedPassword(password, mock.password)) {
-      return done(null, false, { message: Message.IvaildPassword });
+      return done(null, false, { message: Message.InvalidPassword });
     }
 
     return done(null, mock, { message: Message.SucceedLogin });
