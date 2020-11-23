@@ -4,12 +4,15 @@ import styled from '@theme/styled';
 import useChange from '@hooks/useChange';
 
 import PageFrame from '@components/PageFrame';
+import HeaderWithBack from '@/components/HeaderWithBack';
 import UserToggle, { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
 
 import CommonSignup from './CommonSignup';
 import NextSignup from './NextSingup';
 
 const StyledSignup = styled(PageFrame)`
+  height: calc(100% - 3rem);
+
   & .signup-header {
     display: flex;
     justify-content: space-between;
@@ -47,30 +50,39 @@ const Signup: FC = () => {
     setIsNext(true);
   }, []);
 
+  const onClickBackHandler = useCallback(() => {
+    if (isNext) {
+      setIsNext(false);
+    }
+  }, [isNext]);
+
   return (
-    <StyledSignup>
-      <div className="signup-header">
-        <h1>회원가입</h1>
-        <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
-      </div>
-      {isNext ? (
-        <NextSignup nextForm={signupTarget} />
-      ) : (
-        <CommonSignup
-          name={name}
-          email={email}
-          password={password}
-          passwordRe={passwordRe}
-          phone={phone}
-          onChangeName={onChangeName}
-          onChangeEmail={onChangeEmail}
-          onChangePassword={onChangePassword}
-          onChangePasswordRe={onChangePasswordRe}
-          onChangePhone={onChangePhone}
-          onClickNextHandler={onClickNextHandler}
-        />
-      )}
-    </StyledSignup>
+    <>
+      <HeaderWithBack onClick={onClickBackHandler} />
+      <StyledSignup>
+        <div className="signup-header">
+          <h1>회원가입</h1>
+          <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
+        </div>
+        {isNext ? (
+          <NextSignup nextForm={signupTarget} />
+        ) : (
+          <CommonSignup
+            name={name}
+            email={email}
+            password={password}
+            passwordRe={passwordRe}
+            phone={phone}
+            onChangeName={onChangeName}
+            onChangeEmail={onChangeEmail}
+            onChangePassword={onChangePassword}
+            onChangePasswordRe={onChangePasswordRe}
+            onChangePhone={onChangePhone}
+            onClickNextHandler={onClickNextHandler}
+          />
+        )}
+      </StyledSignup>
+    </>
   );
 };
 
