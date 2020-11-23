@@ -1,6 +1,8 @@
-import passport from '@passport/index';
 import jwt from 'jsonwebtoken';
+
+import passport from '@passport/index';
 import { ExpressFunction } from '@type/ExpressFunction';
+import UserModel from '@models/user';
 
 interface Message {
   message: string;
@@ -14,16 +16,17 @@ const { JWT_SECRET_KEY }: SECRET_KEY = process.env;
 
 const loginAuth: ExpressFunction = async (req, res, next) => {
   try {
-    passport.authenticate('local', (error, user, { message }: Message) => {
+    passport.authenticate('local', async (error, user, { message }: Message) => {
       if (error || !user) return res.status(400).json({ result: 'fail', message });
 
       const payload = { email: user.email };
-      const AccessToken = jwt.sign(payload, JWT_SECRET_KEY!);
-      const RefreshToken = jwt.sign(payload, JWT_SECRET_KEY!);
+      const accessToken = jwt.sign(payload, JWT_SECRET_KEY!, { expiresIn: '15m' });
+      const refreshToken = jwt.sign(payload, JWT_SECRET_KEY!, { expiresIn: '14d' });
 
-      // 리프레시 토큰 서버에 저장 로직 추가 필요
+      const userData = await UserModel.findOne({ email: user.email });
+      await UserModel.update({ _id: userData?.get('_id') }, { refreshToken });
 
-      res.status(200).json({ result: 'success', AccessToken });
+      res.status(200).json({ result: 'success', accessToken });
     })(req, res, next);
   } catch (error) {
     next(error);
