@@ -1,5 +1,4 @@
 import React, { FC, useState, useCallback } from 'react';
-import { Button } from 'antd-mobile';
 
 import styled from '@theme/styled';
 import useChange from '@hooks/useChange';
@@ -15,23 +14,13 @@ const StyledSignup = styled(PageFrame)`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-bottom: 2rem;
 
     & h1 {
       font-size: 2.2rem;
       font-weight: 700;
       color: ${({ theme }) => theme.PRIMARY};
     }
-  }
-
-  & section {
-    transition: transform 0.5s;
-  }
-
-  & > a {
-    cursor: pointer;
-    margin-top: auto;
-    font-weight: 700;
-    font-size: 0.9rem;
   }
 `;
 
@@ -64,24 +53,22 @@ const Signup: FC = () => {
         <h1>회원가입</h1>
         <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
       </div>
-      <CommonSignup
-        name={name}
-        email={email}
-        password={password}
-        passwordRe={passwordRe}
-        phone={phone}
-        onChangeName={onChangeName}
-        onChangeEmail={onChangeEmail}
-        onChangePassword={onChangePassword}
-        onChangePasswordRe={onChangePasswordRe}
-        onChangePhone={onChangePhone}
-        className={!isNext ? ' focus-section' : ''}
-      />
-      <NextSignup />
-      {!isNext && (
-        <Button type="primary" onClick={onClickNextHandler}>
-          다음
-        </Button>
+      {isNext ? (
+        <NextSignup nextForm={signupTarget} />
+      ) : (
+        <CommonSignup
+          name={name}
+          email={email}
+          password={password}
+          passwordRe={passwordRe}
+          phone={phone}
+          onChangeName={onChangeName}
+          onChangeEmail={onChangeEmail}
+          onChangePassword={onChangePassword}
+          onChangePasswordRe={onChangePasswordRe}
+          onChangePhone={onChangePhone}
+          onClickNextHandler={onClickNextHandler}
+        />
       )}
     </StyledSignup>
   );
