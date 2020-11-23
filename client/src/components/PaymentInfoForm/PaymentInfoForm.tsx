@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
 import { Button } from 'antd-mobile';
+import useChange from '@hooks/useChange';
 
 const StyledPaymentInfoForm = styled.form`
   display: flex;
@@ -36,35 +37,13 @@ const Banks = [
 ];
 
 const PaymentInfoForm: FC = () => {
-  const [bank, setBank] = useState('');
-  const [cardNumber1, setCardNumber1] = useState('');
-  const [cardNumber2, setCardNumber2] = useState('');
-  const [cardNumber3, setCardNumber3] = useState('');
-  const [cardNumber4, setCardNumber4] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvc, setCvc] = useState('');
-
-  const onSelectBank = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setBank(e.target.value);
-  };
-  const cardNumber1OnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber1(e.target.value);
-  };
-  const cardNumber2OnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber2(e.target.value);
-  };
-  const cardNumber3OnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber3(e.target.value);
-  };
-  const cardNumber4OnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber4(e.target.value);
-  };
-  const expiryOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExpiryDate(e.target.value);
-  };
-  const cvcOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCvc(e.target.value);
-  };
+  const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
+  const [cardNumber1, , onChangeCardNumber1] = useChange('');
+  const [cardNumber2, , onChangeCardNumber2] = useChange('');
+  const [cardNumber3, , onChangeCardNumber3] = useChange('');
+  const [cardNumber4, , onChangeCardNumber4] = useChange('');
+  const [expiryDate, , onChangeExpiryDate] = useChange('');
+  const [cvc, , onChangeCvc] = useChange('');
 
   return (
     <StyledPaymentInfoForm>
@@ -74,7 +53,7 @@ const PaymentInfoForm: FC = () => {
             title="카드 회사"
             name="bank"
             placeholder="카드 회사를 선택해 주세요"
-            onChange={onSelectBank}
+            onChange={onChangeBank}
             items={Banks}
           />
         </div>
@@ -82,14 +61,14 @@ const PaymentInfoForm: FC = () => {
           <Input
             title="카드 번호"
             value={cardNumber1}
-            onChange={cardNumber1OnChange}
+            onChange={onChangeCardNumber1}
             className="small-input"
           />
-          <Input value={cardNumber2} onChange={cardNumber2OnChange} className="small-input" />
-          <Input value={cardNumber3} onChange={cardNumber3OnChange} className="small-input" />
+          <Input value={cardNumber2} onChange={onChangeCardNumber2} className="small-input" />
+          <Input value={cardNumber3} onChange={onChangeCardNumber3} className="small-input" />
           <Input
             value={cardNumber4}
-            onChange={cardNumber4OnChange}
+            onChange={onChangeCardNumber4}
             type="password"
             className="small-input"
           />
@@ -97,13 +76,20 @@ const PaymentInfoForm: FC = () => {
         <div>
           <Input
             title="만료일"
+            placeholder="예시) 09/21"
             value={expiryDate}
-            onChange={expiryOnChange}
+            onChange={onChangeExpiryDate}
             className="small-input"
           />
         </div>
         <div>
-          <Input title="CVC" value={cvc} onChange={cvcOnChange} type="password" />
+          <Input
+            title="CVC"
+            value={cvc}
+            onChange={onChangeCvc}
+            type="password"
+            className="small-input"
+          />
         </div>
       </section>
       <Button type="primary">회원가입</Button>
