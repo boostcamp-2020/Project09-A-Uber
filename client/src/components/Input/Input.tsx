@@ -21,7 +21,7 @@ const StyledInput = styled.div`
   & h1 {
     font-size: 0.9rem;
     color: ${({ theme }) => theme.FONT};
-    margin-bottom: 2px;
+    margin-bottom: 0.5rem;
   }
 
   & input {
