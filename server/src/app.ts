@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 
 import schema from '@config/schema';
 import loginRouter from '@api/login/index';
+import signupRouter from '@api/signup';
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ class App {
       this.app.use(morgan('dev'));
       this.app.use(express.json());
       this.app.use('/api/login', loginRouter);
+      this.app.use('/api/signup', signupRouter);
       this.app.use(
         cors({
           origin: true,
