@@ -1,20 +1,24 @@
 import React, { FC, useState, useCallback } from 'react';
-import { Button } from 'antd-mobile';
+import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
 import useChange from '@hooks/useChange';
 
 import PageFrame from '@components/PageFrame';
+import HeaderWithBack from '@/components/HeaderWithBack';
 import UserToggle, { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
 
 import CommonSignup from './CommonSignup';
 import NextSignup from './NextSingup';
 
 const StyledSignup = styled(PageFrame)`
+  height: calc(100% - 3rem);
+
   & .signup-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-bottom: 2rem;
 
     & h1 {
       font-size: 2.2rem;
@@ -22,20 +26,10 @@ const StyledSignup = styled(PageFrame)`
       color: ${({ theme }) => theme.PRIMARY};
     }
   }
-
-  & section {
-    transition: transform 0.5s;
-  }
-
-  & > a {
-    cursor: pointer;
-    margin-top: auto;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
 `;
 
 const Signup: FC = () => {
+  const history = useHistory();
   const [isNext, setIsNext] = useState(false);
   const [signupTarget, setSignupTarget] = useState<ToggleFocus>(FOCUS_USER);
   const [name, , onChangeName] = useChange('');
@@ -58,32 +52,41 @@ const Signup: FC = () => {
     setIsNext(true);
   }, []);
 
+  const onClickBackHandler = useCallback(() => {
+    if (isNext) {
+      setIsNext(false);
+      return;
+    }
+    history.push('/signin');
+  }, [isNext]);
+
   return (
-    <StyledSignup>
-      <div className="signup-header">
-        <h1>회원가입</h1>
-        <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
-      </div>
-      <CommonSignup
-        name={name}
-        email={email}
-        password={password}
-        passwordRe={passwordRe}
-        phone={phone}
-        onChangeName={onChangeName}
-        onChangeEmail={onChangeEmail}
-        onChangePassword={onChangePassword}
-        onChangePasswordRe={onChangePasswordRe}
-        onChangePhone={onChangePhone}
-        className={!isNext ? ' focus-section' : ''}
-      />
-      <NextSignup />
-      {!isNext && (
-        <Button type="primary" onClick={onClickNextHandler}>
-          다음
-        </Button>
-      )}
-    </StyledSignup>
+    <>
+      <HeaderWithBack onClick={onClickBackHandler} />
+      <StyledSignup>
+        <div className="signup-header">
+          <h1>회원가입</h1>
+          <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
+        </div>
+        {isNext ? (
+          <NextSignup nextForm={signupTarget} />
+        ) : (
+          <CommonSignup
+            name={name}
+            email={email}
+            password={password}
+            passwordRe={passwordRe}
+            phone={phone}
+            onChangeName={onChangeName}
+            onChangeEmail={onChangeEmail}
+            onChangePassword={onChangePassword}
+            onChangePasswordRe={onChangePasswordRe}
+            onChangePhone={onChangePhone}
+            onClickNextHandler={onClickNextHandler}
+          />
+        )}
+      </StyledSignup>
+    </>
   );
 };
 

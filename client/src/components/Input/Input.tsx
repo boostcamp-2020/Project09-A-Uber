@@ -16,6 +16,8 @@ interface Props {
 }
 
 const StyledInput = styled.div`
+  width: 100%;
+
   & > div {
     position: relative;
   }

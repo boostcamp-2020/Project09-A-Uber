@@ -1,4 +1,5 @@
-import React, { FC, useRef, useCallback } from 'react';
+import React, { FC } from 'react';
+import { Button } from 'antd-mobile';
 
 import styled from '@theme/styled';
 import Input from '@components/Input';
@@ -15,19 +16,24 @@ interface Props {
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePasswordRe: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePhone: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClickNextHandler: () => void;
   className?: string;
 }
 
 const StyledCommonSignup = styled.section`
-  margin-top: 2rem;
-  transform: translateX(-100vw);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   & > div {
     margin-bottom: 1.2rem;
   }
 
-  &.focus-section {
-    transform: translateX(0px);
+  & > a {
+    cursor: pointer;
+    margin-top: auto;
+    font-weight: 700;
+    font-size: 0.9rem;
   }
 `;
 
@@ -42,6 +48,7 @@ const CommonSignup: FC<Props> = ({
   onChangePassword,
   onChangePasswordRe,
   onChangePhone,
+  onClickNextHandler,
   className,
 }) => (
   <StyledCommonSignup className={className}>
@@ -73,6 +80,10 @@ const CommonSignup: FC<Props> = ({
       title="핸드폰 번호"
       placeholder="핸드폰 번호를 입력해 주세요."
     />
+
+    <Button type="primary" onClick={onClickNextHandler}>
+      다음
+    </Button>
   </StyledCommonSignup>
 );
 
