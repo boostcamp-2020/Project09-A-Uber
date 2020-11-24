@@ -173,7 +173,19 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
           />
         </div>
       </section>
-      <Button type="primary" onClick={onSubmit}>
+      <Button
+        type="primary"
+        onClick={onSubmit}
+        disabled={
+          !bank ||
+          !isCardNumber1Valid ||
+          !isCardNumber2Valid ||
+          !isCardNumber3Valid ||
+          !isCardNumber4Valid ||
+          !expiryDate ||
+          !cvc
+        }
+      >
         회원가입
       </Button>
     </StyledPaymentInfoForm>
