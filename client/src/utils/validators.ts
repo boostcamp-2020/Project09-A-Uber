@@ -4,6 +4,7 @@ interface RegExpDictionary {
 
 const regExp: RegExpDictionary = {
   email: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
+  phone: /^\d{3}-\d{3,4}-\d{4}$/,
   cardNumber: /^\d{4}$/,
   expiryDate: /^(0[1-9]|1[0-2])[/](01|[0][1-9]|[1-2][1-9]|[3][0-1])$/,
   cvcNumber: /^\d{3}$/,
@@ -20,6 +21,10 @@ interface CardNumber {
 
 export const isEmail = (maybeEmail: string): boolean => {
   return regExp.email.test(maybeEmail);
+};
+
+export const isPhone = (maybePhone: string): boolean => {
+  return regExp.phone.test(maybePhone);
 };
 
 export const isCardNumber = (maybeCardNumber: CardNumber): boolean => {
