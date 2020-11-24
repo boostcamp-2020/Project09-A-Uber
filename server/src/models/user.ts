@@ -1,5 +1,9 @@
 import { Schema, model } from 'mongoose';
 
+import paymentSchema from './payment';
+import driverSchema from './driver';
+import locationSchema from './location';
+
 export const loginType = {
   driver: '드라이버' as const,
   user: '일반 사용자' as const,
@@ -15,32 +19,9 @@ const userSchema = new Schema({
   phone: { type: String, required: true },
   type: { type: String, required: true, enum: [loginType.driver, loginType.user] },
   profile: Schema.Types.String,
-  payment: {
-    type: {
-      bank: { type: String, required: true },
-      creditNumber: { type: String, required: true },
-      expiryDate: { type: String, required: true },
-      cvc: { type: Number, required: true },
-    },
-    required: false,
-  },
-  driver: {
-    type: {
-      licenseNumber: { type: String, required: true },
-      status: { type: String, enum: ['waiting', 'driving'], required: true },
-      car: {
-        type: {
-          carNumber: { type: String, required: true },
-          carType: { type: String, enum: ['small', 'middle', 'large'], required: true },
-        },
-        required: true,
-      },
-    },
-    required: false,
-  },
-  location: {
-    coordinates: [Number],
-  },
+  payment: { type: paymentSchema, required: false },
+  driver: { type: driverSchema, required: false },
+  location: locationSchema,
   refreshToken: Schema.Types.String,
 });
 
