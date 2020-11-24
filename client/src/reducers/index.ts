@@ -1,4 +1,11 @@
-import { ADD_USER_INFO, AddUserInfo } from './addUserInfo';
+import {
+  SIGN_UP_REQUEST,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAILURE,
+  signUpRequest,
+  signUpSuccess,
+  signUpFailure,
+} from './user';
 
 interface Driver {
   licenseNumber: string;
@@ -6,6 +13,9 @@ interface Driver {
 }
 
 export interface InitialState {
+  signUpLoading: boolean;
+  signUpDone: boolean;
+  signUpError?: string | null;
   user?: {
     _id: string;
     name: string;
@@ -13,14 +23,26 @@ export interface InitialState {
   };
 }
 
-const initialState: InitialState = {};
+const initialState: InitialState = {
+  signUpLoading: false,
+  signUpDone: false,
+  signUpError: null,
+};
 
-type Action = AddUserInfo;
+type Action = {
+  type: typeof SIGN_UP_REQUEST | typeof SIGN_UP_SUCCESS | typeof SIGN_UP_FAILURE;
+  error?: string;
+};
 
-const reducer = (state: InitialState = initialState, action: Action) => {
+const reducer = (state: InitialState = initialState, action: Action): InitialState => {
   switch (action.type) {
-    case ADD_USER_INFO:
-      return state;
+    case SIGN_UP_REQUEST:
+      console.log(action);
+      return { ...initialState, signUpLoading: true };
+    case SIGN_UP_SUCCESS:
+      return { ...initialState, signUpLoading: false };
+    case SIGN_UP_FAILURE:
+      return { ...initialState, signUpLoading: false, signUpError: action.error };
     default:
       return state;
   }
