@@ -11,6 +11,11 @@ interface Props {
   password: string;
   passwordRe: string;
   phone: string;
+  isName: boolean;
+  isEmail: boolean;
+  isPassword: boolean;
+  isPasswordRe: boolean;
+  isPhone: boolean;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -43,6 +48,11 @@ const CommonSignup: FC<Props> = ({
   password,
   passwordRe,
   phone,
+  isName,
+  isEmail,
+  isPassword,
+  isPasswordRe,
+  isPhone,
   onChangeName,
   onChangeEmail,
   onChangePassword,
@@ -53,12 +63,19 @@ const CommonSignup: FC<Props> = ({
 }) => (
   <StyledCommonSignup className={className}>
     <ProfileUplodaer />
-    <Input value={name} onChange={onChangeName} title="이름" placeholder="이름을 입력해 주세요." />
+    <Input
+      value={name}
+      onChange={onChangeName}
+      title="이름"
+      placeholder="이름을 입력해 주세요."
+      allow={isName}
+    />
     <Input
       value={email}
       onChange={onChangeEmail}
       title="이메일"
       placeholder="이메일을 입력해 주세요."
+      allow={isEmail}
     />
     <Input
       value={password}
@@ -66,6 +83,7 @@ const CommonSignup: FC<Props> = ({
       title="비밀번호"
       placeholder="비밀번호를 입력해 주세요."
       type="password"
+      allow={isPassword}
     />
     <Input
       value={passwordRe}
@@ -73,15 +91,21 @@ const CommonSignup: FC<Props> = ({
       title="비밀번호 재확인"
       placeholder="비밀번호를 한번 더 입력해 주세요."
       type="password"
+      allow={isPasswordRe}
     />
     <Input
       value={phone}
       onChange={onChangePhone}
       title="핸드폰 번호"
       placeholder="핸드폰 번호를 입력해 주세요."
+      allow={isPhone}
     />
 
-    <Button type="primary" onClick={onClickNextHandler}>
+    <Button
+      type="primary"
+      onClick={onClickNextHandler}
+      disabled={!isName || !isEmail || !isPassword || !isPasswordRe || !isPhone}
+    >
       다음
     </Button>
   </StyledCommonSignup>

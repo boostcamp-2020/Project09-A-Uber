@@ -2,7 +2,8 @@ import React, { FC, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
-import useChange from '@hooks/useChange';
+import useValidator from '@hooks/useValidator';
+import { isKoreanName, isEmail, isPassword, isPhone } from '@utils/validators';
 
 import PageFrame from '@components/PageFrame';
 import HeaderWithBack from '@/components/HeaderWithBack';
@@ -32,11 +33,20 @@ const Signup: FC = () => {
   const history = useHistory();
   const [isNext, setIsNext] = useState(false);
   const [signupTarget, setSignupTarget] = useState<ToggleFocus>(FOCUS_USER);
-  const [name, , onChangeName] = useChange('');
-  const [email, , onChangeEmail] = useChange('');
-  const [password, , onChangePassword] = useChange('');
-  const [passwordRe, , onChangePasswordRe] = useChange('');
-  const [phone, , onChangePhone] = useChange('');
+  const [name, , onChangeName, isNameValid] = useValidator('', isKoreanName);
+  const [email, , onChangeEmail, isEmailValid] = useValidator('', isEmail);
+  const [password, , onChangePassword, isPasswordValid] = useValidator('', isPassword);
+  const [passwordRe, setPasswordRe] = useState('');
+  const [isPasswordReValid, setIsPasswordReValid] = useState(false);
+  const [phone, , onChangePhone, isPhoneValid] = useValidator('', isPhone);
+
+  const onChangePasswordReHandler = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPasswordRe(e.target.value);
+      setIsPasswordReValid(e.target.value === password);
+    },
+    [password],
+  );
 
   const onClickToggleHandler = useCallback(
     (target: ToggleFocus) => {
@@ -69,7 +79,13 @@ const Signup: FC = () => {
           <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
         </div>
         {isNext ? (
-          <NextSignup nextForm={signupTarget} />
+          <NextSignup
+            nextForm={signupTarget}
+            name={name}
+            email={email}
+            password={password}
+            phone={phone}
+          />
         ) : (
           <CommonSignup
             name={name}
@@ -77,10 +93,15 @@ const Signup: FC = () => {
             password={password}
             passwordRe={passwordRe}
             phone={phone}
+            isName={isNameValid}
+            isEmail={isEmailValid}
+            isPassword={isPasswordValid}
+            isPasswordRe={isPasswordReValid}
+            isPhone={isPhoneValid}
             onChangeName={onChangeName}
             onChangeEmail={onChangeEmail}
             onChangePassword={onChangePassword}
-            onChangePasswordRe={onChangePasswordRe}
+            onChangePasswordRe={onChangePasswordReHandler}
             onChangePhone={onChangePhone}
             onClickNextHandler={onClickNextHandler}
           />
