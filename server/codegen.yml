@@ -1,4 +1,4 @@
-schema: http://localhost:4000/graphql
+schema: src/api/**/*.graphql
 generates:
   ./src/types/api.d.ts:
     plugins:
