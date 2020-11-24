@@ -1,21 +1,36 @@
-import { Strategy as LocalStrategy, VerifyFunction } from 'passport-local';
+import {
+  Strategy as LocalStrategy,
+  VerifyFunctionWithRequest,
+  IStrategyOptionsWithRequest,
+} from 'passport-local';
+import { Request } from 'express';
+
 import { isComparedPassword } from '@util/bcrypt';
 import { Message } from '@util/server-message';
+import UserModel, { LoginType } from '@models/user';
 
-const config = { usernameField: 'email', passwordField: 'password' };
-const mock = {
-  email: 'gildong@test.com',
-  password: '$2b$10$UzWKr4Em04s.UVjHZf1fHe8rc39voVNMuUhVCW7KP.tc0vrbmNW.K',
+const config: IStrategyOptionsWithRequest = {
+  passReqToCallback: true,
+  usernameField: 'email',
+  passwordField: 'password',
 };
 
-const authenticate: VerifyFunction = async (email: string, password: string, done) => {
+const authenticate: VerifyFunctionWithRequest = async (
+  req: Request,
+  email: string,
+  password: string,
+  done,
+) => {
   try {
-    if (mock.email !== email) return done(null, false, { message: Message.InvalidEmail });
-    if (!isComparedPassword(password, mock.password)) {
+    const loginType = req.body.loginType as LoginType;
+    const user = await UserModel.findOne({ email, type: loginType });
+
+    if (!user) return done(null, false, { message: Message.InvalidEmail });
+    if (!isComparedPassword(password, user?.get('password'))) {
       return done(null, false, { message: Message.InvalidPassword });
     }
 
-    return done(null, mock, { message: Message.SucceedLogin });
+    return done(null, user, { message: Message.SucceedLogin });
   } catch (error) {
     done(error);
   }
