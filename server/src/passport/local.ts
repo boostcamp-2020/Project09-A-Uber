@@ -7,11 +7,7 @@ import { Request } from 'express';
 
 import { isComparedPassword } from '@util/bcrypt';
 import { Message } from '@util/server-message';
-import UserModel from '@models/user';
-
-interface LoginType {
-  loginType: '일반 사용자' | '드라이버';
-}
+import UserModel, { LoginType } from '@models/user';
 
 const config: IStrategyOptionsWithRequest = {
   passReqToCallback: true,
@@ -26,7 +22,7 @@ const authenticate: VerifyFunctionWithRequest = async (
   done,
 ) => {
   try {
-    const { loginType }: LoginType = req.body;
+    const loginType = req.body.loginType as LoginType;
     const user = await UserModel.findOne({ email, type: loginType });
 
     if (!user) return done(null, false, { message: Message.InvalidEmail });
