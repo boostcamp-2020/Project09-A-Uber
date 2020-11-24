@@ -39,7 +39,7 @@ const carTypes: string[] = ['대형', '중형', '소형'];
 const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
-  const [lisence, , onChangeLisence, isLisence] = useValidator('', isLicense);
+  const [lisence, , onChangeLisence, isLicenseValid] = useValidator('', isLicense);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -71,9 +71,13 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
         placeholder="운전면허 번호 입력해주세요. 12-12-123456-12"
         value={lisence}
         onChange={onChangeLisence}
-        allow={isLisence}
+        allow={isLicenseValid}
       />
-      <Button type="primary" onClick={onSubmit}>
+      <Button
+        type="primary"
+        onClick={onSubmit}
+        disabled={!carType || !isCarNumValid || !isLicenseValid}
+      >
         회원가입
       </Button>
     </StyledDriverForm>
