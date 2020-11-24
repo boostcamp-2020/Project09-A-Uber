@@ -20,9 +20,12 @@ export const StyledSignIn = styled.div`
   }
 
   & > .am-button {
+    cursor: pointer;
     width: 100%;
     height: 2.5rem;
     margin-bottom: 0.8rem;
+    font-weight: 700;
+    font-size: 0.9rem;
   }
 
   & .am-button.signup-button {
