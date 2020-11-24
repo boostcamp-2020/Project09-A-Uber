@@ -22,11 +22,11 @@ type Action = {
 const reducer = (state: InitialState = initialState, action: Action): InitialState => {
   switch (action.type) {
     case SIGN_IN_REQUEST:
-      return { ...initialState, signin: { loading: true } };
+      return { ...state, signin: { loading: true } };
     case SIGN_IN_SUCCESS:
-      return { ...initialState, signin: { loading: false, result: true } };
+      return { ...state, signin: { loading: false, result: true } };
     case SIGN_IN_FAILURE:
-      return { ...initialState, signin: { loading: false, error: action.error } };
+      return { ...state, signin: { loading: false, error: action.error } };
     default:
       return state;
   }
