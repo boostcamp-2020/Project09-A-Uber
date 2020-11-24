@@ -3,8 +3,17 @@ import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
+import useChange from '@/hooks/useChange';
+import { isCarNumber, isLicense } from '../../utils/vaildator';
 
-const StyledDriverForm = styled.form`
+interface Props {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+}
+
+const StyledDriverForm = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -24,31 +33,22 @@ const StyledDriverForm = styled.form`
 
 const carTypes: string[] = ['대형', '중형', '소형'];
 
-const DriverForm: FC = ({ ...common }) => {
-  const [carType, setCarType] = useState('');
-  const [carNumber, setCarNumber] = useState('');
-  const [lisence, setLisence] = useState('');
+const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
+  const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
+  const [carNumber, , onChangeCarNumber] = useChange('');
+  const [lisence, , onChangeLisence] = useChange('');
 
-  const onChangeCarType = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCarType(e.target.value);
-  }, []);
-
-  const onChangeCarNumber = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setCarNumber(e.target.value);
-  }, []);
-
-  const onChangeLisence = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setLisence(e.target.value);
-  }, []);
-
-  const onSubmit = useCallback((e: React.FormEvent) => {
-    // TODO: 회원가입 요청
-    e.preventDefault();
-    console.log('api 요청.');
-  }, []);
+  const onSubmit = useCallback(
+    (e: React.FormEvent) => {
+      // TODO: 회원가입 요청
+      e.preventDefault();
+      console.log(carType, carNumber, lisence);
+    },
+    [carType, carNumber, lisence],
+  );
 
   return (
-    <StyledDriverForm onSubmit={onSubmit}>
+    <StyledDriverForm>
       <Selector
         title="차량종류"
         name="car"
@@ -68,7 +68,7 @@ const DriverForm: FC = ({ ...common }) => {
         value={lisence}
         onChange={onChangeLisence}
       />
-      <Button type="primary">회원가입</Button>
+      <Button type="primary" onClick={onSubmit}>회원가입</Button>
     </StyledDriverForm>
   );
 };
