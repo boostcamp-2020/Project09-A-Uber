@@ -61,6 +61,8 @@ class App {
           credentials: true,
         }),
       );
+      this.app.use('/api/login', loginRouter);
+      this.app.use('/api/signup', signupRouter);
     }
     this.app.use('/api/login', loginRouter);
     this.app.use('/api/signup', signupRouter);
