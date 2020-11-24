@@ -23,6 +23,12 @@ const StyledPaymentInfoForm = styled.form`
   & .small-input {
     width: 4rem;
   }
+
+  & > a {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
 `;
 
 const Banks = [
