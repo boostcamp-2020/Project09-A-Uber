@@ -3,6 +3,7 @@ interface RegExpDictionary {
 }
 
 const regExp: RegExpDictionary = {
+  name: /^[가-힣]{2,5}$/,
   email: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
   phone: /^\d{3}-\d{3,4}-\d{4}$/,
   cardNumber: /^\d{4}$/,
@@ -18,6 +19,10 @@ interface CardNumber {
   cardNumber3: string;
   cardNumber4: string;
 }
+
+export const isKoreanName = (maybeKoreanName: string): boolean => {
+  return regExp.name.test(maybeKoreanName);
+};
 
 export const isEmail = (maybeEmail: string): boolean => {
   return regExp.email.test(maybeEmail);
