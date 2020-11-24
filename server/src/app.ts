@@ -12,6 +12,7 @@ import dotenv from 'dotenv';
 import schema from '@config/schema';
 import loginRouter from '@api/login/index';
 import signupRouter from '@api/signup';
+import apiAuth from '@util/apiAuth';
 
 dotenv.config();
 
@@ -33,7 +34,7 @@ class App {
     this.app = express();
     this.apolloServer = new ApolloServer({
       schema,
-      context: (ctx) => ({ ...ctx, pubsub: this.pubsub }),
+      context: (ctx) => apiAuth(ctx, this.pubsub),
       playground: true,
     });
     this.server = createServer(this.app);
