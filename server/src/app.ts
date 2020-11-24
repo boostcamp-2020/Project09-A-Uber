@@ -55,14 +55,14 @@ class App {
     } else {
       this.app.use(morgan('dev'));
       this.app.use(express.json());
-      this.app.use('/api/login', loginRouter);
-      this.app.use('/api/signup', signupRouter);
       this.app.use(
         cors({
           origin: true,
           credentials: true,
         }),
       );
+      this.app.use('/api/login', loginRouter);
+      this.app.use('/api/signup', signupRouter);
     }
 
     this.app.use(compression());
