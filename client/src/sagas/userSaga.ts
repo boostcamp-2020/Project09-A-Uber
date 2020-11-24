@@ -17,6 +17,8 @@ import axios from 'axios';
 
 import { setToken } from '@utils/token';
 
+const LOGIN_FAIL = '로그인 정보가 틀렸습니다.';
+
 function signUpUserAPI(data: UserInfo) {
   return axios.post('/api/signup/user', data);
 }
@@ -62,6 +64,7 @@ function* signIn(action: SignInRequest) {
         data: { message },
       },
     } = err;
+    alert(LOGIN_FAIL);
     yield put(signInFailure(message));
   }
 }
