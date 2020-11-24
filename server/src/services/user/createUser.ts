@@ -1,4 +1,5 @@
 import User, { loginType } from '@models/user';
+import { encryptPassword } from '@util/bcrypt';
 
 import { ServiceReturn } from '@type/service';
 
@@ -23,7 +24,14 @@ const createUser = async ({
   payment,
 }: CreateUserProps): Promise<ServiceReturn> => {
   try {
-    await User.create({ name, email, password, phone, payment, type: loginType.user });
+    await User.create({
+      name,
+      email,
+      password: encryptPassword(password),
+      phone,
+      payment,
+      type: loginType.user,
+    });
 
     return { result: 'success' };
   } catch (err) {
