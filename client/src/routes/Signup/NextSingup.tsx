@@ -15,9 +15,15 @@ interface Props {
 const NextSignup: FC<Props> = ({ nextForm, name, email, password, phone }) => (
   <>
     {nextForm === FOCUS_USER ? (
-      <PaymentInfoForm name={name} email={email} password={password} phone={phone} />
+      <PaymentInfoForm
+        name={name}
+        email={email}
+        password={password}
+        phone={phone}
+        type={nextForm}
+      />
     ) : (
-      <DriverForm name={name} email={email} password={password} phone={phone} />
+      <DriverForm name={name} email={email} password={password} phone={phone} type={nextForm} />
     )}
   </>
 );

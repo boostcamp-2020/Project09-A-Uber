@@ -6,12 +6,14 @@ import Input from '@components/Input';
 import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
+import { ToggleFocus } from '@components/UserToggle';
 
 interface Props {
   name: string;
   email: string;
   password: string;
   phone: string;
+  type: ToggleFocus;
 }
 
 const StyledDriverForm = styled.div`
@@ -34,7 +36,7 @@ const StyledDriverForm = styled.div`
 
 const carTypes: string[] = ['대형', '중형', '소형'];
 
-const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
+const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [lisence, , onChangeLisence, isLisence] = useValidator('', isLicense);
@@ -43,7 +45,7 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
     (e: React.FormEvent) => {
       // TODO: 회원가입 요청
       e.preventDefault();
-      console.log(name, email, password, phone, carType, carNumber, lisence);
+      console.log(name, email, password, phone, carType, carNumber, lisence, type);
     },
     [carType, carNumber, lisence],
   );
