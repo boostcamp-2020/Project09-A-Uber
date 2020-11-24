@@ -4,6 +4,8 @@ import Selector from '@components/Selector';
 import Input from '@components/Input';
 import { Button } from 'antd-mobile';
 import useChange from '@hooks/useChange';
+import useValidator from '@hooks/useValidator';
+import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
 
 const StyledPaymentInfoForm = styled.form`
   display: flex;
@@ -44,12 +46,28 @@ const Banks = [
 
 const PaymentInfoForm: FC = () => {
   const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
-  const [cardNumber1, , onChangeCardNumber1] = useChange('');
-  const [cardNumber2, , onChangeCardNumber2] = useChange('');
-  const [cardNumber3, , onChangeCardNumber3] = useChange('');
-  const [cardNumber4, , onChangeCardNumber4] = useChange('');
-  const [expiryDate, , onChangeExpiryDate] = useChange('');
-  const [cvc, , onChangeCvc] = useChange('');
+  const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
+    '',
+    isCardNumber,
+    4,
+  );
+  const [cardNumber2, , onChangeCardNumber2, isCardNumber2Valid] = useValidator(
+    '',
+    isCardNumber,
+    4,
+  );
+  const [cardNumber3, , onChangeCardNumber3, isCardNumber3Valid] = useValidator(
+    '',
+    isCardNumber,
+    4,
+  );
+  const [cardNumber4, , onChangeCardNumber4, isCardNumber4Valid] = useValidator(
+    '',
+    isCardNumber,
+    4,
+  );
+  const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate, 5);
+  const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber, 3);
 
   return (
     <StyledPaymentInfoForm>
@@ -69,14 +87,26 @@ const PaymentInfoForm: FC = () => {
             value={cardNumber1}
             onChange={onChangeCardNumber1}
             className="small-input"
+            allow={isCardNumber1Valid}
           />
-          <Input value={cardNumber2} onChange={onChangeCardNumber2} className="small-input" />
-          <Input value={cardNumber3} onChange={onChangeCardNumber3} className="small-input" />
+          <Input
+            value={cardNumber2}
+            onChange={onChangeCardNumber2}
+            className="small-input"
+            allow={isCardNumber2Valid}
+          />
+          <Input
+            value={cardNumber3}
+            onChange={onChangeCardNumber3}
+            className="small-input"
+            allow={isCardNumber3Valid}
+          />
           <Input
             value={cardNumber4}
             onChange={onChangeCardNumber4}
             type="password"
             className="small-input"
+            allow={isCardNumber4Valid}
           />
         </div>
         <div>
@@ -85,6 +115,7 @@ const PaymentInfoForm: FC = () => {
             value={expiryDate}
             onChange={onChangeExpiryDate}
             className="small-input"
+            allow={isExpiryDateValid}
           />
         </div>
         <div>
@@ -94,6 +125,7 @@ const PaymentInfoForm: FC = () => {
             onChange={onChangeCvc}
             type="password"
             className="small-input"
+            allow={isCvcValid}
           />
         </div>
       </section>
