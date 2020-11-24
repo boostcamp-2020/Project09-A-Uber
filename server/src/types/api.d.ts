@@ -23,6 +23,18 @@ export type Query = {
   hello: HelloResponse;
 };
 
+export type RequestTokenResponse = {
+  __typename?: 'requestTokenResponse';
+  result: Scalars['Boolean'];
+  accessToken?: Maybe<Scalars['String']>;
+  error?: Maybe<Scalars['String']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  requestToken: RequestTokenResponse;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -104,7 +116,9 @@ export type ResolversTypes = {
   HelloResponse: ResolverTypeWrapper<HelloResponse>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Query: ResolverTypeWrapper<{}>;
+  requestTokenResponse: ResolverTypeWrapper<RequestTokenResponse>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Mutation: ResolverTypeWrapper<{}>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -112,7 +126,9 @@ export type ResolversParentTypes = {
   HelloResponse: HelloResponse;
   String: Scalars['String'];
   Query: {};
+  requestTokenResponse: RequestTokenResponse;
   Boolean: Scalars['Boolean'];
+  Mutation: {};
 };
 
 export type HelloResponseResolvers<ContextType = {
@@ -133,6 +149,25 @@ export type QueryResolvers<ContextType = {
   hello?: Resolver<ResolversTypes['HelloResponse'], ParentType, ContextType>;
 };
 
+export type RequestTokenResponseResolvers<ContextType = {
+  req: Request,
+  pubsub: PubSub
+}
+, ParentType extends ResolversParentTypes['requestTokenResponse'] = ResolversParentTypes['requestTokenResponse']> = {
+  result?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  error?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = {
+  req: Request,
+  pubsub: PubSub
+}
+, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  requestToken?: Resolver<ResolversTypes['requestTokenResponse'], ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = {
   req: Request,
   pubsub: PubSub
@@ -140,6 +175,8 @@ export type Resolvers<ContextType = {
 > = {
   HelloResponse?: HelloResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  requestTokenResponse?: RequestTokenResponseResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
 };
 
 
