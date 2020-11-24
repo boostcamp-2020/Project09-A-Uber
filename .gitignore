@@ -1,6 +1,5 @@
 */node_modules/
 */.env
 
-server/src/types.d.ts
 client/src/types/api.d.ts
-client/schema.json
+
