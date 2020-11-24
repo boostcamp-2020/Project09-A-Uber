@@ -9,7 +9,6 @@ interface UserCommonInfo {
   name: string;
   password: string;
   phone: string;
-  type: ToggleFocus;
 }
 
 export interface UserInfo extends UserCommonInfo {
@@ -32,6 +31,7 @@ export interface DriverInfo extends UserCommonInfo {
 export interface SignUpRequest {
   type: typeof SIGN_UP_REQUEST;
   data: UserInfo | DriverInfo;
+  userType: ToggleFocus;
 }
 
 export interface SignUpSuccess {
@@ -44,9 +44,13 @@ export interface SignUpFailure {
 }
 
 // 회원가입 액션 크링
-export const signUpRequest = (data: UserInfo | DriverInfo): SignUpRequest => ({
+export const signUpRequest = (
+  data: UserInfo | DriverInfo,
+  userType: ToggleFocus,
+): SignUpRequest => ({
   type: SIGN_UP_REQUEST,
   data,
+  userType,
 });
 export const signUpSuccess = (): SignUpSuccess => ({ type: SIGN_UP_SUCCESS });
 export const signUpFailure = (error: string): SignUpFailure => ({
