@@ -6,10 +6,26 @@ import PaymentInfoForm from '@components/PaymentInfoForm';
 
 interface Props {
   nextForm: ToggleFocus;
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
 }
 
-const NextSignup: FC<Props> = ({ nextForm }) => (
-  <>{nextForm === FOCUS_USER ? <PaymentInfoForm /> : <DriverForm />}</>
+const NextSignup: FC<Props> = ({ nextForm, name, email, password, phone }) => (
+  <>
+    {nextForm === FOCUS_USER ? (
+      <PaymentInfoForm
+        name={name}
+        email={email}
+        password={password}
+        phone={phone}
+        type={nextForm}
+      />
+    ) : (
+      <DriverForm name={name} email={email} password={password} phone={phone} type={nextForm} />
+    )}
+  </>
 );
 
 export default NextSignup;
