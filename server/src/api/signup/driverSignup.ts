@@ -7,7 +7,7 @@ const driverSignup: ExpressFunction = async (req, res, next) => {
     const { result, message } = await createDriver({ name, email, password, phone, driver });
 
     if (result === 'fail') {
-      res.json({ result: 'fail', message });
+      res.status(400).json({ result: 'fail', message });
     }
     res.json({ result: 'success' });
   } catch (err) {
