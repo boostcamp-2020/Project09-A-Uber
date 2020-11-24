@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 export default <T extends { value: string } = HTMLInputElement>(
   initialState: string,
@@ -12,6 +12,11 @@ export default <T extends { value: string } = HTMLInputElement>(
 ] => {
   const [value, setValue] = useState(initialState);
   const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    if (validator(value)) setIsValid(true);
+    else setIsValid(false);
+  }, [value]);
 
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<T>) => {

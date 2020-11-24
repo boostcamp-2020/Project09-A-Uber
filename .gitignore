@@ -2,4 +2,4 @@
 */.env
 
 client/src/types/api.d.ts
-
+server/src/types/api.d.ts
