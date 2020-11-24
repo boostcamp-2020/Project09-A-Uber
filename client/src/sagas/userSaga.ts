@@ -1,4 +1,4 @@
-import { all, takeLatest, fork, call, put, delay } from 'redux-saga/effects';
+import { all, takeLatest, fork, call, put } from 'redux-saga/effects';
 import { FOCUS_USER } from '@components/UserToggle';
 import {
   SIGN_UP_REQUEST,
@@ -11,17 +11,17 @@ import {
 import axios from 'axios';
 
 function signUpUserAPI(data: UserInfo) {
-  return axios.post('/api/signup/user', data);
+  return axios.post('/signup/user', data, { withCredentials: true });
 }
 
 function signUpDriverAPI(data: DriverInfo) {
-  return axios.post('/api/signup/driver', data);
+  return axios.post('/signup/driver', data, { withCredentials: true });
 }
 
 function* signUp(action: SignUpRequest) {
   try {
     let response = null;
-    if (action.data.type === FOCUS_USER) {
+    if (action.userType === FOCUS_USER) {
       response = yield call(signUpUserAPI, action.data as UserInfo);
     } else {
       response = yield call(signUpDriverAPI, action.data as DriverInfo);

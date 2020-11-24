@@ -6,8 +6,11 @@ interface Driver {
 }
 
 export interface InitialState {
-  signUpLoading: boolean;
-  signUpError?: string | null;
+  signup: {
+    loading: boolean;
+    result?: boolean;
+    error?: string;
+  };
   user?: {
     _id: string;
     name: string;
@@ -16,8 +19,9 @@ export interface InitialState {
 }
 
 const initialState: InitialState = {
-  signUpLoading: false,
-  signUpError: null,
+  signup: {
+    loading: false,
+  },
 };
 
 type Action = {
@@ -28,11 +32,11 @@ type Action = {
 const reducer = (state: InitialState = initialState, action: Action): InitialState => {
   switch (action.type) {
     case SIGN_UP_REQUEST:
-      return { ...initialState, signUpLoading: true };
+      return { ...state, signup: { loading: true } };
     case SIGN_UP_SUCCESS:
-      return { ...initialState, signUpLoading: false };
+      return { ...state, signup: { loading: false, result: true } };
     case SIGN_UP_FAILURE:
-      return { ...initialState, signUpLoading: false, signUpError: action.error };
+      return { ...state, signup: { loading: false, result: false, error: action.error } };
     default:
       return state;
   }
