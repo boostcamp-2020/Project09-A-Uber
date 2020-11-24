@@ -6,6 +6,7 @@ import { Button } from 'antd-mobile';
 import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
+import { ToggleFocus } from '@components/UserToggle';
 
 const StyledPaymentInfoForm = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ interface Props {
   email: string;
   password: string;
   phone: string;
+  type: ToggleFocus;
 }
 
 const Banks = [
@@ -51,7 +53,7 @@ const Banks = [
   '카카오뱅크',
 ];
 
-const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
+const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
   const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
     '',
