@@ -53,16 +53,10 @@ const StyledInput = styled.div`
 `;
 
 const Input: FC<Props> = ({ title, placeholder, allow, value, onChange, type, className }) => (
-  <StyledInput>
+  <StyledInput className={className}>
     {title && <h1>{title}</h1>}
     <div>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={className}
-      />
+      <input type={type} value={value} onChange={onChange} placeholder={placeholder} />
       {allow !== undefined &&
         (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
     </div>

@@ -30,7 +30,7 @@ const StyledPaymentInfoForm = styled.div`
   }
 
   & .small-input {
-    width: 4rem;
+    width: 22%;
   }
 
   & > a {
