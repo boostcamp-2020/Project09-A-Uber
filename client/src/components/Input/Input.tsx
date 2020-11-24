@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { forwardRef } from 'react';
 
 import styled from '@theme/styled';
 
@@ -13,6 +13,7 @@ interface Props {
   allow?: boolean;
   type?: 'text' | 'password';
   className?: string;
+  ref?: React.RefObject<HTMLInputElement>;
 }
 
 const StyledInput = styled.div`
@@ -52,21 +53,17 @@ const StyledInput = styled.div`
   }
 `;
 
-const Input: FC<Props> = ({ title, placeholder, allow, value, onChange, type, className }) => (
-  <StyledInput>
-    {title && <h1>{title}</h1>}
-    <div>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={className}
-      />
-      {allow !== undefined &&
-        (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
-    </div>
-  </StyledInput>
+const Input = forwardRef<HTMLInputElement, Props>(
+  ({ title, placeholder, allow, value, onChange, type, className }, ref) => (
+    <StyledInput className={className}>
+      {title && <h1>{title}</h1>}
+      <div>
+        <input type={type} value={value} onChange={onChange} placeholder={placeholder} ref={ref} />
+        {allow !== undefined &&
+          (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
+      </div>
+    </StyledInput>
+  ),
 );
 
 Input.defaultProps = {

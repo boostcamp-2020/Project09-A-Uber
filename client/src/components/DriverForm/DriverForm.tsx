@@ -1,4 +1,6 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
@@ -7,6 +9,9 @@ import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
 import { ToggleFocus } from '@components/UserToggle';
+import { InitialState } from '@reducers/.';
+import { signUpRequest } from '@reducers/user';
+import carTypeMapper from './carTypeMapper';
 
 interface Props {
   name: string;
@@ -34,21 +39,42 @@ const StyledDriverForm = styled.div`
   }
 `;
 
-const carTypes: string[] = ['대형', '중형', '소형'];
+export const carTypes: string[] = ['대형', '중형', '소형'];
 
 const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
-  const [lisence, , onChangeLisence, isLisence] = useValidator('', isLicense);
+  const [license, , onChangeLicense, isLicenseValid] = useValidator('', isLicense);
+  const { result } = useSelector(({ signup }: InitialState) => signup);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
-      // TODO: 회원가입 요청
       e.preventDefault();
-      console.log(name, email, password, phone, carType, carNumber, lisence, type);
+      const driver = {
+        name,
+        email,
+        password,
+        phone,
+        driver: {
+          licenseNumber: license,
+          car: {
+            carNumber,
+            carType: carTypeMapper(carType),
+          },
+        },
+      };
+      dispatch(signUpRequest(driver, type));
     },
-    [carType, carNumber, lisence],
+    [carType, carNumber, license],
   );
+
+  useEffect(() => {
+    if (result) {
+      history.push('/');
+    }
+  }, [result]);
 
   return (
     <StyledDriverForm>
@@ -69,11 +95,15 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
       <Input
         title="운전면허 번호"
         placeholder="운전면허 번호 입력해주세요. 12-12-123456-12"
-        value={lisence}
-        onChange={onChangeLisence}
-        allow={isLisence}
+        value={license}
+        onChange={onChangeLicense}
+        allow={isLicenseValid}
       />
-      <Button type="primary" onClick={onSubmit}>
+      <Button
+        type="primary"
+        onClick={onSubmit}
+        disabled={!carType || !isCarNumValid || !isLicenseValid}
+      >
         회원가입
       </Button>
     </StyledDriverForm>
