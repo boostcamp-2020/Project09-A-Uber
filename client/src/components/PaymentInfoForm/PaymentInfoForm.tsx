@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
@@ -7,7 +7,7 @@ import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
 
-const StyledPaymentInfoForm = styled.form`
+const StyledPaymentInfoForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -34,6 +34,13 @@ const StyledPaymentInfoForm = styled.form`
   }
 `;
 
+interface Props {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+}
+
 const Banks = [
   '기업은행',
   '국민은행',
@@ -44,7 +51,7 @@ const Banks = [
   '카카오뱅크',
 ];
 
-const PaymentInfoForm: FC = () => {
+const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
   const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
   const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
     '',
@@ -68,6 +75,14 @@ const PaymentInfoForm: FC = () => {
   );
   const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate, 5);
   const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber, 3);
+  const onSubmit = useCallback(
+    (e: React.FormEvent) => {
+      // TODO: 회원가입 요청
+      e.preventDefault();
+      console.log(name, email, password, phone);
+    },
+    [bank, cardNumber1, cardNumber2, cardNumber3, cardNumber4, expiryDate, cvc],
+  );
 
   return (
     <StyledPaymentInfoForm>
@@ -129,7 +144,9 @@ const PaymentInfoForm: FC = () => {
           />
         </div>
       </section>
-      <Button type="primary">회원가입</Button>
+      <Button type="primary" onClick={onSubmit}>
+        회원가입
+      </Button>
     </StyledPaymentInfoForm>
   );
 };
