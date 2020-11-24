@@ -69,7 +69,13 @@ const Signup: FC = () => {
           <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
         </div>
         {isNext ? (
-          <NextSignup nextForm={signupTarget} />
+          <NextSignup
+            nextForm={signupTarget}
+            name={name}
+            email={email}
+            password={password}
+            phone={phone}
+          />
         ) : (
           <CommonSignup
             name={name}
