@@ -34,7 +34,7 @@ const StyledDriverForm = styled.div`
 
 const carTypes: string[] = ['대형', '중형', '소형'];
 
-const DriverForm: FC = () => {
+const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [lisence, , onChangeLisence, isLisence] = useValidator('', isLicense);
@@ -43,7 +43,7 @@ const DriverForm: FC = () => {
     (e: React.FormEvent) => {
       // TODO: 회원가입 요청
       e.preventDefault();
-      console.log(carType, carNumber, lisence);
+      console.log(name, email, password, phone, carType, carNumber, lisence);
     },
     [carType, carNumber, lisence],
   );
