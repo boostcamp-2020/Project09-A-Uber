@@ -1,4 +1,7 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
@@ -7,6 +10,8 @@ import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
 import { ToggleFocus } from '@components/UserToggle';
+import { InitialState } from '@reducers/.';
+import { signUpRequest } from '@reducers/user';
 
 const StyledPaymentInfoForm = styled.div`
   display: flex;
@@ -54,6 +59,8 @@ const Banks = [
 ];
 
 const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
   const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
     '',
@@ -77,14 +84,34 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
   );
   const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate, 5);
   const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber, 3);
+  const { result } = useSelector(({ signup }: InitialState) => signup);
+
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
       // TODO: 회원가입 요청
       e.preventDefault();
-      console.log(name, email, password, phone);
+      const user = {
+        name,
+        email,
+        password,
+        phone,
+        payment: {
+          bank,
+          creditNumber: `${cardNumber1}-${cardNumber2}-${cardNumber3}-${cardNumber4}`,
+          expiryDate,
+          cvc: Number(cvc),
+        },
+      };
+      dispatch(signUpRequest(user, type));
     },
     [bank, cardNumber1, cardNumber2, cardNumber3, cardNumber4, expiryDate, cvc],
   );
+
+  useEffect(() => {
+    if (result) {
+      history.push('/');
+    }
+  }, [result]);
 
   return (
     <StyledPaymentInfoForm>
