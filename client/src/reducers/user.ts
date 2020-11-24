@@ -22,9 +22,11 @@ export interface UserInfo extends UserCommonInfo {
 
 export interface DriverInfo extends UserCommonInfo {
   driver: {
-    carType: string;
-    carNumber: string;
-    carLicense: string;
+    licenseNumber: string;
+    car: {
+      carType: string;
+      carNumber: string;
+    };
   };
 }
 
