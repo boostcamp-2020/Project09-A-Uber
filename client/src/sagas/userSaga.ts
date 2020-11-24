@@ -6,9 +6,18 @@ import {
   signUpSuccess,
   UserInfo,
   DriverInfo,
+  LoginInfo,
   SignUpRequest,
+  SignInRequest,
+  SIGN_IN_REQUEST,
+  signInSuccess,
+  signInFailure,
 } from '@reducers/user';
 import axios from 'axios';
+
+import { setToken } from '@utils/token';
+
+const LOGIN_FAIL = '로그인 정보가 틀렸습니다.';
 
 function signUpUserAPI(data: UserInfo) {
   return axios.post('/signup/user', data, { withCredentials: true });
@@ -40,10 +49,35 @@ function* signUp(action: SignUpRequest) {
   }
 }
 
+function signInAPI(data: LoginInfo) {
+  return axios.post('/login', data);
+}
+
+function* signIn(action: SignInRequest) {
+  try {
+    const response = yield call(signInAPI, action.data);
+    setToken(response.data.accessToken);
+
+    yield put(signInSuccess());
+  } catch (err) {
+    const {
+      response: {
+        data: { message },
+      },
+    } = err;
+    alert(LOGIN_FAIL);
+    yield put(signInFailure(message));
+  }
+}
+
 function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
+function* watchSignIn() {
+  yield takeLatest(SIGN_IN_REQUEST, signIn);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchSignUp)]);
+  yield all([fork(watchSignUp), fork(watchSignIn)]);
 }
