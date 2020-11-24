@@ -55,8 +55,6 @@ class App {
     } else {
       this.app.use(morgan('dev'));
       this.app.use(express.json());
-      this.app.use('/api/login', loginRouter);
-      this.app.use('/api/signup', signupRouter);
       this.app.use(
         cors({
           origin: true,
@@ -64,7 +62,8 @@ class App {
         }),
       );
     }
-
+    this.app.use('/api/login', loginRouter);
+    this.app.use('/api/signup', signupRouter);
     this.app.use(compression());
     this.apolloServer.applyMiddleware({
       app: this.app,
