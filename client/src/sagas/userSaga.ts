@@ -31,6 +31,7 @@ function* signUp(action: SignUpRequest) {
       yield put(signUpSuccess());
     }
     if (response.data.result === 'fail') {
+      alert('회원가입에 실패했습니다.');
       yield put(signUpFailure(response.data.message));
     }
   } catch (err) {

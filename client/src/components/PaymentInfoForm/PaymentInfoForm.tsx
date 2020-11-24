@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -85,6 +85,9 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate, 5);
   const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber, 3);
   const { result } = useSelector(({ signup }: InitialState) => signup);
+  const creditRef2 = useRef<HTMLInputElement>(null);
+  const creditRef3 = useRef<HTMLInputElement>(null);
+  const creditRef4 = useRef<HTMLInputElement>(null);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -113,6 +116,24 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
     }
   }, [result]);
 
+  useEffect(() => {
+    if (isCardNumber1Valid) {
+      creditRef2.current?.focus();
+    }
+  }, [isCardNumber1Valid, creditRef2.current]);
+
+  useEffect(() => {
+    if (isCardNumber1Valid) {
+      creditRef3.current?.focus();
+    }
+  }, [isCardNumber2Valid, creditRef3.current]);
+
+  useEffect(() => {
+    if (isCardNumber3Valid) {
+      creditRef4.current?.focus();
+    }
+  }, [isCardNumber3Valid, creditRef4.current]);
+
   return (
     <StyledPaymentInfoForm>
       <section className="payment-information-section">
@@ -138,12 +159,14 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
             onChange={onChangeCardNumber2}
             className="small-input"
             allow={isCardNumber2Valid}
+            ref={creditRef2}
           />
           <Input
             value={cardNumber3}
             onChange={onChangeCardNumber3}
             className="small-input"
             allow={isCardNumber3Valid}
+            ref={creditRef3}
           />
           <Input
             value={cardNumber4}
@@ -151,6 +174,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
             type="password"
             className="small-input"
             allow={isCardNumber4Valid}
+            ref={creditRef4}
           />
         </div>
         <div>
