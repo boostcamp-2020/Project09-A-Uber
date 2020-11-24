@@ -20,7 +20,13 @@ export default <T extends { value: string } = HTMLInputElement>(
 
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<T>) => {
-      setValue(limitLength ? e.target.value.substring(0, limitLength) : e.target.value);
+      if (!(!limitLength || (limitLength && value.length <= limitLength))) {
+        return;
+      }
+
+      setValue(e.target.value);
+      if (validator(e.target.value)) setIsValid(true);
+      else setIsValid(false);
     },
     [value],
   );
