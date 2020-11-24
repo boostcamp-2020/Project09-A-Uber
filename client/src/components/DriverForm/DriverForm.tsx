@@ -14,15 +14,20 @@ interface Props {
 }
 
 const StyledDriverForm = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-
-  height: 612px;
 
   & input,
   select {
     margin-bottom: 1.2rem;
+  }
+
+  & .am-button {
+    cursor: pointer;
+    margin-top: auto;
+    font-weight: 700;
+    font-size: 0.9rem;
   }
 `;
 
@@ -44,34 +49,26 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
 
   return (
     <StyledDriverForm>
-      <div>
-        <Selector
-          title="차량종류"
-          name="car"
-          items={carTypes}
-          placeholder="차량을 선택해주세요"
-          onChange={onChangeCarType}
-        />
-
-        <Input
-          title="차량번호"
-          placeholder="차량번호를 입력해주세요. 입력예시) 07나 0452"
-          value={carNumber}
-          onChange={onChangeCarNumber}
-        />
-
-        <Input
-          title="운전면허 번호"
-          placeholder="운전면허 번호 입력해주세요. 입력예시) 12-12-123456-12"
-          value={lisence}
-          onChange={onChangeLisence}
-        />
-      </div>
-      <div>
-        <Button type="primary" onClick={onSubmit}>
-          회원가입
-        </Button>
-      </div>
+      <Selector
+        title="차량종류"
+        name="car"
+        items={carTypes}
+        placeholder="차량을 선택해주세요"
+        onChange={onChangeCarType}
+      />
+      <Input
+        title="차량번호"
+        placeholder="차량번호를 입력해주세요."
+        value={carNumber}
+        onChange={onChangeCarNumber}
+      />
+      <Input
+        title="운전면허 번호"
+        placeholder="운전면허 번호 입력해주세요."
+        value={lisence}
+        onChange={onChangeLisence}
+      />
+      <Button type="primary" onClick={onSubmit}>회원가입</Button>
     </StyledDriverForm>
   );
 };
