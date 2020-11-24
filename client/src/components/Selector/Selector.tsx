@@ -13,15 +13,16 @@ const StyledSelector = styled.div`
   & h1 {
     font-size: 0.9rem;
     color: ${({ theme }) => theme.FONT};
-    margin-bottom: 2px;
+    margin-bottom: 0.5rem;
   }
 
   & select {
+    background-color: ${({ theme }) => theme.LIGHT};
     width: 100%;
     border: 1px solid ${({ theme }) => theme.BORDER};
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
-  
+
     &:focus {
       border: 1px solid ${({ theme }) => theme.PRIMARY};
     }
