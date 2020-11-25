@@ -1,38 +1,35 @@
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Checkbox } from 'antd-mobile';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useMutation } from '@apollo/react-hooks';
+import { SIGNIN } from '@queries/user.queries';
 import { StyledSignIn } from '@routes/SignIn/style';
 import StyledPageFrame from '@components/PageFrame';
 import UserToggle, { FOCUS_USER, ToggleFocus } from '@components/UserToggle';
 import logo from '@images/logo.svg';
 import Input from '@components/Input';
 import useChange from '@hooks/useChange';
-import { InitialState } from '@reducers/.';
-import { signInRequest } from '@reducers/user';
 
 const SignIn: FC = () => {
   const history = useHistory();
+  const [signinMutation] = useMutation(SIGNIN);
   const [loginType, setLoginType] = useState<ToggleFocus>(FOCUS_USER);
   const [isLoginState, setIsLoginState] = useState(false);
   const [email, , onChangeEmail] = useChange('');
   const [password, , onChangePassword] = useChange('');
-  const dispatch = useDispatch();
-  const {
-    signin: { result },
-  } = useSelector((state: InitialState) => state);
+
   const onClickSignup = useCallback(() => {
     history.push('/signup');
   }, []);
   const onClickSignIn = useCallback(() => {
-    dispatch(
-      signInRequest({
+    // TODO: SERVER 연결
+    signinMutation({
+      variables: {
         email,
         password,
         loginType,
-      }),
-    );
+      },
+    });
   }, [email, password, loginType]);
 
   const onClickToggleHandler = useCallback(
@@ -48,12 +45,6 @@ const SignIn: FC = () => {
   const onChangeLoginState = useCallback(() => {
     setIsLoginState(!isLoginState);
   }, []);
-
-  useEffect(() => {
-    if (result) {
-      history.push('/');
-    }
-  }, [result]);
 
   return (
     <StyledPageFrame>

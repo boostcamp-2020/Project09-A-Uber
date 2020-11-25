@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd-mobile';
+import { useMutation } from '@apollo/react-hooks';
+import { SIGNUP_DRIVER } from '@queries/user.queries';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
@@ -9,8 +10,6 @@ import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
 import { ToggleFocus } from '@components/UserToggle';
-import { InitialState } from '@reducers/.';
-import { signUpRequest } from '@reducers/user';
 import carTypeMapper from './carTypeMapper';
 
 interface Props {
@@ -43,38 +42,34 @@ export const carTypes: string[] = ['대형', '중형', '소형'];
 
 const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [license, , onChangeLicense, isLicenseValid] = useValidator('', isLicense);
-  const { result } = useSelector(({ signup }: InitialState) => signup);
+  const [signUpMutation] = useMutation(SIGNUP_DRIVER);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      const driver = {
-        name,
-        email,
-        password,
-        phone,
-        driver: {
-          licenseNumber: license,
-          car: {
-            carNumber,
-            carType: carTypeMapper(carType),
-          },
+      const driverInfo = {
+        licenseNumber: license,
+        car: {
+          carNumber,
+          carType: carTypeMapper(carType),
         },
       };
-      dispatch(signUpRequest(driver, type));
+      // TODO: SERVER 연결
+      signUpMutation({
+        variables: {
+          name,
+          email,
+          password,
+          phone,
+          driver: driverInfo,
+        },
+      });
     },
     [carType, carNumber, license],
   );
-
-  useEffect(() => {
-    if (result) {
-      history.push('/');
-    }
-  }, [result]);
 
   return (
     <StyledDriverForm>
