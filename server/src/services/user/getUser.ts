@@ -7,9 +7,9 @@ interface GetUserResponse {
   error?: string;
 }
 
-const getUser = async (email: string): Promise<GetUserResponse> => {
+const getUser = async (id: string): Promise<GetUserResponse> => {
   try {
-    const user = (await User.findOne({ email })) as UserType | null;
+    const user = (await User.findById({ _id: id })) as UserType | null;
 
     if (!user) {
       return { user: null, error: Message.NotSignedUpUser };
