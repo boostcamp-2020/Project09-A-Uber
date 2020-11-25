@@ -42,3 +42,8 @@ type User {
   driver: Driver
   location: Location
 }
+
+type SignupResponse {
+  result: String!
+  error: String
+}

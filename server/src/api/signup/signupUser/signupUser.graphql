@@ -1,3 +1,0 @@
-type Mutation {
-  signupUser: SignupResponse!
-}
