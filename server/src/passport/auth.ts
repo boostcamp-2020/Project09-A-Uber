@@ -14,7 +14,7 @@ interface SECRET_KEY {
 
 const { JWT_SECRET_KEY }: SECRET_KEY = process.env;
 
-const loginAuth: ExpressFunction = async (req, res, next) => {
+const signinAuth: ExpressFunction = async (req, res, next) => {
   try {
     passport.authenticate('local', async (error, user, { message }: Message) => {
       if (error || !user) return res.status(400).json({ result: 'fail', message });
@@ -33,4 +33,4 @@ const loginAuth: ExpressFunction = async (req, res, next) => {
   }
 };
 
-export default loginAuth;
+export default signinAuth;
