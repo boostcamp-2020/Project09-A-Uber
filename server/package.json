@@ -50,6 +50,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^15.4.0",
+    "graphql-passport": "^0.6.3",
     "graphql-tools": "^7.0.1",
     "helmet": "^4.2.0",
     "hpp": "^0.2.3",

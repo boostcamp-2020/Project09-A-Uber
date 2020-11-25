@@ -8,6 +8,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import { buildContext } from 'graphql-passport';
 
 import schema from '@config/schema';
 import apiAuth from '@util/apiAuth';
@@ -32,7 +33,7 @@ class App {
     this.app = express();
     this.apolloServer = new ApolloServer({
       schema,
-      context: (ctx) => ({ ...ctx, pubsub: this.pubsub }),
+      context: (ctx) => buildContext({ ...ctx, pubsub: this.pubsub }),
       playground: true,
     });
     this.server = createServer(this.app);

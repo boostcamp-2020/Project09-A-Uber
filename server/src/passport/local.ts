@@ -1,28 +1,19 @@
-import {
-  Strategy as LocalStrategy,
-  VerifyFunctionWithRequest,
-  IStrategyOptionsWithRequest,
-} from 'passport-local';
-import { Request } from 'express';
-
+import { GraphQLLocalStrategy } from 'graphql-passport';
 import { isComparedPassword } from '@util/bcrypt';
 import { Message } from '@util/server-message';
 import UserModel, { LoginType } from '@models/user';
+import { Request } from 'express';
 
-const config: IStrategyOptionsWithRequest = {
-  passReqToCallback: true,
-  usernameField: 'email',
-  passwordField: 'password',
-};
-
-const authenticate: VerifyFunctionWithRequest = async (
+type Authenticate = (
   req: Request,
-  email: string,
+  username: string,
   password: string,
-  done,
-) => {
+  done: (error: Error | null, user?: any, options?: { message?: string }) => void,
+) => void;
+
+const authenticate: Authenticate = async (req, email = '', password = '', done) => {
   try {
-    const loginType = req.body.loginType as LoginType;
+    const loginType = req.body.variables.loginType as LoginType;
     const user = await UserModel.findOne({ email, type: loginType });
 
     if (!user) return done(null, false, { message: Message.InvalidEmail });
@@ -35,6 +26,6 @@ const authenticate: VerifyFunctionWithRequest = async (
     done(error);
   }
 };
-const local = new LocalStrategy(config, authenticate);
+const local = new GraphQLLocalStrategy({ passReqToCallback: true }, authenticate as any);
 
 export default local;
