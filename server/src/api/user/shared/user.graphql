@@ -32,7 +32,7 @@ type Location {
 }
 
 type User {
-  id: String!
+  _id: String!
   name: String!
   email: String!
   phone: String!
