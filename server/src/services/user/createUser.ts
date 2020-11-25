@@ -1,7 +1,7 @@
 import User, { loginType } from '@models/user';
 import { encryptPassword } from '@util/bcrypt';
 
-import { ServiceReturn } from '@type/service';
+import { SignupResponse } from '@type/api';
 
 interface CreateUserProps {
   name: string;
@@ -22,7 +22,7 @@ const createUser = async ({
   password,
   phone,
   payment,
-}: CreateUserProps): Promise<ServiceReturn> => {
+}: CreateUserProps): Promise<SignupResponse> => {
   try {
     await User.create({
       name,
@@ -35,7 +35,7 @@ const createUser = async ({
 
     return { result: 'success' };
   } catch (err) {
-    return { result: 'fail', message: err.message };
+    return { result: 'fail', error: err.message };
   }
 };
 
