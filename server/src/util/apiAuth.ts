@@ -7,7 +7,7 @@ const JWT_HEADER = process.env.JWT_HEADER as string;
 const apiAuth: ExpressFunction = (req, res, next) => {
   if (!req.headers.authorization) {
     const cookie = req.cookies[JWT_HEADER];
-    req.headers.authorization = cookie && `bearer ${cookie}`;
+    req.headers.authorization = cookie && `Bearer ${cookie}`;
   }
 
   passport.authenticate('jwt', (error, payload, { message } = {}) => {
