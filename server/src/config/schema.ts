@@ -1,5 +1,6 @@
 import { makeExecutableSchema, mergeTypeDefs, mergeResolvers, loadFilesSync } from 'graphql-tools';
 import path from 'path';
+import isAuthenticated from '@util/isAuthenticated';
 
 const allTypes = loadFilesSync(path.join(__dirname, '../api/**/*.graphql'));
 
@@ -8,6 +9,9 @@ const allResolvers = loadFilesSync(path.join(__dirname, '../api/**/*.resolvers.t
 const schema = makeExecutableSchema({
   typeDefs: mergeTypeDefs(allTypes),
   resolvers: mergeResolvers(allResolvers),
+  schemaDirectives: {
+    auth: isAuthenticated as any,
+  },
 });
 
 export default schema;
