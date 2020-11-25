@@ -10,8 +10,6 @@ import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
 import { ToggleFocus } from '@components/UserToggle';
-import { InitialState } from '@reducers/.';
-import { signUpRequest } from '@reducers/user';
 
 const StyledPaymentInfoForm = styled.div`
   display: flex;
@@ -84,7 +82,6 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
   );
   const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate, 5);
   const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber, 3);
-  const { result } = useSelector(({ signup }: InitialState) => signup);
   const creditRef2 = useRef<HTMLInputElement>(null);
   const creditRef3 = useRef<HTMLInputElement>(null);
   const creditRef4 = useRef<HTMLInputElement>(null);
@@ -105,16 +102,11 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
           cvc: Number(cvc),
         },
       };
-      dispatch(signUpRequest(user, type));
+      console.log(user);
     },
+
     [bank, cardNumber1, cardNumber2, cardNumber3, cardNumber4, expiryDate, cvc],
   );
-
-  useEffect(() => {
-    if (result) {
-      history.push('/');
-    }
-  }, [result]);
 
   useEffect(() => {
     if (isCardNumber1Valid) {
