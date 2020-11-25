@@ -1,15 +1,17 @@
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, PubSub } from 'apollo-server-express';
 import express, { Express } from 'express';
 import { createServer, Server } from 'http';
-import { PubSub } from 'graphql-subscriptions';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import compression from 'compression';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import { buildContext } from 'graphql-passport';
 
 import schema from '@config/schema';
+import passportInit from '@passport/.';
 
 dotenv.config();
 
@@ -31,7 +33,7 @@ class App {
     this.app = express();
     this.apolloServer = new ApolloServer({
       schema,
-      context: (ctx) => ({ ctx, pubsub: this.pubsub }),
+      context: (ctx) => buildContext({ ...ctx, pubsub: this.pubsub }),
       playground: true,
     });
     this.server = createServer(this.app);
@@ -59,7 +61,9 @@ class App {
         }),
       );
     }
+    this.app.use(cookieParser());
     this.app.use(compression());
+    passportInit();
     this.apolloServer.applyMiddleware({
       app: this.app,
       path: GRAPHQL_ENDPOINT,
