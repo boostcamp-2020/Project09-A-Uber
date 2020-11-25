@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
+import { useMutation } from '@apollo/react-hooks';
+import { SIGNUP_USER } from '@queries/user.queries';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
@@ -58,7 +58,7 @@ const Banks = [
 
 const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  const [signinUserMutation] = useMutation(SIGNUP_USER);
   const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
   const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
     '',
@@ -90,19 +90,23 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
     (e: React.FormEvent) => {
       // TODO: 회원가입 요청
       e.preventDefault();
-      const user = {
-        name,
-        email,
-        password,
-        phone,
-        payment: {
-          bank,
-          creditNumber: `${cardNumber1}-${cardNumber2}-${cardNumber3}-${cardNumber4}`,
-          expiryDate,
-          cvc: Number(cvc),
-        },
+
+      const paymentInfo = {
+        bank,
+        creditNumber: `${cardNumber1}-${cardNumber2}-${cardNumber3}-${cardNumber4}`,
+        expiryDate,
+        cvc: Number(cvc),
       };
-      console.log(user);
+      // TODO: SERVER 연결
+      signinUserMutation({
+        variables: {
+          name,
+          email,
+          password,
+          phone,
+          payment: paymentInfo,
+        },
+      });
     },
 
     [bank, cardNumber1, cardNumber2, cardNumber3, cardNumber4, expiryDate, cvc],

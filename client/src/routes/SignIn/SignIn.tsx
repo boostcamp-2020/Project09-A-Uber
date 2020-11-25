@@ -1,7 +1,8 @@
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Checkbox } from 'antd-mobile';
-
+import { useMutation } from '@apollo/react-hooks';
+import { SIGNIN } from '@queries/user.queries';
 import { StyledSignIn } from '@routes/SignIn/style';
 import StyledPageFrame from '@components/PageFrame';
 import UserToggle, { FOCUS_USER, ToggleFocus } from '@components/UserToggle';
@@ -11,6 +12,7 @@ import useChange from '@hooks/useChange';
 
 const SignIn: FC = () => {
   const history = useHistory();
+  const [signinMutation] = useMutation(SIGNIN);
   const [loginType, setLoginType] = useState<ToggleFocus>(FOCUS_USER);
   const [isLoginState, setIsLoginState] = useState(false);
   const [email, , onChangeEmail] = useChange('');
@@ -20,7 +22,14 @@ const SignIn: FC = () => {
     history.push('/signup');
   }, []);
   const onClickSignIn = useCallback(() => {
-    console.log(email, password, loginType);
+    // TODO: SERVER 연결
+    signinMutation({
+      variables: {
+        email,
+        password,
+        loginType,
+      },
+    });
   }, [email, password, loginType]);
 
   const onClickToggleHandler = useCallback(

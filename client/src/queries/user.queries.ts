@@ -24,7 +24,7 @@ export const SIGNUP_USER = gql`
     $email: String!
     $password: String!
     $phone: String!
-    $payment: Payment!
+    $payment: PaymentInfo!
   ) {
     signupUser(name: $name, email: $email, password: $password, phone: $phone, payment: $payment) {
       result
@@ -39,7 +39,7 @@ export const SIGNUP_DRIVER = gql`
     $email: String!
     $password: String!
     $phone: String!
-    $driver: Driver!
+    $driver: DriverInfo!
   ) {
     signupDriver(name: $name, email: $email, password: $password, phone: $phone, driver: $driver) {
       result

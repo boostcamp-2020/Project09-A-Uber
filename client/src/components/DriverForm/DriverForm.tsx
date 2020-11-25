@@ -1,6 +1,8 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd-mobile';
+import { useMutation } from '@apollo/react-hooks';
+import { SIGNUP_DRIVER } from '@queries/user.queries';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
@@ -43,23 +45,28 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [license, , onChangeLicense, isLicenseValid] = useValidator('', isLicense);
+  const [signUpMutation] = useMutation(SIGNUP_DRIVER);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      const driver = {
-        name,
-        email,
-        password,
-        phone,
-        driver: {
-          licenseNumber: license,
-          car: {
-            carNumber,
-            carType: carTypeMapper(carType),
-          },
+      const driverInfo = {
+        licenseNumber: license,
+        car: {
+          carNumber,
+          carType: carTypeMapper(carType),
         },
       };
+      // TODO: SERVER 연결
+      signUpMutation({
+        variables: {
+          name,
+          email,
+          password,
+          phone,
+          driver: driverInfo,
+        },
+      });
     },
     [carType, carNumber, license],
   );
