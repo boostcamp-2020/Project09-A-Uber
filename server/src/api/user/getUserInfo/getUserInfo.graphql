@@ -1,4 +1,9 @@
+type GetUserInfoResponse {
+    user: User
+    error: String
+}
+
 type Query {
-    getUserInfo: User!
+    getUserInfo: GetUserInfoResponse!
 }
 
