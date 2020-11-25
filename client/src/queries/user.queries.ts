@@ -1,21 +1,30 @@
 import { gql } from '@apollo/client';
 
-export const SIGN_IN = gql`
-  mutation signinDriver($email: String!, $password: String!, $loginType: String!) {
-    signIn(email: $email, password: $password, loginType: $loginType) {
+export const GET_USER_INFO = gql`
+  query GetUserInfo {
+    getUserInfo {
+      user
+      error
+    }
+  }
+`;
+
+export const SIGNIN = gql`
+  mutation Signin($email: String!, $password: String!, $loginType: String!) {
+    signin(email: $email, password: $password, loginType: $loginType) {
       result
       error
     }
   }
 `;
 
-export const SIGNIN_USER = gql`
+export const SIGNUP_USER = gql`
   mutation SignupUser(
     $name: String!
     $email: String!
     $password: String!
     $phone: String!
-    $payment: Object!
+    $payment: Payment!
   ) {
     signupUser(name: $name, email: $email, password: $password, phone: $phone, payment: $payment) {
       result
@@ -24,13 +33,13 @@ export const SIGNIN_USER = gql`
   }
 `;
 
-export const SIGNIN_DRIVER = gql`
+export const SIGNUP_DRIVER = gql`
   mutation SignupDriver(
     $name: String!
     $email: String!
     $password: String!
     $phone: String!
-    $driver: Object!
+    $driver: Driver!
   ) {
     signupDriver(name: $name, email: $email, password: $password, phone: $phone, driver: $driver) {
       result
