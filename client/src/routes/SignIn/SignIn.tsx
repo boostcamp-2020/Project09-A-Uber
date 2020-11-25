@@ -70,7 +70,7 @@ const SignIn: FC = () => {
           로그인
         </Button>
         <Button className="signup-button" onClick={onClickSignup}>
-          회원가입
+          회원가입
         </Button>
       </StyledSignIn>
     </StyledPageFrame>
