@@ -15,5 +15,5 @@ const GoogleMap: FC = () => {
 };
 
 export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_MAP_API as string,
+  apiKey: process.env.REACT_APP_GOOGLE_MAP_API!,
 })(GoogleMap);
