@@ -1,7 +1,6 @@
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, PubSub } from 'apollo-server-express';
 import express, { Express } from 'express';
 import { createServer, Server } from 'http';
-import { PubSub } from 'graphql-subscriptions';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
@@ -10,9 +9,6 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 import schema from '@config/schema';
-import loginRouter from '@api/login/index';
-import signupRouter from '@api/signup';
-import apiAuth from '@util/apiAuth';
 
 dotenv.config();
 
@@ -34,7 +30,7 @@ class App {
     this.app = express();
     this.apolloServer = new ApolloServer({
       schema,
-      context: (ctx) => apiAuth(ctx, this.pubsub),
+      context: (ctx) => ({ ...ctx, pubsub: this.pubsub }),
       playground: true,
     });
     this.server = createServer(this.app);
@@ -61,11 +57,7 @@ class App {
           credentials: true,
         }),
       );
-      this.app.use('/api/login', loginRouter);
-      this.app.use('/api/signup', signupRouter);
     }
-    this.app.use('/api/login', loginRouter);
-    this.app.use('/api/signup', signupRouter);
     this.app.use(compression());
     this.apolloServer.applyMiddleware({
       app: this.app,
