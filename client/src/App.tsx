@@ -3,8 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { createStore } from 'redux';
 
 import SignIn from '@/routes/SignIn';
 import Home from '@routes/Home';
