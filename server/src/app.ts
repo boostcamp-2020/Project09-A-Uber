@@ -10,7 +10,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 import schema from '@config/schema';
-import loginRouter from '@api/login/index';
+import signinRouter from '@api/signin/index';
 import signupRouter from '@api/signup';
 import apiAuth from '@util/apiAuth';
 
@@ -61,10 +61,10 @@ class App {
           credentials: true,
         }),
       );
-      this.app.use('/api/login', loginRouter);
+      this.app.use('/api/login', signinRouter);
       this.app.use('/api/signup', signupRouter);
     }
-    this.app.use('/api/login', loginRouter);
+    this.app.use('/api/login', signinRouter);
     this.app.use('/api/signup', signupRouter);
     this.app.use(compression());
     this.apolloServer.applyMiddleware({

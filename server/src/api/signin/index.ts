@@ -1,8 +1,8 @@
 import express from 'express';
-import loginAuth from '@passport/auth';
+import signinAuth from '@passport/auth';
 
 const router = express.Router();
 
-router.post('/', loginAuth);
+router.post('/', signinAuth);
 
 export default router;
