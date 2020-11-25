@@ -18,9 +18,12 @@
     "@graphql-codegen/typescript": "^1.17.11",
     "@graphql-codegen/typescript-resolvers": "^1.17.11",
     "@types/compression": "^1.7.0",
+    "@types/cookie-parser": "^1.4.2",
     "@types/hpp": "^0.2.1",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.10.1",
     "@types/morgan": "^1.9.2",
+    "@types/passport-jwt": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "eslint": "^7.13.0",
@@ -42,6 +45,7 @@
     "apollo-server-express": "^2.19.0",
     "bcrypt": "^5.0.0",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -49,9 +53,11 @@
     "graphql-tools": "^7.0.1",
     "helmet": "^4.2.0",
     "hpp": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.15",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"
   }
 }
