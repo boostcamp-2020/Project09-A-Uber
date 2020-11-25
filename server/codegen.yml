@@ -5,12 +5,12 @@ generates:
       - add:
           content: "import { PubSub } from 'graphql-subscriptions';"
       - add:
-          content: "import { Request } from 'express';"
+          content: "import { RequestWithUser } from './request';"
       - typescript
       - typescript-resolvers
     config:
       contextType: |
         {
-          req: Request,
+          req: RequestWithUser,
           pubsub: PubSub
         }
