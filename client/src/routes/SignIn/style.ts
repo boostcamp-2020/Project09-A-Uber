@@ -7,16 +7,9 @@ export const StyledSignIn = styled.div`
   align-items: center;
   height: 100%;
 
-  & > .visitor-type {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-top: 2.5rem;
-
-    & > .am-segment {
-      width: 10rem;
-      margin-bottom: 0.8rem;
-    }
+  & nav {
+    align-self: flex-end;
+    margin: 0.5rem 0;
   }
 
   & > .am-button {
