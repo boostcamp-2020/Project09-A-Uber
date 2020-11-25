@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser';
 import { buildContext } from 'graphql-passport';
 
 import schema from '@config/schema';
-import apiAuth from '@util/apiAuth';
+import passportInit from '@passport/.';
 
 dotenv.config();
 
@@ -63,7 +63,7 @@ class App {
     }
     this.app.use(cookieParser());
     this.app.use(compression());
-    this.app.use(apiAuth);
+    passportInit();
     this.apolloServer.applyMiddleware({
       app: this.app,
       path: GRAPHQL_ENDPOINT,
