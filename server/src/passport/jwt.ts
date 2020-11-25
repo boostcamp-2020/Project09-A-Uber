@@ -13,7 +13,7 @@ const JWTConfig = {
 
 const jwtVerify: VerifyCallback = async (jwtPayload, done) => {
   try {
-    const user = await User.findOne({ email: jwtPayload.email });
+    const user = await User.findById(jwtPayload.id);
 
     if (user) return done(null, user);
     return done(null, false, { message: Message.InvalidToken });
