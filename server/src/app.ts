@@ -7,8 +7,10 @@ import hpp from 'hpp';
 import compression from 'compression';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 import schema from '@config/schema';
+import apiAuth from '@util/apiAuth';
 
 dotenv.config();
 
@@ -58,7 +60,9 @@ class App {
         }),
       );
     }
+    this.app.use(cookieParser());
     this.app.use(compression());
+    this.app.use(apiAuth);
     this.apolloServer.applyMiddleware({
       app: this.app,
       path: GRAPHQL_ENDPOINT,
