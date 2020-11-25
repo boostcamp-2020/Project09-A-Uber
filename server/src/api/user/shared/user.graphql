@@ -4,10 +4,10 @@ enum UserType {
 }
 
 type Payment {
-  bank: String
-  creditNUmber: String
-  expiryDate: String
-  cvc: Int
+  bank: String!
+  creditNumber: String!
+  expiryDate: String!
+  cvc: Int!
 }
 
 enum CarType {
