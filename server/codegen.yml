@@ -6,11 +6,17 @@ generates:
           content: "import { PubSub } from 'graphql-subscriptions';"
       - add:
           content: "import { RequestWithUser } from './request';"
+      - add:
+          content: "import { Response } from 'express';"
+      - add:
+          content: "import { AuthenticateReturn } from 'graphql-passport';;"
       - typescript
       - typescript-resolvers
     config:
       contextType: |
         {
           req: RequestWithUser,
+          res: Response,
+          authenticate: (strategyName: string, options?: object) => Promise<AuthenticateReturn<any>>,
           pubsub: PubSub
         }
