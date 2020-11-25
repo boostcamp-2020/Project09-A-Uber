@@ -34,6 +34,7 @@ module.exports = {
           ['@hooks', './src/hooks'],
           ['@images', './src/images'],
           ['@utils', './src/utils'],
+          ['@types', './src/types'],
         ],
       },
     },
