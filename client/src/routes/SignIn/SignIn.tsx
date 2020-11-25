@@ -1,25 +1,23 @@
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { SegmentedControl, Button, Checkbox } from 'antd-mobile';
+import { Button, Checkbox } from 'antd-mobile';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { StyledSignIn } from '@routes/SignIn/style';
 import StyledPageFrame from '@components/PageFrame';
+import UserToggle, { FOCUS_USER, ToggleFocus } from '@components/UserToggle';
 import logo from '@images/logo.svg';
 import Input from '@components/Input';
 import useChange from '@hooks/useChange';
 import { InitialState } from '@reducers/.';
 import { signInRequest } from '@reducers/user';
 
-const visitorType = ['일반 사용자', '드라이버'];
-const initialVisitorType = '일반 사용자';
-
 const SignIn: FC = () => {
   const history = useHistory();
-  const [loginType, setLoginType] = useState(initialVisitorType);
+  const [loginType, setLoginType] = useState<ToggleFocus>(FOCUS_USER);
   const [isLoginState, setIsLoginState] = useState(false);
-  const [email, setEmail, onChangeEmail] = useChange('');
-  const [password, setPassword, onChangePassword] = useChange('');
+  const [email, , onChangeEmail] = useChange('');
+  const [password, , onChangePassword] = useChange('');
   const dispatch = useDispatch();
   const {
     signin: { result },
@@ -36,9 +34,17 @@ const SignIn: FC = () => {
       }),
     );
   }, [email, password, loginType]);
-  const onChangeType = useCallback((value: string) => {
-    setLoginType(value);
-  }, []);
+
+  const onClickToggleHandler = useCallback(
+    (target: ToggleFocus) => {
+      if (target === loginType) {
+        return;
+      }
+      setLoginType(target);
+    },
+    [loginType],
+  );
+
   const onChangeLoginState = useCallback(() => {
     setIsLoginState(!isLoginState);
   }, []);
@@ -53,9 +59,7 @@ const SignIn: FC = () => {
     <StyledPageFrame>
       <StyledSignIn>
         <img src={logo} alt="logo image" />
-        <div className="visitor-type">
-          <SegmentedControl values={visitorType} onValueChange={onChangeType}></SegmentedControl>
-        </div>
+        <UserToggle focus={loginType} onClick={onClickToggleHandler} />
         <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail}></Input>
         <Input
           type="password"
