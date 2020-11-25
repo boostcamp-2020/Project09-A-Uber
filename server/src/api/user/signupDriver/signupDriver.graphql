@@ -1,0 +1,19 @@
+input CarInfo {
+  carNumber: String!
+  carType: CarType!
+}
+
+input DriverInfo {
+  licenseNumber: String!
+  car: CarInfo!
+}
+
+type Mutation{
+  signupDriver(
+    name: String!
+    email: String!
+    password: String!
+    phone: String!
+    driver: DriverInfo!
+  ): SignupResponse!
+}
