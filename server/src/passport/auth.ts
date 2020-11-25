@@ -8,11 +8,7 @@ interface Message {
   message: string;
 }
 
-interface SECRET_KEY {
-  JWT_SECRET_KEY?: string | undefined;
-}
-
-const { JWT_SECRET_KEY }: SECRET_KEY = process.env;
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
 
 const loginAuth: ExpressFunction = async (req, res, next) => {
   try {
@@ -20,8 +16,8 @@ const loginAuth: ExpressFunction = async (req, res, next) => {
       if (error || !user) return res.status(400).json({ result: 'fail', message });
 
       const payload = { email: user.email };
-      const accessToken = jwt.sign(payload, JWT_SECRET_KEY!, { expiresIn: '15m' });
-      const refreshToken = jwt.sign(payload, JWT_SECRET_KEY!, { expiresIn: '14d' });
+      const accessToken = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '15m' });
+      const refreshToken = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '14d' });
 
       const userData = await UserModel.findOne({ email: user.email });
       await UserModel.updateOne({ _id: userData?.get('_id') }, { refreshToken });
