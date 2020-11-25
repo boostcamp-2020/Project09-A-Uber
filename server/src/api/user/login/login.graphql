@@ -1,8 +1,8 @@
-type LoginResponse {
+type SigninResponse {
   result: String!
   error: String
 }
 
 type Mutation {
-    login(email: String!, password: String!, loginType: String!): LoginResponse!
+    signin(email: String!, password: String!, loginType: String!): SigninResponse!
 }

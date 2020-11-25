@@ -9,7 +9,7 @@ const EXPIRED = 1000 * 60 * 15;
 
 const resolvers: Resolvers = {
   Mutation: {
-    login: async (_, { email, password }, { res, authenticate }) => {
+    signin: async (_, { email, password }, { res, authenticate }) => {
       const { user, info } = await authenticate('local', { email, password });
 
       if (!user) return { result: 'fail', error: info?.message };
