@@ -15,7 +15,7 @@ export default <T extends { value: string } = HTMLInputElement>(
 
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<T>) => {
-      if (!(!limitLength || (limitLength && value.length <= limitLength))) {
+      if (limitLength && e.target.value.length > limitLength) {
         return;
       }
 
