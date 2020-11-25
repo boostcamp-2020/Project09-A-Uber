@@ -1,0 +1,44 @@
+enum UserType {
+    user
+    driver
+}
+
+type Payment {
+  bank: String
+  creditNUmber: String
+  expiryDate: String
+  cvc: Int
+}
+
+enum CarType {
+  small
+  middle
+  large
+}
+
+type Car {
+  carNumber: String!
+  carType: CarType!
+}
+
+type Driver {
+  licenseNumber: String!
+  status: String!
+  car: Car!
+}
+
+type Location {
+    coordinates: [Int]!
+}
+
+type User {
+  _id: String!
+  name: String!
+  email: String!
+  phone: String!
+  type: UserType!
+  profile: String
+  payment: Payment
+  driver: Driver
+  location: Location
+}
