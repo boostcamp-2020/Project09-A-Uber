@@ -1,4 +1,0 @@
-type SignupResponse {
-  result: Boolean!
-  message: String
-}

@@ -1,0 +1,16 @@
+input PaymentInfo {
+  bank: String!
+  creditNumber: String!
+  expiryDate: String!
+  cvc: Int!
+}
+
+type Mutation {
+  signupUser(
+    name: String!
+    email: String!
+    password: String!
+    phone: String!
+    payment: PaymentInfo!
+  ): SignupResponse!
+}
