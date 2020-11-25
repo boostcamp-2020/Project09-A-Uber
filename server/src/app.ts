@@ -10,9 +10,6 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 import schema from '@config/schema';
-import signinRouter from '@api/signin/index';
-import signupRouter from '@api/signup';
-import apiAuth from '@util/apiAuth';
 
 dotenv.config();
 
@@ -34,7 +31,7 @@ class App {
     this.app = express();
     this.apolloServer = new ApolloServer({
       schema,
-      context: (ctx) => apiAuth(ctx, this.pubsub),
+      context: (ctx) => ({ ctx, pubsub: this.pubsub }),
       playground: true,
     });
     this.server = createServer(this.app);
@@ -61,11 +58,7 @@ class App {
           credentials: true,
         }),
       );
-      this.app.use('/api/login', signinRouter);
-      this.app.use('/api/signup', signupRouter);
     }
-    this.app.use('/api/login', signinRouter);
-    this.app.use('/api/signup', signupRouter);
     this.app.use(compression());
     this.apolloServer.applyMiddleware({
       app: this.app,
