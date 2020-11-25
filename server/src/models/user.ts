@@ -5,8 +5,8 @@ import driverSchema from './driver';
 import locationSchema from './location';
 
 export const loginType = {
-  driver: '드라이버' as const,
-  user: '일반 사용자' as const,
+  driver: 'driver' as const,
+  user: 'user' as const,
 };
 
 export type LoginType = typeof loginType[keyof typeof loginType];

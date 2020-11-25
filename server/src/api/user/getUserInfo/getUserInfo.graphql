@@ -1,0 +1,9 @@
+type GetUserInfoResponse {
+    user: User
+    error: String
+}
+
+type Query {
+    getUserInfo: GetUserInfoResponse!
+}
+
