@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
@@ -9,8 +8,6 @@ import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
 import { ToggleFocus } from '@components/UserToggle';
-import { InitialState } from '@reducers/.';
-import { signUpRequest } from '@reducers/user';
 import carTypeMapper from './carTypeMapper';
 
 interface Props {
@@ -43,11 +40,9 @@ export const carTypes: string[] = ['대형', '중형', '소형'];
 
 const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [license, , onChangeLicense, isLicenseValid] = useValidator('', isLicense);
-  const { result } = useSelector(({ signup }: InitialState) => signup);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -65,16 +60,9 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
           },
         },
       };
-      dispatch(signUpRequest(driver, type));
     },
     [carType, carNumber, license],
   );
-
-  useEffect(() => {
-    if (result) {
-      history.push('/');
-    }
-  }, [result]);
 
   return (
     <StyledDriverForm>

@@ -12,14 +12,11 @@ import Signup from '@routes/Signup';
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
 import reducer from '@reducers/.';
-import saga from '@sagas/.';
 import client from '@/apollo';
 
 import '@theme/antd.less';
 
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(saga);
+const store = createStore(reducer);
 
 const App: FC = () => (
   <ApolloProvider client={client}>
