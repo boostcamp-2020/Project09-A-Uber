@@ -1,9 +1,0 @@
-type requestTokenResponse {
-    result: Boolean!
-    accessToken: String
-    error: String
-}
-
-type Mutation {
-    requestToken: requestTokenResponse!
-}
