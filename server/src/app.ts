@@ -8,7 +8,6 @@ import compression from 'compression';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import expressSession from 'express-session';
 import { buildContext } from 'graphql-passport';
 
 import schema from '@config/schema';
