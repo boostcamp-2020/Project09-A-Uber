@@ -13,8 +13,6 @@ import {
 } from '@apollo/react-hooks';
 import { DocumentNode } from 'graphql';
 import { REQUEST_TOKEN } from '@queries/token.queries';
-import { useHistory } from 'react-router-dom';
-import { History } from 'history';
 
 import { RequestToken } from '@/types/api';
 
@@ -28,17 +26,14 @@ const errorHandler = async (
   error: ApolloError,
   apolloClient: ApolloClient<any>,
   request: (...args: any) => any,
-  history: History,
 ) => {
   const { statusCode } = error.networkError as ServerParseError;
   if (statusCode === 401) {
     const result = await apolloClient.mutate<RequestToken>({ mutation: REQUEST_TOKEN });
     if (result?.data?.requestToken.result === SUCCESS) {
       const reResponseData = await request();
-
       return reResponseData;
     }
-    history.push('/signin');
   }
   return undefined;
 };
@@ -48,11 +43,10 @@ export const useCustomQuery = <T = any>(
   options?: QueryHookOptions<T>,
 ): QueryWrapper => {
   const apolloClient = useApolloClient();
-  const history = useHistory();
   const queryResult = useQuery<T>(query, {
     ...options,
     onError: (error: ApolloError) => {
-      errorHandler(error, apolloClient, queryResult.refetch, history).then(() => {
+      errorHandler(error, apolloClient, queryResult.refetch).then(() => {
         if (options?.onError) {
           options.onError(error);
         }
@@ -64,7 +58,7 @@ export const useCustomQuery = <T = any>(
     try {
       return await queryResult.refetch(variables);
     } catch (error) {
-      const result = await errorHandler(error, apolloClient, queryResult.refetch, history);
+      const result = await errorHandler(error, apolloClient, queryResult.refetch);
       return result;
     }
   };
@@ -77,11 +71,10 @@ export const useCustomMutation = <T = any>(
   options?: MutationHookOptions<T>,
 ): MutationTuple<T, Record<string, any>> => {
   const apolloClient = useApolloClient();
-  const history = useHistory();
   const mutationTuple = useMutation<T>(query, {
     ...options,
     onError: (error: ApolloError) => {
-      errorHandler(error, apolloClient, mutationTuple[0], history).then(() => {
+      errorHandler(error, apolloClient, mutationTuple[0]).then(() => {
         if (options?.onError) {
           options.onError(error);
         }
