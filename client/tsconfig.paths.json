@@ -11,7 +11,8 @@
         "@theme/*": ["src/theme/*"],
         "@hooks/*": ["src/hooks/*"],
         "@images/*": ["src/images/*"],
-        "@utils/*": ["src/utils/*"]
+        "@utils/*": ["src/utils/*"],
+        "@types/*": ["src/types/*"]
       },
   
     }
