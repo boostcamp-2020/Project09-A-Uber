@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.7",
     "@apollo/react-hooks": "^4.0.0",
+    "@react-google-maps/api": "^1.13.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -14,7 +15,6 @@
     "@types/react-dom": "^16.9.8",
     "antd-mobile": "^2.3.4",
     "axios": "^0.21.0",
-    "google-maps-react": "^2.0.6",
     "graphql": "^15.4.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
