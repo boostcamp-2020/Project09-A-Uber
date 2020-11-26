@@ -16,7 +16,7 @@ interface Props {
 
 const containerStyle = {
   width: '100%',
-  height: '80%',
+  height: '100%',
 };
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API as string;
