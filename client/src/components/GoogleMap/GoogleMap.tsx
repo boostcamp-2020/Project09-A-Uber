@@ -40,7 +40,7 @@ const GoogleMap: FC<Props> = ({ origin, destination }) => {
       return;
     }
 
-    const test = await new Promise<Location>((res) => {
+    const currentLocation = await new Promise<Location>((res) => {
       window.navigator.geolocation.getCurrentPosition((position) => {
         res({
           lat: position.coords.latitude,
@@ -48,7 +48,7 @@ const GoogleMap: FC<Props> = ({ origin, destination }) => {
         });
       });
     });
-    setCenter(test);
+    setCenter(currentLocation);
   }, [origin, destination]);
 
   useEffect(() => {
