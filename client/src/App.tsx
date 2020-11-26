@@ -12,6 +12,7 @@ import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
 import reducer from '@reducers/.';
 import client from '@/apollo';
+import auth from '@/utils/auth';
 
 import '@theme/antd.less';
 
@@ -24,7 +25,7 @@ const App: FC = () => (
         <GlobalStyle />
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={auth(Home)} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={Signup} />
           </Switch>

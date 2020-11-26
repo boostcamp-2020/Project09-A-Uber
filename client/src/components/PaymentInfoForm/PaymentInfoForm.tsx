@@ -2,13 +2,16 @@ import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGNUP_USER } from '@queries/user.queries';
+import { SignupUser } from '@/types/api';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
-import { Button } from 'antd-mobile';
+import { Button, Toast } from 'antd-mobile';
 import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
+import { TOAST_DURATION } from '@utils/enums';
+import { Message } from '@utils/client-message';
 import { ToggleFocus } from '@components/UserToggle';
 
 const StyledPaymentInfoForm = styled.div`
@@ -58,7 +61,18 @@ const Banks = [
 
 const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const history = useHistory();
-  const [signinUserMutation] = useMutation(SIGNUP_USER);
+  const [signinUserMutation, { loading }] = useMutation<SignupUser>(SIGNUP_USER, {
+    onCompleted: ({ signupUser }) => {
+      if (signupUser.result === 'success') {
+        Toast.success(Message.SucceedSignup, TOAST_DURATION.SIGNUP_SUCCESS, () => {
+          history.push('/signin');
+        });
+      }
+      if (signupUser.result === 'fail') {
+        Toast.fail(signupUser.error, TOAST_DURATION.SIGNUP_FAILURE);
+      }
+    },
+  });
   const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
   const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
     '',
@@ -88,16 +102,13 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
-      // TODO: 회원가입 요청
       e.preventDefault();
-
       const paymentInfo = {
         bank,
         creditNumber: `${cardNumber1}-${cardNumber2}-${cardNumber3}-${cardNumber4}`,
         expiryDate,
         cvc: Number(cvc),
       };
-      // TODO: SERVER 연결
       signinUserMutation({
         variables: {
           name,
@@ -196,6 +207,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
       <Button
         type="primary"
         onClick={onSubmit}
+        loading={loading}
         disabled={
           !bank ||
           !isCardNumber1Valid ||
