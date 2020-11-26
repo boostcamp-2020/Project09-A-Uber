@@ -65,17 +65,17 @@ const GoogleMap: FC<Props> = ({ origin, destination }) => {
   }, []);
 
   return (
-    <LoadScript googleMapsApiKey={API_KEY}>
-      <GoogleMapComponent
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-      >
-        {origin && !destination && <Marker position={origin} />}
-        {origin && destination && <Directions origin={origin} destination={destination} />}
-      </GoogleMapComponent>
-    </LoadScript>
+    // <LoadScript googleMapsApiKey={API_KEY}>
+    <GoogleMapComponent
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={10}
+      onLoad={onLoad}
+    >
+      {origin && !destination && <Marker position={origin} />}
+      {origin && destination && <Directions origin={origin} destination={destination} />}
+    </GoogleMapComponent>
+    // </LoadScript>
   );
 };
 
