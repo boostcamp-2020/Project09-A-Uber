@@ -15,7 +15,7 @@ const resolvers: Resolvers = {
       if (!user) return { result: 'fail', error: info?.message };
       const userId = user?.get('_id');
       const payload = { id: userId };
-      const accessToken = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '3s' });
+      const accessToken = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '15m' });
       const refreshToken = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '14d' });
 
       await UserModel.updateOne({ _id: userId }, { refreshToken });
