@@ -38,7 +38,6 @@ const resolvers: Resolvers = {
 
         return { result: 'fail' };
       } catch (error) {
-        console.log(error);
         return { result: 'fail', message: error.message };
       }
     },
