@@ -1,0 +1,8 @@
+type requestTokenResponse {
+    result: String!
+    message: String
+}
+
+type Mutation {
+    requestToken: requestTokenResponse!
+}

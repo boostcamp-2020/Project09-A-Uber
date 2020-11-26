@@ -16,6 +16,7 @@ module.exports = {
     'no-use-before-define': 0,
     'import/no-unresolved': 0,
     'import/no-extraneous-dependencies': 0,
+    'consistent-return': 0,
   },
   settings: {
     'import/resolver': {

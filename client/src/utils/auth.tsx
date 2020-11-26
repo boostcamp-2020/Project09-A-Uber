@@ -1,17 +1,17 @@
 import React, { FC, useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 import { Modal } from 'antd-mobile';
 
 import { GET_USER_INFO } from '@queries/user.queries';
 import { GetUserInfo } from '@/types/api';
+import { useCustomQuery } from '@hooks/useApollo';
 
 const AUTH_MESSAGE = '로그인이 필요합니다';
 
 const auth = (Component: FC): FC => () => {
   const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
-  const { loading } = useQuery<GetUserInfo>(GET_USER_INFO, {
+  const { loading } = useCustomQuery<GetUserInfo>(GET_USER_INFO, {
     onCompleted: ({ getUserInfo }) => {
       if (!getUserInfo.user) {
         setModalOpen(true);
