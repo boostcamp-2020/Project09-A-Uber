@@ -1,3 +1,3 @@
 export const Message = {
-  SucceedSignin: '로그인에 성공하였습니다.',
+  SucceedSignup: '회원가입에 성공하였습니다.',
 };
