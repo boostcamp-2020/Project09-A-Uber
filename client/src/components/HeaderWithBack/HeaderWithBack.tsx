@@ -28,7 +28,7 @@ const StyledHeaderWithBack = styled.header`
   }
 `;
 
-const HeaderWithBack: FC<Props> = ({ onClick, className }) => (
+const HeaderWithBack: FC<Props> = ({ onClick, className = 'white-header' }) => (
   <StyledHeaderWithBack className={className}>
     <button type="button" onClick={onClick}>
       <LeftSVG />
