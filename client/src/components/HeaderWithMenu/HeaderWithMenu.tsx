@@ -42,7 +42,7 @@ const StyledHeaderWithMenu = styled.header<{ isMenuOpen: boolean }>`
   }
 `;
 
-const HeaderWithMenu: FC<Props> = ({ className }) => {
+const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
   const [menu, toggleMenu] = useToggle(false);
 
   return (
