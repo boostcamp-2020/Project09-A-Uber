@@ -51,7 +51,7 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const [signUpMutation, { loading }] = useMutation<SignupDriver>(SIGNUP_DRIVER, {
     onCompleted: ({ signupDriver }) => {
       if (signupDriver.result === 'success') {
-        Toast.success(Message.SucceedSignin, TOAST_DURATION.SIGNUP_SUCCESS, () => {
+        Toast.success(Message.SucceedSignup, TOAST_DURATION.SIGNUP_SUCCESS, () => {
           history.push('/signin');
         });
       }
