@@ -22,5 +22,6 @@ module.exports = override(
     '@hooks': path.resolve(__dirname, 'src/hooks'),
     '@images': path.resolve(__dirname, 'src/images'),
     '@utils': path.resolve(__dirname, 'src/utils'),
+    '@types': path.resolve(__dirname, 'src/types'),
   }),
 );
