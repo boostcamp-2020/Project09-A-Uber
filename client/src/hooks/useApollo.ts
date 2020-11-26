@@ -2,11 +2,14 @@ import {
   useApolloClient,
   useQuery,
   QueryHookOptions,
+  MutationHookOptions,
   ApolloError,
   ServerParseError,
   QueryResult,
   ApolloClient,
   ApolloQueryResult,
+  useMutation,
+  MutationTuple,
 } from '@apollo/react-hooks';
 import { DocumentNode } from 'graphql';
 import { REQUEST_TOKEN } from '@queries/token.queries';
@@ -24,14 +27,14 @@ interface QueryWrapper extends QueryResult<any, Record<string, any>> {
 const errorHandler = async (
   error: ApolloError,
   apolloClient: ApolloClient<any>,
-  queryResult: QueryResult<any, Record<string, any>>,
+  request: (...args: any) => any,
   history: History,
 ) => {
   const { statusCode } = error.networkError as ServerParseError;
   if (statusCode === 401) {
     const result = await apolloClient.mutate<RequestToken>({ mutation: REQUEST_TOKEN });
     if (result?.data?.requestToken.result === SUCCESS) {
-      const reResponseData = await queryResult.refetch();
+      const reResponseData = await request();
 
       return reResponseData;
     }
@@ -42,14 +45,14 @@ const errorHandler = async (
 
 export const useCustomQuery = <T = any>(
   query: DocumentNode,
-  options?: QueryHookOptions,
+  options?: QueryHookOptions<T>,
 ): QueryWrapper => {
   const apolloClient = useApolloClient();
   const history = useHistory();
-  const queryResult = useQuery(query, {
+  const queryResult = useQuery<T>(query, {
     ...options,
     onError: (error: ApolloError) => {
-      errorHandler(error, apolloClient, queryResult, history).then(() => {
+      errorHandler(error, apolloClient, queryResult.refetch, history).then(() => {
         if (options?.onError) {
           options.onError(error);
         }
@@ -61,10 +64,30 @@ export const useCustomQuery = <T = any>(
     try {
       return await queryResult.refetch(variables);
     } catch (error) {
-      const result = await errorHandler(error, apolloClient, queryResult, history);
+      const result = await errorHandler(error, apolloClient, queryResult.refetch, history);
       return result;
     }
   };
 
   return { ...queryResult, callQuery };
+};
+
+export const useCustomMutation = <T = any>(
+  query: DocumentNode,
+  options?: MutationHookOptions<T>,
+): MutationTuple<T, Record<string, any>> => {
+  const apolloClient = useApolloClient();
+  const history = useHistory();
+  const mutationTuple = useMutation<T>(query, {
+    ...options,
+    onError: (error: ApolloError) => {
+      errorHandler(error, apolloClient, mutationTuple[0], history).then(() => {
+        if (options?.onError) {
+          options.onError(error);
+        }
+      });
+    },
+  });
+
+  return mutationTuple;
 };
