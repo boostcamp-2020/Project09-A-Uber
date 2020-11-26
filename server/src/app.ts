@@ -8,6 +8,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import expressSession from 'express-session';
 import { buildContext } from 'graphql-passport';
 
 import schema from '@config/schema';
@@ -56,7 +57,7 @@ class App {
       this.app.use(express.json());
       this.app.use(
         cors({
-          origin: true,
+          origin: 'http://localhost:3000',
           credentials: true,
         }),
       );
@@ -67,6 +68,10 @@ class App {
     this.apolloServer.applyMiddleware({
       app: this.app,
       path: GRAPHQL_ENDPOINT,
+      cors: {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      },
     });
     this.apolloServer.installSubscriptionHandlers(this.server);
   }
