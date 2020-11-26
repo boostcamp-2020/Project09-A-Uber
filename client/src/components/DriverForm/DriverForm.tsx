@@ -1,14 +1,17 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from 'antd-mobile';
+import { Button, Toast } from 'antd-mobile';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGNUP_DRIVER } from '@queries/user.queries';
+import { SignupDriver } from '@/types/api';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
 import Input from '@components/Input';
 import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
+import { TOAST_DURATION } from '@utils/enums';
+import { Message } from '@utils/client-message';
 import { ToggleFocus } from '@components/UserToggle';
 import carTypeMapper from './carTypeMapper';
 
@@ -45,7 +48,18 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [license, , onChangeLicense, isLicenseValid] = useValidator('', isLicense);
-  const [signUpMutation] = useMutation(SIGNUP_DRIVER);
+  const [signUpMutation, { loading }] = useMutation<SignupDriver>(SIGNUP_DRIVER, {
+    onCompleted: ({ signupDriver }) => {
+      if (signupDriver.result === 'success') {
+        Toast.success(Message.SucceedSignin, TOAST_DURATION.SIGNUP_SUCCESS, () => {
+          history.push('/signin');
+        });
+      }
+      if (signupDriver.result === 'fail') {
+        Toast.fail(signupDriver.error, TOAST_DURATION.SIGNUP_FAILURE);
+      }
+    },
+  });
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -57,7 +71,7 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
           carType: carTypeMapper(carType),
         },
       };
-      // TODO: SERVER 연결
+
       signUpMutation({
         variables: {
           name,
@@ -97,6 +111,7 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
       <Button
         type="primary"
         onClick={onSubmit}
+        loading={loading}
         disabled={!carType || !isCarNumValid || !isLicenseValid}
       >
         회원가입
