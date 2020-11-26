@@ -5,12 +5,15 @@ import LeftSVG from '@images/LeftSVG';
 
 interface Props {
   onClick: () => void;
+  className?: string;
 }
 
 const StyledHeaderWithBack = styled.header`
   display: flex;
-  margin-left: 1.5rem;
   height: 3rem;
+  width: 100%;
+  background-color: ${({ className, theme }) =>
+    className === 'green-header' ? theme.PRIMARY : '#ffffff'};
 
   & button {
     background: none;
@@ -21,11 +24,12 @@ const StyledHeaderWithBack = styled.header`
   & svg {
     width: 1.5rem;
     fill: ${({ theme }) => theme.PRIMARY};
+    margin-left: 1.5rem;
   }
 `;
 
-const HeaderWithBack: FC<Props> = ({ onClick }) => (
-  <StyledHeaderWithBack>
+const HeaderWithBack: FC<Props> = ({ onClick, className = 'white-header' }) => (
+  <StyledHeaderWithBack className={className}>
     <button type="button" onClick={onClick}>
       <LeftSVG />
     </button>
