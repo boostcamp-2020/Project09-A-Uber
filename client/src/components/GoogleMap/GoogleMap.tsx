@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect, useCallback } from 'react';
 
-import { GoogleMap as GoogleMapComponent, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap as GoogleMapComponent, Marker } from '@react-google-maps/api';
 
 import Directions from './Directions';
 
@@ -16,10 +16,8 @@ interface Props {
 
 const containerStyle = {
   width: '100%',
-  height: '80%',
+  height: '100%',
 };
-
-const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API as string;
 
 const GoogleMap: FC<Props> = ({ origin, destination }) => {
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
@@ -65,17 +63,15 @@ const GoogleMap: FC<Props> = ({ origin, destination }) => {
   }, []);
 
   return (
-    <LoadScript googleMapsApiKey={API_KEY}>
-      <GoogleMapComponent
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-      >
-        {origin && !destination && <Marker position={origin} />}
-        {origin && destination && <Directions origin={origin} destination={destination} />}
-      </GoogleMapComponent>
-    </LoadScript>
+    <GoogleMapComponent
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={10}
+      onLoad={onLoad}
+    >
+      {origin && !destination && <Marker position={origin} />}
+      {origin && destination && <Directions origin={origin} destination={destination} />}
+    </GoogleMapComponent>
   );
 };
 
