@@ -176,10 +176,10 @@ const ChatRoom: FC = () => {
   return (
     <>
       <StyledChatRoom>
-        <HeaderWithBack onClick={onClickBackButton} className="green-header"></HeaderWithBack>
+        <HeaderWithBack onClick={onClickBackButton} className="green-header" />
         <StyledChatMain>
           {Chat.map((item) => (
-            <ChatLog {...item}></ChatLog>
+            <ChatLog key={item.id} {...item}></ChatLog>
           ))}
         </StyledChatMain>
         <ChatInput></ChatInput>

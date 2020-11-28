@@ -34,17 +34,15 @@ const ChatInput: FC = () => {
   const [chatContent, , onChangeChatContent] = useChange('');
 
   return (
-    <>
-      <StyledChatInput>
-        <Input
-          type="text"
-          placeholder="채팅을 입력해 주세요."
-          value={chatContent}
-          onChange={onChangeChatContent}
-        ></Input>
-        <Button type="primary">전송</Button>
-      </StyledChatInput>
-    </>
+    <StyledChatInput>
+      <Input
+        type="text"
+        placeholder="채팅을 입력해 주세요."
+        value={chatContent}
+        onChange={onChangeChatContent}
+      ></Input>
+      <Button type="primary">전송</Button>
+    </StyledChatInput>
   );
 };
 
