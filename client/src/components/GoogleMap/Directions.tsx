@@ -13,10 +13,10 @@ const Directions: FC<Props> = ({ origin, destination }) => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const count = useRef(0);
 
-  const options = {
+  const options: google.maps.DirectionsRendererOptions = {
     polylineOptions: {
       strokeColor: 'red',
-      strockeWeight: 10,
+      strokeWeight: 4,
       strokeOpacity: 0.8,
     },
   };
@@ -38,7 +38,7 @@ const Directions: FC<Props> = ({ origin, destination }) => {
   return (
     <>
       <DirectionsService
-        options={{ origin, destination, travelMode: 'BICYCLING' as any }}
+        options={{ origin, destination, travelMode: 'BICYCLING' as google.maps.TravelMode }}
         callback={directionsCallback}
       />
       <DirectionsRenderer directions={directions} options={options} />
