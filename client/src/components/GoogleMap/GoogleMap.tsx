@@ -21,7 +21,8 @@ const containerStyle = {
 };
 
 const GoogleMap: FC<Props> = ({ origin, destination }) => {
-  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  const [isInitLoad, setIsInitLoad] = useState(true);
+  const [center, setCenter] = useState<Location>();
 
   const setCenterHandler = useCallback(async () => {
     if (origin && destination) {
@@ -46,12 +47,17 @@ const GoogleMap: FC<Props> = ({ origin, destination }) => {
   }, [origin, destination]);
 
   useEffect(() => {
-    const centerInterval = setInterval(setCenterHandler, 5000);
-
-    return () => {
-      clearInterval(centerInterval);
-    };
+    if (isInitLoad) {
+      setTimeout(setCenterHandler, 100);
+      setIsInitLoad(false);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!isInitLoad) {
+      setTimeout(setCenterHandler, 100);
+    }
+  }, [origin, destination]);
 
   const onLoad = React.useCallback((map) => {
     const bounds = new window.google.maps.LatLngBounds();
