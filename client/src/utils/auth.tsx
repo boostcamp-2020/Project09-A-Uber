@@ -3,17 +3,26 @@ import { useHistory } from 'react-router-dom';
 import { Modal } from 'antd-mobile';
 
 import { GET_USER_INFO } from '@queries/user.queries';
+import { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
 import { GetUserInfo } from '@/types/api';
 import { useCustomQuery } from '@hooks/useApollo';
 
+const AUTH_TYPE_MESSAGE = '로 로그인이 필요합니다';
+
 const AUTH_MESSAGE = '로그인이 필요합니다';
 
-const auth = (Component: FC): FC => () => {
+const userTypeMapper = (type: ToggleFocus) => (type === FOCUS_USER ? '일반 사용자' : '드라이버');
+
+const auth = (Component: FC, type?: ToggleFocus): FC => () => {
   const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
   const { loading } = useCustomQuery<GetUserInfo>(GET_USER_INFO, {
     onCompleted: ({ getUserInfo }) => {
       if (!getUserInfo.user) {
+        setModalOpen(true);
+        return;
+      }
+      if (type && getUserInfo.user.type !== type) {
         setModalOpen(true);
       }
     },
@@ -40,7 +49,7 @@ const auth = (Component: FC): FC => () => {
           },
         ]}
       >
-        {AUTH_MESSAGE}
+        {type ? `${userTypeMapper(type)}${AUTH_TYPE_MESSAGE}` : AUTH_MESSAGE}
       </Modal>
       {!loading && !modalOpen && <Component />}
     </>
