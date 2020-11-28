@@ -23,7 +23,7 @@ const StyledHeaderWithBack = styled.header`
 
   & svg {
     width: 1.5rem;
-    fill: ${({ theme }) => theme.PRIMARY};
+    fill: ${({ className, theme }) => (className === 'green-header' ? theme.LIGHT : theme.PRIMARY)};
     margin-left: 1.5rem;
   }
 `;
