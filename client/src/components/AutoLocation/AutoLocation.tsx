@@ -19,12 +19,13 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
     debounce: 700,
   });
 
-  const handleInput = (e: any) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
   const onClickCancleIcon = () => {
     setValue('');
+    setPosition();
   };
 
   const registerRef = useOnclickOutside(() => {
@@ -53,7 +54,7 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
       } = suggestion;
 
       return (
-        <li key={id} onClick={handleSelect(suggestion)}>
+        <li key={`AutoLocation_${suggestion.place_id}`} onClick={handleSelect(suggestion)}>
           <strong>{main_text}</strong> <small>{secondary_text}</small>
         </li>
       );
