@@ -31,7 +31,7 @@ const EstimatedTime: FC<Props> = ({ isEstimatedTime, directions }) => {
       {isEstimatedTime && (
         <StyledEstimatedTime>
           <span className="estimated-time">소요 시간: {estimatedTime?.text}</span>
-          <span className="estimated-distance">총 거리: {estimatedDistance?.text}</span>
+          <span className="estimated-distance">이동 거리: {estimatedDistance?.text}</span>
         </StyledEstimatedTime>
       )}
     </>
