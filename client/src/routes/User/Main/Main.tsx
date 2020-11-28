@@ -23,20 +23,18 @@ const StyledButton = styled(Button)`
 const Main: FC = () => {
   const [origin, setOrigin] = useState<Location>();
   const [destination, setDestination] = useState<Location>();
-  const [isEstimatedTime, setIsEstimatedTime] = useState(false);
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
 
   return (
     <MapFrame
       origin={origin}
       destination={destination}
-      setIsEstimatedTime={setIsEstimatedTime}
       setDirections={setDirections}
       directions={directions}
     >
       <AutoLocation setPosition={setOrigin} />
       <AutoLocation setPosition={setDestination} />
-      <EstimatedTime isEstimatedTime={isEstimatedTime} directions={directions} />
+      <EstimatedTime directions={directions} origin={origin} destination={destination} />
       <StyledButton type="primary">라이더 탐색</StyledButton>
     </MapFrame>
   );
