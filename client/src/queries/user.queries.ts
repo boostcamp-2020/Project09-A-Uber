@@ -5,6 +5,7 @@ export const GET_USER_INFO = gql`
     getUserInfo {
       user {
         email
+        type
       }
       error
     }
