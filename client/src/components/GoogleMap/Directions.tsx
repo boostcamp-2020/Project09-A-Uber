@@ -7,10 +7,19 @@ import { Location } from './GoogleMap';
 interface Props {
   origin: Location;
   destination: Location;
+  setIsEstimatedTime?: React.Dispatch<React.SetStateAction<boolean>>;
+  setDirections?: React.Dispatch<React.SetStateAction<google.maps.DirectionsResult | undefined>>;
+  directions?: google.maps.DirectionsResult | undefined;
 }
 
-const Directions: FC<Props> = ({ origin, destination }) => {
-  const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
+const Directions: FC<Props> = ({
+  origin,
+  destination,
+  setDirections,
+  setIsEstimatedTime,
+  directions,
+}) => {
+  // const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const count = useRef(0);
 
   const options: google.maps.DirectionsRendererOptions = {
@@ -31,7 +40,8 @@ const Directions: FC<Props> = ({ origin, destination }) => {
   ): void => {
     if (status === 'OK' && count.current === 0) {
       count.current += 1;
-      setDirections(result);
+      setDirections!(result);
+      setIsEstimatedTime!(true);
     }
   };
 
