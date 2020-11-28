@@ -8,7 +8,7 @@ const orderSchema = new Schema({
   id: Schema.Types.ObjectId,
   user: { type: Schema.Types.ObjectId, required: true },
   driver: Schema.Types.ObjectId,
-  amount: { type: Number, required: true },
+  amount: Number,
   payment: { type: paymentSchema, required: false },
   startingPoint: { type: locationSchema, required: true },
   destination: { type: locationSchema, required: true },
