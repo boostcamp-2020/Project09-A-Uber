@@ -6,7 +6,7 @@ import GoogleMap, { Location } from '@components/GoogleMap';
 import HeaderWithMenu from '@components/HeaderWithMenu';
 
 interface Props {
-  children: React.ReactChild | React.ReactChild[];
+  children?: React.ReactChild | React.ReactChild[];
   origin?: Location;
   destination?: Location;
 }
