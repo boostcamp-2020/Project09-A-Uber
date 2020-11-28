@@ -2,7 +2,8 @@
 import React, { FC } from 'react';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from 'react-cool-onclickoutside';
-import { AutoLocationWrapper } from './style';
+
+import { AutoLocationWrapper, StyledIcon } from './style';
 
 interface Props {
   setPosition: any;
@@ -14,14 +15,16 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
     suggestions: { status, data },
     setValue,
     clearSuggestions,
-    ready,
   } = usePlacesAutocomplete({
     debounce: 700,
-    callbackName: 'initMap',
   });
 
   const handleInput = (e: any) => {
     setValue(e.target.value);
+  };
+
+  const onClickCancleIcon = () => {
+    setValue('');
   };
 
   const registerRef = useOnclickOutside(() => {
@@ -59,6 +62,7 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
     <AutoLocationWrapper ref={registerRef} className="location-input">
       <span className="before-placeholder">▪</span>
       <input value={value} onChange={handleInput} placeholder="어디로 가시나요?" />
+      <StyledIcon type="cross" size="xxs" onClick={onClickCancleIcon}></StyledIcon>
       {status === 'OK' && <ul>{renderSuggestions()}</ul>}
     </AutoLocationWrapper>
   );
