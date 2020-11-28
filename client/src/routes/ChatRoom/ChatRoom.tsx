@@ -178,7 +178,7 @@ const ChatRoom: FC = () => {
       <HeaderWithBack onClick={onClickBackButton} className="green-header" />
       <StyledChatMain>
         {Chat.map((item) => (
-          <ChatLog key={item.id} {...item}></ChatLog>
+          <ChatLog key={`chat_${item.id}`} {...item}></ChatLog>
         ))}
       </StyledChatMain>
       <ChatInput></ChatInput>
