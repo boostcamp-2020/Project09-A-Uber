@@ -19,7 +19,6 @@ const Directions: FC<Props> = ({
   setIsEstimatedTime,
   directions,
 }) => {
-  // const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const count = useRef(0);
 
   const options: google.maps.DirectionsRendererOptions = {
