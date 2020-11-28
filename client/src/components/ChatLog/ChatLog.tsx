@@ -28,11 +28,9 @@ const StyledChatLog = styled.span<Type>`
 
 const ChatLog: FC<Props> = ({ content, createdAt, writer, type }) => {
   return (
-    <>
-      <StyledChatLogWrapper type={type}>
-        <StyledChatLog type={type}>{content}</StyledChatLog>
-      </StyledChatLogWrapper>
-    </>
+    <StyledChatLogWrapper type={type}>
+      <StyledChatLog type={type}>{content}</StyledChatLog>
+    </StyledChatLogWrapper>
   );
 };
 
