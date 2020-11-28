@@ -1,0 +1,18 @@
+enum OrderStatus {
+    close
+    active
+}
+
+type Order {
+  _id: String!
+  user: String!
+  driver: String
+  amount: Int
+  payment: Payment
+  startingPoint: Location!
+  destination: Location!
+  status: OrderStatus!
+  chat: [Chat]
+  startedAt: String
+  completedAt: String
+}
