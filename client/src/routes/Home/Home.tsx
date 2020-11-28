@@ -1,36 +1,23 @@
-import React, { FC, useState } from 'react';
-import { Button } from 'antd-mobile';
+import React, { FC } from 'react';
+import { useCustomQuery } from '@hooks/useApollo';
+import { useHistory } from 'react-router-dom';
 
-import AutoLocation from '@components/AutoLocation';
-import MapFrame from '@components/MapFrame';
-import { Location } from '@components/GoogleMap';
-
-import styled from '@theme/styled';
-
-const StyledButton = styled(Button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  height: 2rem;
-  margin-bottom: 0.8rem;
-  margin-top: 2rem;
-  font-weight: 700;
-  font-size: 0.9rem;
-`;
+import { GET_USER_INFO } from '@queries/user.queries';
+import { GetUserInfo } from '@/types/api';
 
 const Home: FC = () => {
-  const [origin, setOrigin] = useState<Location>();
-  const [destination, setDestination] = useState<Location>();
+  const history = useHistory();
 
-  return (
-    <>
-      <MapFrame origin={origin} destination={destination}>
-        <AutoLocation setPosition={setOrigin}></AutoLocation>
-        <AutoLocation setPosition={setDestination}></AutoLocation>
-        <StyledButton type="primary">라이더 탐색</StyledButton>
-      </MapFrame>
-    </>
-  );
+  useCustomQuery<GetUserInfo>(GET_USER_INFO, {
+    onCompleted: ({ getUserInfo }) => {
+      if (!getUserInfo.user) {
+        history.replace('/signin');
+        return;
+      }
+      history.replace(`/${getUserInfo.user.type}`);
+    },
+  });
+  return <></>;
 };
+
 export default Home;

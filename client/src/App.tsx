@@ -7,6 +7,7 @@ import { createStore } from 'redux';
 
 import SignIn from '@/routes/SignIn';
 import Home from '@routes/Home';
+import UserMain from '@routes/User/Main';
 import Signup from '@routes/Signup';
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
@@ -26,6 +27,7 @@ const App: FC = () => (
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={auth(Home)} />
+            <Route exact path="/user" component={auth(UserMain, 'user')} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={Signup} />
           </Switch>
