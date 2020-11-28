@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect, useCallback } from 'react';
 
 import { GoogleMap as GoogleMapComponent, Marker } from '@react-google-maps/api';
+import getUserLocation from '@utils/getUserLocation';
 
 import Directions from './Directions';
 
@@ -38,15 +39,10 @@ const GoogleMap: FC<Props> = ({ origin, destination }) => {
       return;
     }
 
-    const currentLocation = await new Promise<Location>((res) => {
-      window.navigator.geolocation.getCurrentPosition((position) => {
-        res({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      });
-    });
-    setCenter(currentLocation);
+    const currentLocation = await getUserLocation();
+    if (currentLocation) {
+      setCenter(currentLocation);
+    }
   }, [origin, destination]);
 
   useEffect(() => {
