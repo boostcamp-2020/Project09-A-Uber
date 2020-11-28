@@ -1,1 +1,12 @@
 directive @auth on FIELD_DEFINITION
+
+type Payment {
+  bank: String!
+  creditNumber: String!
+  expiryDate: String!
+  cvc: Int!
+}
+
+type Location {
+    coordinates: [Int]!
+}
