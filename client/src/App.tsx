@@ -29,7 +29,6 @@ const App: FC = () => (
             <Route exact path="/" component={auth(Home)} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/signup" component={Signup} />
             <Route exact path="/chatroom" component={auth(ChatRoom)} />
           </Switch>
         </BrowserRouter>
