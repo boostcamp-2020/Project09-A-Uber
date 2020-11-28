@@ -174,17 +174,15 @@ const ChatRoom: FC = () => {
   };
 
   return (
-    <>
-      <StyledChatRoom>
-        <HeaderWithBack onClick={onClickBackButton} className="green-header" />
-        <StyledChatMain>
-          {Chat.map((item) => (
-            <ChatLog key={item.id} {...item}></ChatLog>
-          ))}
-        </StyledChatMain>
-        <ChatInput></ChatInput>
-      </StyledChatRoom>
-    </>
+    <StyledChatRoom>
+      <HeaderWithBack onClick={onClickBackButton} className="green-header" />
+      <StyledChatMain>
+        {Chat.map((item) => (
+          <ChatLog key={item.id} {...item}></ChatLog>
+        ))}
+      </StyledChatMain>
+      <ChatInput></ChatInput>
+    </StyledChatRoom>
   );
 };
 
