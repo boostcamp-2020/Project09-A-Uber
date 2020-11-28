@@ -3,13 +3,6 @@ enum UserType {
     driver
 }
 
-type Payment {
-  bank: String!
-  creditNumber: String!
-  expiryDate: String!
-  cvc: Int!
-}
-
 enum CarType {
   small
   middle
@@ -25,10 +18,6 @@ type Driver {
   licenseNumber: String!
   status: String!
   car: Car!
-}
-
-type Location {
-    coordinates: [Int]!
 }
 
 type User {
