@@ -17,19 +17,19 @@ const StyledChatLogWrapper = styled.div<Type>`
   display: flex;
   justify-content: ${({ type }) => (type === 'me' ? 'flex-end' : 'flex-start')};
   padding: 0.5rem;
-`;
 
-const StyledChatLog = styled.span<Type>`
-  padding: 0.6rem 1rem;
-  background-color: ${({ theme, type }) => (type === 'me' ? theme.PRIMARY : theme.BORDER)};
-  color: ${({ theme }) => theme.LIGHT};
-  border-radius: 0.4rem;
+  & > .chat-content {
+    padding: 0.6rem 1rem;
+    background-color: ${({ theme, type }) => (type === 'me' ? theme.PRIMARY : theme.BORDER)};
+    color: ${({ theme }) => theme.LIGHT};
+    border-radius: 0.4rem;
+  }
 `;
 
 const ChatLog: FC<Props> = ({ content, createdAt, writer, type }) => {
   return (
     <StyledChatLogWrapper type={type}>
-      <StyledChatLog type={type}>{content}</StyledChatLog>
+      <span className="chat-content">{content}</span>
     </StyledChatLogWrapper>
   );
 };
