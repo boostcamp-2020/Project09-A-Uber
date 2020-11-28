@@ -22,10 +22,11 @@ export const AutoLocationWrapper = styled.div`
   & ul {
     position: absolute;
     top: 2rem;
+    width: 100%;
+    background-color: white;
     border: 1px solid ${({ theme }) => theme.BORDER};
     border-radius: 0.3rem;
     z-index: 1;
-    background-color: white;
 
     & > li {
       padding: 0.6rem;
