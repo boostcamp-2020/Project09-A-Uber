@@ -13,7 +13,6 @@ export interface Location {
 interface Props {
   origin?: Location;
   destination?: Location;
-  setIsEstimatedTime?: React.Dispatch<React.SetStateAction<boolean>>;
   setDirections?: React.Dispatch<React.SetStateAction<google.maps.DirectionsResult | undefined>>;
   directions: google.maps.DirectionsResult | undefined;
 }
@@ -23,13 +22,7 @@ const containerStyle = {
   height: '100%',
 };
 
-const GoogleMap: FC<Props> = ({
-  origin,
-  destination,
-  setDirections,
-  setIsEstimatedTime,
-  directions,
-}) => {
+const GoogleMap: FC<Props> = ({ origin, destination, setDirections, directions }) => {
   const [isInitLoad, setIsInitLoad] = useState(true);
   const [center, setCenter] = useState<Location>();
 
@@ -86,7 +79,6 @@ const GoogleMap: FC<Props> = ({
           origin={origin}
           destination={destination}
           setDirections={setDirections}
-          setIsEstimatedTime={setIsEstimatedTime}
           directions={directions}
         />
       )}

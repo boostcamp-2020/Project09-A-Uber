@@ -9,7 +9,6 @@ interface Props {
   children?: React.ReactChild | React.ReactChild[];
   origin?: Location;
   destination?: Location;
-  setIsEstimatedTime?: React.Dispatch<React.SetStateAction<boolean>>;
   setDirections?: React.Dispatch<React.SetStateAction<google.maps.DirectionsResult | undefined>>;
   directions?: google.maps.DirectionsResult | undefined;
 }
@@ -39,14 +38,7 @@ const loader = new Loader({
   libraries: ['places'],
 });
 
-const MapFrame: FC<Props> = ({
-  children,
-  origin,
-  destination,
-  setDirections,
-  setIsEstimatedTime,
-  directions,
-}) => {
+const MapFrame: FC<Props> = ({ children, origin, destination, setDirections, directions }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const initialScriptLoad = async () => {
@@ -68,7 +60,6 @@ const MapFrame: FC<Props> = ({
               origin={origin}
               destination={destination}
               setDirections={setDirections}
-              setIsEstimatedTime={setIsEstimatedTime}
               directions={directions}
             />
           </section>
