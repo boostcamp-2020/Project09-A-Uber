@@ -18,8 +18,8 @@ import { RequestToken } from '@/types/api';
 
 const SUCCESS = 'success';
 
-interface QueryWrapper extends QueryResult<any, Record<string, any>> {
-  callQuery: (variables?: any) => Promise<ApolloQueryResult<any> | undefined>;
+interface QueryWrapper<T> extends QueryResult<T, Record<string, any>> {
+  callQuery: (variables?: any) => Promise<ApolloQueryResult<T> | undefined>;
 }
 
 const errorHandler = async (
@@ -38,10 +38,10 @@ const errorHandler = async (
   return undefined;
 };
 
-export const useCustomQuery = <T = any>(
+export const useCustomQuery = <T>(
   query: DocumentNode,
   options?: QueryHookOptions<T>,
-): QueryWrapper => {
+): QueryWrapper<T> => {
   const apolloClient = useApolloClient();
   const queryResult = useQuery<T>(query, {
     ...options,
