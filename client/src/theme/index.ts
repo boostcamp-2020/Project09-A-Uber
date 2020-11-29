@@ -3,6 +3,7 @@ export const theme = {
   BORDER: '#bfbfbf',
   FONT: '#2c2c2c',
   LIGHT: '#fff',
+  LIGHT_GRAY: '#eaeaea',
 };
 
 export type Theme = typeof theme;
