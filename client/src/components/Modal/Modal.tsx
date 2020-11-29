@@ -2,11 +2,12 @@ import React, { FC } from 'react';
 
 import { Icon } from 'antd-mobile';
 import styled from '@theme/styled';
+import Portal from '@utils/portal';
 
 interface Props {
   className?: string;
   visible?: boolean;
-  onClose?: any;
+  onClose?: () => void | undefined;
 }
 
 const ModalOverlay = styled.div<Props>`
@@ -56,7 +57,9 @@ const ModalInner = styled.div`
 
 const Modal: FC<Props> = ({ visible, className, children, onClose }) => {
   const onMaskClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
   };
 
   const close = () => {
@@ -64,7 +67,7 @@ const Modal: FC<Props> = ({ visible, className, children, onClose }) => {
   };
 
   return (
-    <>
+    <Portal elementId="modal-root">
       <ModalOverlay visible={visible}></ModalOverlay>
       <ModalWrapper className={className} tabIndex={-1} visible={visible} onClick={onMaskClick}>
         <ModalInner tabIndex={0} className="model-inner">
@@ -72,7 +75,7 @@ const Modal: FC<Props> = ({ visible, className, children, onClose }) => {
           {children}
         </ModalInner>
       </ModalWrapper>
-    </>
+    </Portal>
   );
 };
 
