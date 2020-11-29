@@ -10,17 +10,17 @@ const resolvers: Resolvers = {
     updateLocation: async (_, { curLocation }, { req, pubsub }) => {
       const { result, error } = await updateLocation({ userId: req.user?._id, curLocation });
 
-      if (req.user?.type === loginType.user) {
-        const order = await Order.findOne({ user: req.user._id, status: 'waiting' });
+      if (req.user?.type === loginType.driver) {
+        const order = await Order.findOne({ user: req.user?._id, status: 'waiting' });
         if (order) {
-          pubsub.publish('DIRVER_UPADTE', {
+          pubsub.publish(DIRVER_UPADTE, {
             subLocation: { ...curLocation, orderId: order._id },
           });
         }
       }
 
       if (result === 'fail') {
-        return { result, error: 'no' };
+        return { result, error };
       }
 
       return { result };
