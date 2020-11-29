@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import AutoLocation from '@components/AutoLocation';
 import MapFrame from '@components/MapFrame';
+import EstimatedTime from '@components/EstimatedTime';
 import { Location } from '@components/GoogleMap';
 import { useCustomMutation } from '@hooks/useApollo';
 import { CREATE_ORDER } from '@queries/order.queries';
@@ -42,6 +43,7 @@ const Main: FC = () => {
   });
   const [origin, setOrigin] = useState<Location>();
   const [destination, setDestination] = useState<Location>();
+  const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
 
   const onClickSearchDriver = useCallback(() => {
     if (!origin || !destination) {
@@ -61,12 +63,16 @@ const Main: FC = () => {
   }, [origin, destination]);
 
   return (
-    <MapFrame origin={origin} destination={destination}>
-      <AutoLocation setPosition={setOrigin}></AutoLocation>
-      <AutoLocation setPosition={setDestination}></AutoLocation>
-      <StyledButton type="primary" onClick={onClickSearchDriver}>
-        라이더 탐색
-      </StyledButton>
+    <MapFrame
+      origin={origin}
+      destination={destination}
+      setDirections={setDirections}
+      directions={directions}
+    >
+      <AutoLocation setPosition={setOrigin} />
+      <AutoLocation setPosition={setDestination} />
+      <EstimatedTime directions={directions} origin={origin} destination={destination} />
+      <StyledButton type="primary">라이더 탐색</StyledButton>
     </MapFrame>
   );
 };
