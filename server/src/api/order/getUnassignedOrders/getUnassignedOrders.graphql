@@ -1,0 +1,9 @@
+type GetUnassignedOrders {
+    result: String!
+    unassignedOrders: [Order!]
+    error: String
+}
+
+type Query {
+    getUnassignedOrders: GetUnassignedOrders! @auth
+}
