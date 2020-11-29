@@ -1,9 +1,0 @@
-type UpdateUserLocationResponse {
-    result: String!
-    error: String!
-}
-
-type Mutation {
-    updateUserLocation(lat: Float!, lng: Float!): UpdateUserLocationResponse! @auth
-}
-
