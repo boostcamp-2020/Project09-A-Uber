@@ -28,8 +28,7 @@ const StyledDriverForm = styled.div`
   display: flex;
   flex-direction: column;
 
-  & input,
-  select {
+  & > div {
     margin-bottom: 1.2rem;
   }
 
@@ -96,17 +95,19 @@ const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
       />
       <Input
         title="차량번호"
-        placeholder="차량번호를 입력해주세요. 예시) 07나 1247"
+        placeholder="차량번호를 입력해주세요."
         value={carNumber}
         onChange={onChangeCarNumber}
         allow={isCarNumValid}
+        inValidMessage={Message.CarNumberGuidance}
       />
       <Input
         title="운전면허 번호"
-        placeholder="운전면허 번호 입력해주세요. 12-12-123456-12"
+        placeholder="운전면허 번호 입력해주세요."
         value={license}
         onChange={onChangeLicense}
         allow={isLicenseValid}
+        inValidMessage={Message.LicenseGuidance}
       />
       <Button
         type="primary"

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Button } from 'antd-mobile';
 
+import { Message } from '@utils/client-message';
 import styled from '@theme/styled';
 import Input from '@components/Input';
 import ProfileUplodaer from '@components/ProfileUploader';
@@ -69,6 +70,7 @@ const CommonSignup: FC<Props> = ({
       title="이름"
       placeholder="이름을 입력해 주세요."
       allow={isName}
+      inValidMessage={Message.NameGuidance}
     />
     <Input
       value={email}
@@ -84,6 +86,7 @@ const CommonSignup: FC<Props> = ({
       placeholder="비밀번호를 입력해 주세요."
       type="password"
       allow={isPassword}
+      inValidMessage={Message.PasswordGuidance}
     />
     <Input
       value={passwordRe}
@@ -99,6 +102,7 @@ const CommonSignup: FC<Props> = ({
       title="핸드폰 번호"
       placeholder="핸드폰 번호를 입력해 주세요."
       allow={isPhone}
+      inValidMessage={Message.PhoneGuidance}
     />
 
     <Button
