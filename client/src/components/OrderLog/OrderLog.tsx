@@ -38,8 +38,8 @@ const StyledOrderLog = styled.div`
 const OrderLog: FC<Props> = ({ order, onClick }) => (
   <StyledOrderLog onClick={onClick}>
     <span className="order-dot" />
-    <span className="order-address">{`출발지: ${order.startingPoint}`}</span>
-    <span className="order-address">{`목적지: ${order.destination}`}</span>
+    <span className="order-address">{`출발지: ${order.startingPoint.address}`}</span>
+    <span className="order-address">{`목적지: ${order.destination.address}`}</span>
   </StyledOrderLog>
 );
 

@@ -53,9 +53,11 @@ const Main: FC = () => {
     createOrderMutation({
       variables: {
         startingPoint: {
+          address: origin.address || '',
           coordinates: [origin.lat, origin.lng],
         },
         destination: {
+          address: destination.address || '',
           coordinates: [destination.lat, destination.lng],
         },
       },
@@ -72,7 +74,9 @@ const Main: FC = () => {
       <AutoLocation setPosition={setOrigin} />
       <AutoLocation setPosition={setDestination} />
       <EstimatedTime directions={directions} origin={origin} destination={destination} />
-      <StyledButton type="primary">라이더 탐색</StyledButton>
+      <StyledButton type="primary" onClick={onClickSearchDriver}>
+        라이더 탐색
+      </StyledButton>
     </MapFrame>
   );
 };
