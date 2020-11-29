@@ -17,9 +17,11 @@ export const GET_UNASSIGNED_ORDERS = gql`
       unassignedOrders {
         _id
         startingPoint {
+          address
           coordinates
         }
         destination {
+          address
           coordinates
         }
       }
