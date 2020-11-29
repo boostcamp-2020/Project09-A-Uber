@@ -3,10 +3,6 @@ type UpdateLocationResponse {
     error: String
 }
 
-input LocationInfo {
-  coordinates: [Float!]!
-}
-
 type Mutation {
     updateLocation(curLocation: LocationInfo!): UpdateLocationResponse!  @auth
 }

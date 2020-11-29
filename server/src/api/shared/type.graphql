@@ -8,9 +8,11 @@ type Payment {
 }
 
 type Location {
-    coordinates: [Float]!
+  address: String!
+  coordinates: [Float!]!
 }
 
 input LocationInfo {
+  address: String!
   coordinates: [Float!]!
 }
