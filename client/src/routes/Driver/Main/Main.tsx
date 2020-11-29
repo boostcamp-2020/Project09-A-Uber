@@ -15,6 +15,16 @@ const StyledOrderLogList = styled.section`
   & > div {
     margin-bottom: 0.5rem;
   }
+
+  & > h1 {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: ${({ theme }) => theme.BORDER};
+  }
 `;
 
 const Main: FC = () => {
@@ -24,8 +34,10 @@ const Main: FC = () => {
     <MapFrame>
       <StyledOrderLogList>
         {orders?.getUnassignedOrders.unassignedOrders?.map((order) => (
-          <OrderLog order={order} key={`order_list_${order._id}`} />
-        ))}
+          <>
+            <OrderLog order={order} key={`order_list_${order._id}`} />
+          </>
+        )) || <h1>현재 요청이 없습니다</h1>}
       </StyledOrderLogList>
     </MapFrame>
   );
