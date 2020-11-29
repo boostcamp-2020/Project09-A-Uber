@@ -3,6 +3,8 @@ export const theme = {
   BORDER: '#bfbfbf',
   FONT: '#2c2c2c',
   LIGHT: '#fff',
+  MODAL_BACKGROUND: 'rgba(90,153,115,0.75)',
+  MODAL_OVERLAY: 'rgba(0,0,0,0.3)',
 };
 
 export type Theme = typeof theme;
