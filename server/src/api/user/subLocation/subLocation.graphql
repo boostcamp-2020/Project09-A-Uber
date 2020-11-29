@@ -1,0 +1,8 @@
+type LocationWithOrderId {
+     coordinates: [Float]!
+     orderId: String!
+}
+
+type Subscription {
+    subLocation(orderId: String!): LocationWithOrderId!
+}
