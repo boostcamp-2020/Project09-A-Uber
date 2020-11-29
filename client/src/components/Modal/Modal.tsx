@@ -68,7 +68,7 @@ const Modal: FC<Props> = ({ visible, className, children, onClose }) => {
 
   return (
     <Portal elementId="modal-root">
-      <ModalOverlay visible={visible}></ModalOverlay>
+      <ModalOverlay visible={visible} />
       <ModalWrapper className={className} tabIndex={-1} visible={visible} onClick={onMaskClick}>
         <ModalInner tabIndex={0} className="model-inner">
           <Icon type="cross" className="close-button" onClick={close} />
