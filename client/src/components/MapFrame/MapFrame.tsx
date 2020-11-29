@@ -9,6 +9,8 @@ interface Props {
   children?: React.ReactChild | React.ReactChild[];
   origin?: Location;
   destination?: Location;
+  setDirections?: React.Dispatch<React.SetStateAction<google.maps.DirectionsResult | undefined>>;
+  directions?: google.maps.DirectionsResult | undefined;
 }
 
 const StyledMapFrame = styled.div`
@@ -36,7 +38,7 @@ const loader = new Loader({
   libraries: ['places'],
 });
 
-const MapFrame: FC<Props> = ({ children, origin, destination }) => {
+const MapFrame: FC<Props> = ({ children, origin, destination, setDirections, directions }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const initialScriptLoad = async () => {
@@ -54,7 +56,12 @@ const MapFrame: FC<Props> = ({ children, origin, destination }) => {
         <StyledMapFrame>
           <HeaderWithMenu className="green-header" />
           <section className="map-section">
-            <GoogleMap origin={origin} destination={destination} />
+            <GoogleMap
+              origin={origin}
+              destination={destination}
+              setDirections={setDirections}
+              directions={directions}
+            />
           </section>
           <section className="control-section">{children}</section>
         </StyledMapFrame>
