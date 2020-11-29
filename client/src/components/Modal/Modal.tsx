@@ -55,7 +55,7 @@ const ModalInner = styled.div`
   }
 `;
 
-const Modal: FC<Props> = ({ visible, className, children, onClose }) => {
+const Modal: FC<Props> = ({ visible = false, className, children, onClose }) => {
   const onMaskClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget && onClose) {
       onClose();
