@@ -9,3 +9,21 @@ export const CREATE_ORDER = gql`
     }
   }
 `;
+
+export const GET_UNASSIGNED_ORDERS = gql`
+  query GetUnassignedOrders {
+    getUnassignedOrders {
+      result
+      unassignedOrders {
+        _id
+        startingPoint {
+          coordinates
+        }
+        destination {
+          coordinates
+        }
+      }
+      error
+    }
+  }
+`;
