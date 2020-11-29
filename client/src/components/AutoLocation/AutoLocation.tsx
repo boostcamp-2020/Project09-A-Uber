@@ -2,7 +2,8 @@
 import React, { FC } from 'react';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from 'react-cool-onclickoutside';
-import { AutoLocationWrapper } from './style';
+
+import { AutoLocationWrapper, StyledIcon } from './style';
 
 interface Props {
   setPosition: any;
@@ -14,14 +15,17 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
     suggestions: { status, data },
     setValue,
     clearSuggestions,
-    ready,
   } = usePlacesAutocomplete({
     debounce: 700,
-    callbackName: 'initMap',
   });
 
-  const handleInput = (e: any) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+  };
+
+  const onClickCancleIcon = () => {
+    setValue('');
+    setPosition();
   };
 
   const registerRef = useOnclickOutside(() => {
@@ -35,7 +39,7 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
     getGeocode({ address: description })
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        setPosition({ lat, lng });
+        setPosition({ lat, lng, address: description });
       })
       .catch((error) => {
         console.log('Error: ', error);
@@ -50,7 +54,7 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
       } = suggestion;
 
       return (
-        <li key={id} onClick={handleSelect(suggestion)}>
+        <li key={`AutoLocation_${suggestion.place_id}`} onClick={handleSelect(suggestion)}>
           <strong>{main_text}</strong> <small>{secondary_text}</small>
         </li>
       );
@@ -59,6 +63,7 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
     <AutoLocationWrapper ref={registerRef} className="location-input">
       <span className="before-placeholder">▪</span>
       <input value={value} onChange={handleInput} placeholder="어디로 가시나요?" />
+      <StyledIcon type="cross" size="xxs" onClick={onClickCancleIcon}></StyledIcon>
       {status === 'OK' && <ul>{renderSuggestions()}</ul>}
     </AutoLocationWrapper>
   );

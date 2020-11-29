@@ -12,7 +12,7 @@ const orderSchema = new Schema({
   payment: { type: paymentSchema, required: false },
   startingPoint: { type: locationSchema, required: true },
   destination: { type: locationSchema, required: true },
-  status: { type: String, enum: ['close', 'active'], required: true },
+  status: { type: String, enum: ['close', 'active', 'waiting'], required: true },
   chat: [chatSchema],
   startedAt: Schema.Types.Date,
   completedAt: Schema.Types.Date,
