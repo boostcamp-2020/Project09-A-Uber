@@ -2,7 +2,6 @@ import { Request } from 'express';
 
 interface User {
   _id: string;
-  name: string;
   type: string;
 }
 
