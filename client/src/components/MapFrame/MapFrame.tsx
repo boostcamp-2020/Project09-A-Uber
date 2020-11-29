@@ -19,14 +19,13 @@ const StyledMapFrame = styled.div`
   height: 100%;
 
   & > .map-section {
-    flex: 15 0 0;
     position: relative;
-    height: 100%;
+    height: 75%;
   }
 
   & > .control-section {
-    flex: 5 0 0;
     padding: 1.5rem;
+    height: 25%;
   }
 `;
 
