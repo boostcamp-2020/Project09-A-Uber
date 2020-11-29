@@ -9,7 +9,7 @@ const getUnassinedOrders = async (driverId: string) => {
   try {
     const driver = await User.findById(driverId, 'location');
     const centerPoint = driver?.get('location.coordinates') || [0, 0];
-    const unassignedOrders = ((await await await Order.find({
+    const unassignedOrders = ((await Order.find({
       status: 'waiting',
     })
       .where('startingPoint.coordinates')
