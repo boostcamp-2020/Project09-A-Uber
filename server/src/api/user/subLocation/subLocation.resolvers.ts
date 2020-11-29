@@ -1,6 +1,6 @@
 import { Resolvers } from '@type/api';
 import { withFilter } from 'apollo-server-express';
-import { DIRVER_UPADTE } from '@api/user/updateUserLocation/updateLocation.resolvers';
+import { DIRVER_UPADTE } from '@api/user/updateLocation/updateLocation.resolvers';
 
 const resolvers: Resolvers = {
   Subscription: {
