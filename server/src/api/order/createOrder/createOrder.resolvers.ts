@@ -7,7 +7,7 @@ const resolvers: Resolvers = {
       const { result, orderId, error } = await createOrder({
         startingPoint,
         destination,
-        user: req.user || '',
+        user: req.user?.id || '',
       });
 
       if (result === 'fail' || error) {
