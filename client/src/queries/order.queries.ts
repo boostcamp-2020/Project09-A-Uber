@@ -29,3 +29,20 @@ export const GET_UNASSIGNED_ORDERS = gql`
     }
   }
 `;
+
+export const APPROVAL_ORDER = gql`
+  mutation ApprovalOrder($orderId: String!) {
+    approvalOrder(orderId: $orderId) {
+      result
+      error
+    }
+  }
+`;
+
+export const SUB_APPROVAL_ORDER = gql`
+  subscription SubApprovalOrder($orderId: String, $isDriver: Boolean) {
+    subApprovalOrder(orderId: $orderId, isDriver: $isDriver) {
+      approvalOrderId
+    }
+  }
+`;

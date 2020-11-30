@@ -57,7 +57,7 @@ const Main: FC = () => {
         </StyledOrderLogList>
       </MapFrame>
       <Modal visible={isModal} onClose={closeModal}>
-        {orderItem && <OrderModalItem order={orderItem} />}
+        {orderItem && <OrderModalItem order={orderItem} closeModal={closeModal} />}
       </Modal>
     </>
   );
