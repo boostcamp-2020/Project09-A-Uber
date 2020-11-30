@@ -7,7 +7,7 @@ export const APPROVAL_ORDER = 'APPROVAL_ORDER';
 const resolvers: Resolvers = {
   Mutation: {
     approvalOrder: async (_, { orderId }, { req, pubsub }) => {
-      const { result, error, unassignedOrders } = await approvalOrder(req.user?._id || '', orderId);
+      const { result, error } = await approvalOrder(req.user?._id || '', orderId);
 
       if (result === 'fail' || error) {
         return { result, error };
@@ -15,7 +15,7 @@ const resolvers: Resolvers = {
 
       pubsub.publish(APPROVAL_ORDER, { subApprovalOrder: { approvalOrderId: orderId } });
       pubsub.publish(UPDATE_ORDER_LIST, {
-        updateOrderList: { unassignedOrders, result: 'success' },
+        updateOrderList: { result: 'success' },
       });
 
       return { result };
