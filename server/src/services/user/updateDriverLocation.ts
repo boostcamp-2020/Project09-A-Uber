@@ -1,5 +1,6 @@
 import User, { LoginType, loginType } from '@models/user';
 import { Location } from '@models/location';
+import Order from '@models/order';
 import { Message } from '@util/server-message';
 
 interface UpdateLocationProps {
@@ -16,10 +17,13 @@ const updateDriverLocation = async ({ userId, userType, curLocation }: UpdateLoc
     await User.updateOne(
       { _id: userId },
       {
-        location: curLocation,
+        location: { coordinates: curLocation.coordinates },
       },
     );
-    return { result: 'success' };
+
+    const order = await Order.findOne({ driver: userId, status: 'activate' });
+
+    return { result: 'success', orderId: order?._id };
   } catch (err) {
     return { result: 'fail', error: err.message };
   }
