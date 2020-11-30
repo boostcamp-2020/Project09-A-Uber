@@ -1,13 +1,13 @@
 /* eslint-disable eqeqeq */
 import { Resolvers } from '@type/api';
 import { withFilter } from 'apollo-server-express';
-import { DIRVER_UPADTE } from '@api/user/updateDriverLocation/updateDriverLocation.resolvers';
+import { UPDATE_DRIVER_LOCATION } from '@api/user/updateDriverLocation/updateDriverLocation.resolvers';
 
 const resolvers: Resolvers = {
   Subscription: {
     subLocation: {
       subscribe: withFilter(
-        (_, __, { pubsub }) => pubsub.asyncIterator(DIRVER_UPADTE),
+        (_, __, { pubsub }) => pubsub.asyncIterator(UPDATE_DRIVER_LOCATION),
         (payload, variables) => {
           return payload.subLocation.orderId == variables.orderId;
         },

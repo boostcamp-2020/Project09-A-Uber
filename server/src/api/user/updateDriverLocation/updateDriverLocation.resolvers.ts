@@ -1,9 +1,8 @@
 import { Resolvers } from '@type/api';
 import updateDriverLocation from '@services/user/updateDriverLocation';
-import { loginType } from '@models/user';
 import Order from '@models/order';
 
-export const DIRVER_UPADTE = 'DIRVER_UPADTE';
+export const UPDATE_DRIVER_LOCATION = 'UPDATE_DRIVER_LOCATION';
 
 const resolvers: Resolvers = {
   Mutation: {
@@ -15,7 +14,7 @@ const resolvers: Resolvers = {
       });
       const order = await Order.findOne({ user: req.user?._id, status: 'waiting' });
       if (order) {
-        pubsub.publish(DIRVER_UPADTE, {
+        pubsub.publish(UPDATE_DRIVER_LOCATION, {
           subLocation: { ...curLocation, orderId: order._id },
         });
       }
