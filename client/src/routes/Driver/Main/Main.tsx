@@ -53,7 +53,7 @@ const Main: FC = () => {
               key={`order_list_${order._id}`}
               onClick={() => onClickOrder(order)}
             />
-          )) || <h1>현재 요청이 없습니다</h1>}
+          )).length || <h1>현재 요청이 없습니다</h1>}
         </StyledOrderLogList>
       </MapFrame>
       <Modal visible={isModal} onClose={closeModal}>
