@@ -39,7 +39,7 @@ const AutoLocation: FC<Props> = ({ setPosition }) => {
     getGeocode({ address: description })
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        setPosition({ lat, lng });
+        setPosition({ lat, lng, address: description });
       })
       .catch((error) => {
         console.log('Error: ', error);
