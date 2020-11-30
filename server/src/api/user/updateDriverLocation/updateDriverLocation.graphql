@@ -4,6 +4,6 @@ type UpdateLocationResponse {
 }
 
 type Mutation {
-    updateLocation(curLocation: LocationInfo!): UpdateLocationResponse! @auth
+    updateDriverLocation(curLocation: LocationInfo!): UpdateLocationResponse! @auth
 }
 

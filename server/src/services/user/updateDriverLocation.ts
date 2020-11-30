@@ -6,7 +6,7 @@ interface UpdateLocationProps {
   curLocation: Location;
 }
 
-const updateCurLocation = async ({ userId, curLocation }: UpdateLocationProps) => {
+const updateDriverLocation = async ({ userId, curLocation }: UpdateLocationProps) => {
   try {
     await User.updateOne(
       { _id: userId },
@@ -20,4 +20,4 @@ const updateCurLocation = async ({ userId, curLocation }: UpdateLocationProps) =
   }
 };
 
-export default updateCurLocation;
+export default updateDriverLocation;
