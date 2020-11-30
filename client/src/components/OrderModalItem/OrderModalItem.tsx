@@ -1,12 +1,18 @@
+/* eslint-disable no-underscore-dangle */
 import React, { FC } from 'react';
+import { Button } from 'antd-mobile';
 
 import styled from '@theme/styled';
-import { Button } from 'antd-mobile';
-import { GetUnassignedOrders_getUnassignedOrders_unassignedOrders as UnassignedOrder } from '@/types/api';
+import { useCustomMutation } from '@hooks/useApollo';
+import { APPROVAL_ORDER } from '@queries/order.queries';
+import {
+  ApprovalOrder,
+  GetUnassignedOrders_getUnassignedOrders_unassignedOrders as UnassignedOrder,
+} from '@/types/api';
 
 interface Props {
   order: UnassignedOrder;
-  onClick?: () => void;
+  closeModal: () => void;
 }
 
 const StyledOrderItem = styled.div`
@@ -39,7 +45,19 @@ const StyledOrderItem = styled.div`
   }
 `;
 
-const OrderModalItem: FC<Props> = ({ order, onClick }) => {
+const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
+  const [approvalOrder] = useCustomMutation<ApprovalOrder>(APPROVAL_ORDER, {
+    onCompleted: ({ approvalOrder: approvalResult }) => {
+      if (approvalResult.result === 'success') {
+        closeModal();
+      }
+    },
+  });
+
+  const onClickApprovalOrder = () => {
+    approvalOrder({ variables: { orderId: order._id } });
+  };
+
   return (
     <StyledOrderItem>
       <div>요청</div>
@@ -48,7 +66,7 @@ const OrderModalItem: FC<Props> = ({ order, onClick }) => {
         <span className="destination">{`목적지: ${order.destination.address}`}</span>
       </div>
       <div>해당 운행을 수락하시겠습니까?</div>
-      <Button type="primary" onClick={onClick}>
+      <Button type="primary" onClick={onClickApprovalOrder}>
         수락
       </Button>
     </StyledOrderItem>

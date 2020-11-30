@@ -1,8 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { Button, ActivityIndicator } from 'antd-mobile';
+import { useSelector } from 'react-redux';
+import { useSubscription } from '@apollo/react-hooks';
+import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
 import Header from '@components/HeaderWithMenu';
+import Modal from '@components/Modal';
+import { InitialState } from '@reducers/.';
+import { SUB_APPROVAL_ORDER } from '@queries/order.queries';
+import { SubApprovalOrder } from '@/types/api';
+import useModal from '@hooks/useModal';
 
 const StyledSearchDriver = styled.div`
   margin-bottom: 0.8rem;
@@ -47,17 +55,42 @@ const StyledSearchDriver = styled.div`
   }
 `;
 
-const SearchDriver: FC = () => (
-  <StyledSearchDriver>
-    <Header className="green-header" />
-    <section>
-      <div className="loading-center">
-        주변에 운행이 가능한 드라이버를 탐색중입니다
-        <ActivityIndicator size="large" />
-      </div>
-      <Button type="warning">탐색 취소</Button>
-    </section>
-  </StyledSearchDriver>
-);
+const SearchDriver: FC = () => {
+  const history = useHistory();
+  const [isModal, onOpenModal, onCloseModal] = useModal();
+  const { orderId } = useSelector((state: InitialState) => state);
+  const { data: approvalOrder } = useSubscription<SubApprovalOrder>(SUB_APPROVAL_ORDER, {
+    variables: { orderId },
+  });
+
+  const onClickModalCloseHandler = useCallback(() => {
+    onCloseModal();
+    history.push('/user/waiting');
+  }, []);
+
+  useEffect(() => {
+    if (orderId && approvalOrder && orderId === approvalOrder?.subApprovalOrder.approvalOrderId) {
+      onOpenModal();
+    }
+  }, [orderId, approvalOrder]);
+
+  return (
+    <>
+      <StyledSearchDriver>
+        <Header className="green-header" />
+        <section>
+          <div className="loading-center">
+            주변에 운행이 가능한 드라이버를 탐색중입니다
+            <ActivityIndicator size="large" />
+          </div>
+          <Button type="warning">탐색 취소</Button>
+        </section>
+      </StyledSearchDriver>
+      <Modal visible={isModal} onClose={onClickModalCloseHandler}>
+        오더가 매칭되었습니다.
+      </Modal>
+    </>
+  );
+};
 
 export default SearchDriver;
