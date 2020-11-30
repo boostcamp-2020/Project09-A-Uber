@@ -9,8 +9,7 @@ interface GetOrderProps {
 
 const getOrder = async ({ orderId, driverId }: GetOrderProps) => {
   try {
-    // const order = (await Order.findOne({ _id: orderId, user: userId })) as OrderType | null;
-    const order = (await Order.findOne({ _id: orderId })) as OrderType | null;
+    const order = (await Order.findOne({ _id: orderId, driver: driverId })) as OrderType | null;
 
     if (!order) {
       return { result: 'fail', order: null, error: Message.OrderNotFound };
