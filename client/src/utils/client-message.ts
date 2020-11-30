@@ -8,4 +8,5 @@ export const Message = {
   LicenseGuidance: '입력이 올바르지 않습니다. 예시: 12-12-123456-12',
   CarNumberGuidance: '입력이 올바르지 않습니다. 예시: 12가 1234',
   ExpiryDateGuidance: '예시: MM/YY',
+  DriverAjacent: '차량이 곧 도착합니다.',
 };
