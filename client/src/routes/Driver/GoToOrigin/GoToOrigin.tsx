@@ -4,9 +4,10 @@ import styled from '@theme/styled';
 
 import MapFrame from '@components/MapFrame';
 import { GET_ORDER } from '@queries/order.queries';
-import { GetOrderInfo } from '@/types/api';
+import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
+import { GetOrderInfo, UpdateDriverLocation } from '@/types/api';
 import { Location } from '@components/GoogleMap/GoogleMap';
-import { useCustomQuery } from '@hooks/useApollo';
+import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 
 const StyledDriverGoToOriginMenu = styled.section`
   height: 100%;
@@ -40,6 +41,9 @@ const GoToOrigin = () => {
   const { data } = useCustomQuery<GetOrderInfo>(GET_ORDER, {
     variables: { orderId: '5fc45539e439ea40e869bf47' },
   });
+  const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
+    UPDATE_DRIVER_LOCATION,
+  );
 
   const order = data?.getOrderInfo.order;
 
@@ -49,7 +53,11 @@ const GoToOrigin = () => {
         res({ lat: position.coords.latitude, lng: position.coords.longitude });
       });
     });
+
     setCurrentLocation(currLocation);
+    updateDriverLocationMutation({
+      variables: { lat: currLocation.lat, lng: currLocation.lng },
+    });
   };
 
   useEffect(() => {
