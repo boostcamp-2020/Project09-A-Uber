@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import { Resolvers } from '@type/api';
 import { withFilter } from 'apollo-server-express';
-import { DIRVER_UPADTE } from '@api/user/updateLocation/updateLocation.resolvers';
+import { DIRVER_UPADTE } from '@api/user/updateDriverLocation/updateDriverLocation.resolvers';
 
 const resolvers: Resolvers = {
   Subscription: {
