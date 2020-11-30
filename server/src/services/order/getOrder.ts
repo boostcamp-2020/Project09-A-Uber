@@ -1,15 +1,31 @@
 import { Order as OrderType } from '@type/api';
 import Order from '@models/order';
 import { Message } from '@util/server-message';
+import { loginType, LoginType } from '@models/user';
 
 interface GetOrderProps {
   orderId: string;
-  driverId: string;
+  userId: string;
+  userType?: LoginType;
 }
 
-const getOrder = async ({ orderId, driverId }: GetOrderProps) => {
+interface Query {
+  _id: string;
+  user?: string;
+  driver?: string;
+  status: string;
+}
+
+const getOrder = async ({ orderId, userId, userType }: GetOrderProps) => {
   try {
-    const order = (await Order.findOne({ _id: orderId, driver: driverId })) as OrderType | null;
+    let query: Query = {
+      _id: orderId,
+      status: 'active',
+    };
+    if (userType === loginType.user) query = { ...query, user: userId };
+    if (userType === loginType.driver) query = { ...query, driver: userId };
+
+    const order = (await Order.findOne(query)) as OrderType | null;
 
     if (!order) {
       return { result: 'fail', order: null, error: Message.OrderNotFound };
