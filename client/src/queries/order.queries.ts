@@ -46,3 +46,16 @@ export const SUB_APPROVAL_ORDER = gql`
     }
   }
 `;
+
+export const GET_ORDER_CAR_INFO = gql`
+  query GetOrderCarInfo($orderId: String!) {
+    getOrderCarInfo(orderId: $orderId) {
+      result
+      error
+      carInfo {
+        carNumber
+        carType
+      }
+    }
+  }
+`;
