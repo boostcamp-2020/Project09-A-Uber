@@ -21,7 +21,9 @@ const StyledOrderItem = styled.div`
   & .origin,
   & .destination {
     display: block;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
