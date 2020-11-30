@@ -1,0 +1,9 @@
+type GetOrder {
+  result: String!
+  order: Order
+  error: String
+}
+
+type Query {
+  getOrderInfo(orderId: String!): GetOrder! @auth
+}
