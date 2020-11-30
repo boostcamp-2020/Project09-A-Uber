@@ -9,4 +9,5 @@ export const Message = {
   CarNumberGuidance: '입력이 올바르지 않습니다. 예시: 12가 1234',
   ExpiryDateGuidance: '예시: MM/YY',
   DriverAjacent: '차량이 곧 도착합니다.',
+  DriverMatchingCompolete: '차량이 매칭되었습니다',
 };
