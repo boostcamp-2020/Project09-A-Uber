@@ -4,4 +4,5 @@ export const Message = {
   InvalidToken: '토큰이 유효하지 않습니다.',
   SucceedLogin: '로그인에 성공하였습니다.',
   NotSignedUpUser: '해당 아이디가 존재하지 않습니다.',
+  NotDriverUser: '드라이버만 요청이 가능합니다.',
 };
