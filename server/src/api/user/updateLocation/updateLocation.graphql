@@ -1,0 +1,9 @@
+type UpdateLocationResponse {
+    result: String!
+    error: String
+}
+
+type Mutation {
+    updateLocation(curLocation: LocationInfo!): UpdateLocationResponse!  @auth
+}
+
