@@ -50,18 +50,6 @@ export const SUB_APPROVAL_ORDER = gql`
 export const UPDATE_ORDER_LIST = gql`
   subscription UpdateOrderList {
     updateOrderList {
-      error
-      unassignedOrders {
-        _id
-        startingPoint {
-          address
-          coordinates
-        }
-        destination {
-          address
-          coordinates
-        }
-      }
       result
     }
   }
