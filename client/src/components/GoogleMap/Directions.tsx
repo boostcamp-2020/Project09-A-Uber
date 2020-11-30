@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { FC, useRef, useEffect } from 'react';
 
 import { DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
@@ -7,10 +7,11 @@ import { Location } from './GoogleMap';
 interface Props {
   origin: Location;
   destination: Location;
+  setDirections?: React.Dispatch<React.SetStateAction<google.maps.DirectionsResult | undefined>>;
+  directions?: google.maps.DirectionsResult | undefined;
 }
 
-const Directions: FC<Props> = ({ origin, destination }) => {
-  const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
+const Directions: FC<Props> = ({ origin, destination, setDirections, directions }) => {
   const count = useRef(0);
 
   const options: google.maps.DirectionsRendererOptions = {
@@ -31,7 +32,7 @@ const Directions: FC<Props> = ({ origin, destination }) => {
   ): void => {
     if (status === 'OK' && count.current === 0) {
       count.current += 1;
-      setDirections(result);
+      setDirections!(result);
     }
   };
 
