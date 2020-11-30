@@ -1,4 +1,5 @@
-import { OrderActions, ADD_ORDER_ID } from './order';
+import { CarInfo } from '@/types/api';
+import { OrderActions, ADD_ORDER_ID, ADD_CAR_INFO } from './order';
 
 interface Driver {
   licenseNumber: string;
@@ -13,6 +14,7 @@ export interface InitialState {
   };
   order?: {
     id?: string;
+    carInfo?: CarInfo;
   };
 }
 
@@ -24,6 +26,8 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
   switch (action.type) {
     case ADD_ORDER_ID:
       return { ...state, order: { ...state.order, id: action.orderId } };
+    case ADD_CAR_INFO:
+      return { ...state, order: { ...state.order, carInfo: action.carInfo } };
     default:
       return state;
   }
