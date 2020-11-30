@@ -8,15 +8,16 @@ export const DIRVER_UPADTE = 'DIRVER_UPADTE';
 const resolvers: Resolvers = {
   Mutation: {
     updateDriverLocation: async (_, { curLocation }, { req, pubsub }) => {
-      const { result, error } = await updateDriverLocation({ userId: req.user?._id, curLocation });
+      if (req.user?.type !== loginType.driver) {
+        return { result: 'fail', error: 'Bad Request' };
+      }
 
-      if (req.user?.type === loginType.driver) {
-        const order = await Order.findOne({ user: req.user?._id, status: 'waiting' });
-        if (order) {
-          pubsub.publish(DIRVER_UPADTE, {
-            subLocation: { ...curLocation, orderId: order._id },
-          });
-        }
+      const { result, error } = await updateDriverLocation({ userId: req.user?._id, curLocation });
+      const order = await Order.findOne({ user: req.user?._id, status: 'waiting' });
+      if (order) {
+        pubsub.publish(DIRVER_UPADTE, {
+          subLocation: { ...curLocation, orderId: order._id },
+        });
       }
 
       if (result === 'fail') {
