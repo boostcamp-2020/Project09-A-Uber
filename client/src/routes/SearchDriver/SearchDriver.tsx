@@ -58,7 +58,7 @@ const StyledSearchDriver = styled.div`
 const SearchDriver: FC = () => {
   const history = useHistory();
   const [isModal, onOpenModal, onCloseModal] = useModal();
-  const { orderId } = useSelector((state: InitialState) => state);
+  const { id: orderId } = useSelector((state: InitialState) => state.order || {});
   const { data: approvalOrder } = useSubscription<SubApprovalOrder>(SUB_APPROVAL_ORDER, {
     variables: { orderId },
   });

@@ -11,7 +11,9 @@ export interface InitialState {
     name: string;
     driver?: Driver;
   };
-  orderId?: string;
+  order?: {
+    id?: string;
+  };
 }
 
 const initialState: InitialState = {};
@@ -21,7 +23,7 @@ type Action = OrderActions;
 const reducer = (state: InitialState = initialState, action: Action): InitialState => {
   switch (action.type) {
     case ADD_ORDER_ID:
-      return { ...state, orderId: action.orderId };
+      return { ...state, order: { ...state.order, id: action.orderId } };
     default:
       return state;
   }
