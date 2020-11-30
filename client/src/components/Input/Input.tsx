@@ -11,6 +11,7 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   allow?: boolean;
+  inValidMessage?: string;
   type?: 'text' | 'password';
   className?: string;
   ref?: React.RefObject<HTMLInputElement>;
@@ -45,6 +46,13 @@ const StyledInput = styled.div`
     }
   }
 
+  & span {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: ${({ theme }) => theme.RED};
+    font-size: 0.5rem;
+  }
+
   img {
     position: absolute;
     right: 0.5rem;
@@ -54,7 +62,7 @@ const StyledInput = styled.div`
 `;
 
 const Input = forwardRef<HTMLInputElement, Props>(
-  ({ title, placeholder, allow, value, onChange, type, className }, ref) => (
+  ({ title, placeholder, allow, value, onChange, type, className, inValidMessage }, ref) => (
     <StyledInput className={className}>
       {title && <h1>{title}</h1>}
       <div>
@@ -62,6 +70,9 @@ const Input = forwardRef<HTMLInputElement, Props>(
         {allow !== undefined &&
           (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
       </div>
+      {allow !== undefined && inValidMessage !== undefined && !allow && value.length !== 0 && (
+        <span>{inValidMessage}</span>
+      )}
     </StyledInput>
   ),
 );

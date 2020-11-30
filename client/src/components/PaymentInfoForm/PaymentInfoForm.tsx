@@ -191,6 +191,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
             onChange={onChangeExpiryDate}
             className="small-input"
             allow={isExpiryDateValid}
+            inValidMessage={Message.ExpiryDateGuidance}
           />
         </div>
         <div>
