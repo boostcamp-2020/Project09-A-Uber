@@ -16,7 +16,8 @@ const StyledCarInfo = styled.div`
 
   & > h1 {
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 700;
     margin-bottom: 2rem;
   }
 
