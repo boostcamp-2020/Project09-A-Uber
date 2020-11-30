@@ -6,16 +6,16 @@ export const UPDATE_DRIVER_LOCATION = 'UPDATE_DRIVER_LOCATION';
 
 const resolvers: Resolvers = {
   Mutation: {
-    updateDriverLocation: async (_, { curLocation }, { req, pubsub }) => {
+    updateDriverLocation: async (_, { lat, lng }, { req, pubsub }) => {
       const { result, error } = await updateDriverLocation({
         userId: req.user?._id,
         userType: req.user?.type,
-        curLocation,
+        curLocation: { coordinates: [lat, lng] },
       });
-      const order = await Order.findOne({ user: req.user?._id, status: 'waiting' });
+      const order = await Order.findOne({ driver: req.user?._id, status: 'activate' });
       if (order) {
         pubsub.publish(UPDATE_DRIVER_LOCATION, {
-          subLocation: { ...curLocation, orderId: order._id },
+          subLocation: { coordinates: [lat, lng], orderId: order._id },
         });
       }
 
