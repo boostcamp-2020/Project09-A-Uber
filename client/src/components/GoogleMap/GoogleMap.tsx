@@ -6,6 +6,7 @@ import getUserLocation from '@utils/getUserLocation';
 import Directions from './Directions';
 
 export interface Location {
+  address?: string;
   lat: number;
   lng: number;
 }

@@ -4,6 +4,12 @@ export interface Location {
   coordinates: number[];
 }
 
-const locationSchema = new Schema({ coordinates: [Number] }, { _id: false });
+const locationSchema = new Schema(
+  {
+    address: String,
+    coordinates: [Number],
+  },
+  { _id: false },
+);
 
 export default locationSchema;

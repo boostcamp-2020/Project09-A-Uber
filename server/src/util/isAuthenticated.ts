@@ -25,7 +25,6 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
             id: payload?.get('_id'),
             type: payload?.get('type'),
           };
-          console.log(req.user);
           resFn();
         })(req, res);
       });
