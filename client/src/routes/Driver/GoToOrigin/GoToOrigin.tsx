@@ -64,7 +64,7 @@ const GoToOrigin = () => {
     const updateCurrentLocationInterval = setInterval(updateCurrentLocation, 5000);
 
     return () => {
-      clearInterval();
+      clearInterval(updateCurrentLocationInterval);
     };
   }, []);
 
