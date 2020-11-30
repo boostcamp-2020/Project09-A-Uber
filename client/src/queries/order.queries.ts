@@ -29,3 +29,12 @@ export const GET_UNASSIGNED_ORDERS = gql`
     }
   }
 `;
+
+export const APPROVAL_ORDER = gql`
+  mutation ApprovalOrder($orderId: String!) {
+    approvalOrder(orderId: $orderId) {
+      result
+      error
+    }
+  }
+`;
