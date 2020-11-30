@@ -1,5 +1,5 @@
 import { Resolvers } from '@type/api';
-import updateLocation from '@services/user/updateLocation';
+import updateDriverLocation from '@services/user/updateDriverLocation';
 import { loginType } from '@models/user';
 import Order from '@models/order';
 
@@ -7,8 +7,8 @@ export const DIRVER_UPADTE = 'DIRVER_UPADTE';
 
 const resolvers: Resolvers = {
   Mutation: {
-    updateLocation: async (_, { curLocation }, { req, pubsub }) => {
-      const { result, error } = await updateLocation({ userId: req.user?._id, curLocation });
+    updateDriverLocation: async (_, { curLocation }, { req, pubsub }) => {
+      const { result, error } = await updateDriverLocation({ userId: req.user?._id, curLocation });
 
       if (req.user?.type === loginType.driver) {
         const order = await Order.findOne({ user: req.user?._id, status: 'waiting' });
