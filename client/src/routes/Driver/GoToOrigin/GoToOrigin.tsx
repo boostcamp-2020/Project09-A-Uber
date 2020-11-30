@@ -7,6 +7,7 @@ import { GET_ORDER } from '@queries/order.queries';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
 import { GetOrderInfo, UpdateDriverLocation } from '@/types/api';
 import { Location } from '@components/GoogleMap/GoogleMap';
+import getUserLocation from '@utils/getUserLocation';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 
 const StyledDriverGoToOriginMenu = styled.section`
@@ -48,16 +49,14 @@ const GoToOrigin = () => {
   const order = data?.getOrderInfo.order;
 
   const updateCurrentLocation = async () => {
-    const currLocation = await new Promise<Location>((res) => {
-      window.navigator.geolocation.getCurrentPosition((position) => {
-        res({ lat: position.coords.latitude, lng: position.coords.longitude });
-      });
-    });
+    const currLocation = await getUserLocation();
 
-    setCurrentLocation(currLocation);
-    updateDriverLocationMutation({
-      variables: { lat: currLocation.lat, lng: currLocation.lng },
-    });
+    if (currLocation) {
+      setCurrentLocation(currLocation);
+      updateDriverLocationMutation({
+        variables: { lat: currLocation.lat, lng: currLocation.lng },
+      });
+    }
   };
 
   useEffect(() => {
