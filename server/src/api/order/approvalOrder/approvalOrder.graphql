@@ -1,0 +1,8 @@
+type ApprovalOrderResponse {
+    result: String!
+    error: String
+}
+
+type Mutation {
+    approvalOrder(orderId: String!): ApprovalOrderResponse! @auth
+}

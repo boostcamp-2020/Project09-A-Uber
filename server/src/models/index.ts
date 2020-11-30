@@ -19,6 +19,7 @@ export default () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
+        useFindAndModify: false,
         dbName: DB_NAME,
       })
       .then(() => console.log(message.CONNECT_SUCCEED))
