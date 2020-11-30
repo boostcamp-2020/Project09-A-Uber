@@ -35,18 +35,15 @@ const StyledOrderLogList = styled.section`
 `;
 
 const Main: FC = () => {
-  const { data: orders } = useCustomQuery<GetUnassignedOrders>(GET_UNASSIGNED_ORDERS);
+  const { data: orders, callQuery } = useCustomQuery<GetUnassignedOrders>(GET_UNASSIGNED_ORDERS);
   const { unassignedOrders } = orders?.getUnassignedOrders || {};
   const [orderData, setOrderData] = useState<Order[] | null | undefined>();
   const [isModal, openModal, closeModal] = useModal();
   const [orderItem, setOrderItem] = useState<Order>();
   const { data } = useSubscription(UPDATE_ORDER_LIST, {
-    onSubscriptionData: ({
-      subscriptionData: {
-        data: { updateOrderList },
-      },
-    }) => {
-      const { unassignedOrders: newOrderList } = updateOrderList;
+    onSubscriptionData: async () => {
+      const newData = await callQuery();
+      const { unassignedOrders: newOrderList } = newData?.data.getUnassignedOrders || {};
       setOrderData(newOrderList);
     },
   });
