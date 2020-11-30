@@ -40,13 +40,13 @@ const ModalInner = styled.div`
   background-color: ${({ theme }) => theme.MODAL_BACKGROUND};
   border-radius: 10px;
   width: 80%;
-  height: 40%;
+  height: 35%;
   max-width: 400px;
   max-height: 600px;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
-  padding: 45px 20px;
+  padding: 45px 25px;
 
   & .close-button {
     position: absolute;
