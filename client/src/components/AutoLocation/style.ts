@@ -1,4 +1,5 @@
 import styled from '@theme/styled';
+import { Icon } from 'antd-mobile';
 
 export const AutoLocationWrapper = styled.div`
   margin-bottom: 0.5rem;
@@ -6,7 +7,7 @@ export const AutoLocationWrapper = styled.div`
 
   & input {
     width: 100%;
-    padding: 0.3rem 0.8rem;
+    padding: 0.3rem 1.4rem 0.3rem 0.8rem;
     border: none;
     border-bottom: 1px solid ${({ theme }) => theme.BORDER};
   }
@@ -22,10 +23,11 @@ export const AutoLocationWrapper = styled.div`
   & ul {
     position: absolute;
     top: 2rem;
+    width: 100%;
+    background-color: white;
     border: 1px solid ${({ theme }) => theme.BORDER};
     border-radius: 0.3rem;
     z-index: 1;
-    background-color: white;
 
     & > li {
       padding: 0.6rem;
@@ -34,4 +36,13 @@ export const AutoLocationWrapper = styled.div`
       border-bottom: 1px solid ${({ theme }) => theme.BORDER};
     }
   }
+`;
+
+export const StyledIcon = styled(Icon)`
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  fill: ${({ theme }) => theme.BORDER};
+  cursor: pointer;
 `;
