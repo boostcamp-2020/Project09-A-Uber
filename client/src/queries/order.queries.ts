@@ -38,3 +38,11 @@ export const APPROVAL_ORDER = gql`
     }
   }
 `;
+
+export const SUB_APPROVAL_ORDER = gql`
+  subscription SubApprovalOrder($orderId: String, $isDriver: Boolean) {
+    subApprovalOrder(orderId: $orderId, isDriver: $isDriver) {
+      approvalOrderId
+    }
+  }
+`;
