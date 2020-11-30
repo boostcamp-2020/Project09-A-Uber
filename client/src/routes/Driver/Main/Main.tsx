@@ -37,6 +37,7 @@ const Main: FC = () => {
   const { data: orders } = useCustomQuery<GetUnassignedOrders>(GET_UNASSIGNED_ORDERS);
   const [isModal, openModal, closeModal] = useModal();
   const [orderItem, setOrderItem] = useState<Order>();
+  const { unassignedOrders } = orders?.getUnassignedOrders || {};
 
   const onClickOrder = (order: Order) => {
     openModal();
@@ -47,13 +48,17 @@ const Main: FC = () => {
     <>
       <MapFrame>
         <StyledOrderLogList>
-          {orders?.getUnassignedOrders.unassignedOrders?.map((order) => (
-            <OrderLog
-              order={order}
-              key={`order_list_${order._id}`}
-              onClick={() => onClickOrder(order)}
-            />
-          )).length || <h1>현재 요청이 없습니다</h1>}
+          {unassignedOrders && unassignedOrders?.length !== 0 ? (
+            unassignedOrders?.map((order) => (
+              <OrderLog
+                order={order}
+                key={`order_list_${order._id}`}
+                onClick={() => onClickOrder(order)}
+              />
+            ))
+          ) : (
+            <h1>현재 요청이 없습니다</h1>
+          )}
         </StyledOrderLogList>
       </MapFrame>
       <Modal visible={isModal} onClose={closeModal}>
