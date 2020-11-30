@@ -50,6 +50,7 @@ const StyledInput = styled.div`
     display: inline-block;
     margin-top: 0.5rem;
     color: ${({ theme }) => theme.RED};
+    font-size: 0.5rem;
   }
 
   img {
