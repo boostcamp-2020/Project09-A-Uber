@@ -13,7 +13,7 @@ const resolvers: Resolvers = {
       const { user, info } = await authenticate('local', { email, password });
 
       if (!user) return { result: 'fail', error: info?.message };
-      const userId = user?.get('_id');
+      const userId = user?._id;
       const payload = { id: userId };
       const accessToken = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '15m' });
       const refreshToken = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '14d' });
