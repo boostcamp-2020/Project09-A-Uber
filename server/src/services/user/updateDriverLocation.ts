@@ -16,7 +16,7 @@ const updateDriverLocation = async ({ userId, userType, curLocation }: UpdateLoc
     await User.updateOne(
       { _id: userId },
       {
-        location: curLocation,
+        location: { coordinates: curLocation.coordinates },
       },
     );
     return { result: 'success' };
