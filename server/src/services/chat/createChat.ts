@@ -1,5 +1,4 @@
 import OrderModel from '@models/order';
-import getChatList from '@services/chat/getChat';
 import { Message } from '@util/server-message';
 
 interface Props {
@@ -20,7 +19,6 @@ const insertChat = async ({ writer, createdAt, chatId, content }: Props) => {
       return { result: 'fail', chat: null, error: Message.ChatNotCreated };
     }
 
-    // const { chat, result } = await getChatList(chatId);
     const newChat = {
       writer,
       createdAt,
