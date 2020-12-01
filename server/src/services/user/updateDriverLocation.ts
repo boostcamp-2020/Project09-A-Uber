@@ -21,9 +21,7 @@ const updateDriverLocation = async ({ userId, userType, curLocation }: UpdateLoc
       },
     );
 
-    const order = await Order.findOne({ driver: userId, status: 'active' });
-
-    return { result: 'success', orderId: order?._id };
+    return { result: 'success' };
   } catch (err) {
     return { result: 'fail', error: err.message };
   }
