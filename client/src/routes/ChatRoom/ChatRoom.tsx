@@ -1,14 +1,15 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import HeaderWithBack from '@components/HeaderWithBack';
 import ChatLog from '@components/ChatLog';
 import ChatInput from '@components/ChatInput';
 import styled from '@theme/styled';
-import { useCustomQuery } from '@hooks/useApollo';
+import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import { GET_USER_INFO } from '@queries/user.queries';
 import { CREATE_CHAT, GET_CHAT } from '@queries/chat.queries';
 import { GetUserInfo, GetChat, GetUserInfo_getUserInfo_user as User } from '@/types/api';
+import useChange from '@/hooks/useChange';
 
 interface ChatID {
   chatId: string;
@@ -30,22 +31,38 @@ const ChatRoom: FC = () => {
   const { chatId } = useParams<ChatID>();
   const { data: userInfo } = useCustomQuery<GetUserInfo>(GET_USER_INFO);
   const { _id: userId } = userInfo?.getUserInfo.user as User;
-  const { data: chatData } = useCustomQuery<GetChat>(GET_CHAT, { variables: { chatId } });
+  const { data: chatData, subscribeToMore } = useCustomQuery<GetChat>(GET_CHAT, {
+    variables: { chatId },
+  });
+  const [CreateChat] = useCustomMutation(CREATE_CHAT);
+  const [chatContent, , onChangeChatContent] = useChange('');
   const chatList = chatData?.getChat.chat;
 
   const onClickBackButton = () => {
     history.push('/signin');
   };
 
+  const onClickSubmitButton = async () => {
+    await CreateChat({
+      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: 'test' },
+    });
+  };
+
   return (
     <StyledChatRoom>
       <HeaderWithBack onClick={onClickBackButton} className="green-header" />
-      {/* <StyledChatMain>
-        {Chat.map((item) => (
-          <ChatLog key={`chat_${item.id}`} {...item}></ChatLog>
-        ))}
-      </StyledChatMain> */}
-      <ChatInput></ChatInput>
+      <StyledChatMain>
+        {chatList &&
+          chatList?.length !== 0 &&
+          chatList.map((item) => (
+            <ChatLog key={`chat_${item?.createdAt}`} {...item} type={userId}></ChatLog>
+          ))}
+      </StyledChatMain>
+      <ChatInput
+        chatContent={chatContent}
+        onChangeChatContent={onChangeChatContent}
+        onClickSubmitButton={onClickSubmitButton}
+      ></ChatInput>
     </StyledChatRoom>
   );
 };
