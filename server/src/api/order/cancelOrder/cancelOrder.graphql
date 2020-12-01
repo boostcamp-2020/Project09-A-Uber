@@ -1,0 +1,8 @@
+type CancelOrderResponse {
+    result: String!
+    error: String
+}
+
+type Mutation {
+    cancelOrder(orderId: String!): CancelOrderResponse! @auth
+}
