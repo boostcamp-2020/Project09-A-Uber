@@ -19,7 +19,7 @@ import { RequestToken } from '@/types/api';
 const SUCCESS = 'success';
 
 interface QueryWrapper<T> extends QueryResult<T, Record<string, any>> {
-  callQuery: (variables?: any) => Promise<ApolloQueryResult<T> | undefined>;
+  callQuery: (variables?: any) => Promise<ApolloQueryResult<T>>;
 }
 
 const errorHandler = async (
