@@ -51,6 +51,7 @@ const ChatRoom: FC = () => {
   useEffect(() => {
     subscribeToMore({
       document: SUB_CHAT,
+      variables: { chatId },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
 
