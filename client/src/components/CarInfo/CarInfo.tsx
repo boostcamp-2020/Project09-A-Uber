@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
-import { Message } from '@utils/client-message';
 import { CarInfo as CarInfoType } from '@/types/api';
 import styled from '@/theme/styled';
+import carTypeMapper from './carTypeMapper';
 
 interface Props {
   carInfo?: CarInfoType;
+  title?: string;
 }
 
 const StyledCarInfo = styled.div`
@@ -12,7 +13,7 @@ const StyledCarInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  padding: 1rem 2rem;
+  padding: 1rem;
 
   & > h1 {
     text-align: center;
@@ -27,14 +28,18 @@ const StyledCarInfo = styled.div`
   }
 `;
 
-const CarInfo: FC<Props> = ({ carInfo }) => {
+const CarInfo: FC<Props> = ({ carInfo, title }) => {
   return (
     <StyledCarInfo>
-      <h1>{Message.DriverAjacent}</h1>
+      <h1>{title}</h1>
       <span>차량번호 : {carInfo?.carNumber}</span>
-      <span>차량타입: {carInfo?.carType}</span>
+      <span>차량타입: {carTypeMapper(carInfo?.carType)}</span>
     </StyledCarInfo>
   );
+};
+
+CarInfo.defaultProps = {
+  title: '',
 };
 
 export default CarInfo;

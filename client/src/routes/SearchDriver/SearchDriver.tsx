@@ -1,16 +1,20 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { Button, ActivityIndicator } from 'antd-mobile';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
 import Header from '@components/HeaderWithMenu';
 import Modal from '@components/Modal';
+import CarInfo from '@components/CarInfo';
 import { InitialState } from '@reducers/.';
-import { SUB_APPROVAL_ORDER } from '@queries/order.queries';
-import { SubApprovalOrder } from '@/types/api';
+import { SUB_APPROVAL_ORDER, GET_ORDER_CAR_INFO } from '@queries/order.queries';
+import { SubApprovalOrder, GetOrderCarInfo } from '@/types/api';
+import { useCustomQuery } from '@hooks/useApollo';
 import useModal from '@hooks/useModal';
+import { addCarInfo } from '@reducers/order';
+import { Message } from '@utils/client-message';
 
 const StyledSearchDriver = styled.div`
   margin-bottom: 0.8rem;
@@ -57,8 +61,13 @@ const StyledSearchDriver = styled.div`
 
 const SearchDriver: FC = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [isModal, onOpenModal, onCloseModal] = useModal();
-  const { orderId } = useSelector((state: InitialState) => state);
+  const { callQuery } = useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
+    skip: true,
+  });
+  const { id: orderId } = useSelector((state: InitialState) => state.order || {});
+  const { carInfo } = useSelector((state: InitialState) => state.order || {});
   const { data: approvalOrder } = useSubscription<SubApprovalOrder>(SUB_APPROVAL_ORDER, {
     variables: { orderId },
   });
@@ -68,9 +77,19 @@ const SearchDriver: FC = () => {
     history.push('/user/waiting');
   }, []);
 
+  const onOpenOrderModal = useCallback(async () => {
+    const { data } = await callQuery({ orderId });
+    const { carInfo: carInfoData } = data.getOrderCarInfo;
+    if (!carInfoData) {
+      return;
+    }
+    dispatch(addCarInfo(carInfoData));
+    onOpenModal();
+  }, [orderId]);
+
   useEffect(() => {
     if (orderId && approvalOrder && orderId === approvalOrder?.subApprovalOrder.approvalOrderId) {
-      onOpenModal();
+      onOpenOrderModal();
     }
   }, [orderId, approvalOrder]);
 
@@ -81,13 +100,13 @@ const SearchDriver: FC = () => {
         <section>
           <div className="loading-center">
             주변에 운행이 가능한 드라이버를 탐색중입니다
-            <ActivityIndicator size="large" />
+            {!isModal && <ActivityIndicator size="large" />}
           </div>
           <Button type="warning">탐색 취소</Button>
         </section>
       </StyledSearchDriver>
       <Modal visible={isModal} onClose={onClickModalCloseHandler}>
-        오더가 매칭되었습니다.
+        {carInfo && <CarInfo carInfo={carInfo} title={Message.DriverMatchingCompolete} />}
       </Modal>
     </>
   );
