@@ -23,8 +23,8 @@ export const GET_CHAT = gql`
 `;
 
 export const SUB_CHAT = gql`
-  subscription SubChat {
-    subChat {
+  subscription SubChat($chatId: String!) {
+    subChat(orderId: $chatId) {
       result
       error
       chat {
