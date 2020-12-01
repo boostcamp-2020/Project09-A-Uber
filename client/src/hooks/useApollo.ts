@@ -30,14 +30,16 @@ const errorHandler = async <TData>(
   request: (...args: any) => TData,
 ) => {
   const { statusCode } = error.networkError as ServerParseError;
-  if (statusCode === 401) {
-    const result = await apolloClient.mutate<RequestToken>({ mutation: REQUEST_TOKEN });
-    if (result?.data?.requestToken.result === SUCCESS) {
-      const reResponseData = await request();
-      return reResponseData;
-    }
+  if (statusCode !== 401) {
+    throw new ApolloError(error);
   }
-  return {} as TData;
+  const result = await apolloClient.mutate<RequestToken>({ mutation: REQUEST_TOKEN });
+  if (result?.data?.requestToken.result === SUCCESS) {
+    const reResponseData = await request();
+    return reResponseData;
+  }
+
+  throw new ApolloError(error);
 };
 
 export const useCustomQuery = <TData = any, TVariables = OperationVariables>(
@@ -48,9 +50,9 @@ export const useCustomQuery = <TData = any, TVariables = OperationVariables>(
   const queryResult = useQuery<TData, TVariables>(query, {
     ...options,
     onError: (error: ApolloError) => {
-      errorHandler(error, apolloClient, queryResult.refetch).then(() => {
+      errorHandler(error, apolloClient, queryResult.refetch).catch((apolloError) => {
         if (options?.onError) {
-          options.onError(error);
+          options.onError(apolloError);
         }
       });
     },
@@ -76,13 +78,12 @@ export const useCustomMutation = <TData = any, TVariables = OperationVariables>(
   const mutationTuple = useMutation<TData, TVariables>(query, {
     ...options,
     onError: (error: ApolloError) => {
-      errorHandler(error, apolloClient, mutationTuple[0]).then(() => {
+      errorHandler(error, apolloClient, mutationTuple[0]).catch((apolloError) => {
         if (options?.onError) {
-          options.onError(error);
+          options.onError(apolloError);
         }
       });
     },
   });
-
   return mutationTuple;
 };
