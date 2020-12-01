@@ -6,7 +6,7 @@ const getChatList = async (orderId: string) => {
 
     return { result: 'success', chat: chat?.get('chat') };
   } catch (err) {
-    return { result: 'fail', error: err.message };
+    return { result: 'fail', chat: null, error: err.message };
   }
 };
 
