@@ -42,6 +42,7 @@ const StyledWaitingDriverMenu = styled.section`
   }
 `;
 
+// TODO: 출발지, 목적지 재지정 필요
 const WaitingDriver = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [driverLocation, setDriverLocation] = useState({ lat: 0, lng: 0 });
