@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useSubscription } from '@apollo/react-hooks';
+import { useSelector } from 'react-redux';
 
 import MapFrame from '@components/MapFrame';
 import { GET_ORDER, GET_ORDER_CAR_INFO } from '@queries/order.queries';
@@ -18,6 +19,7 @@ import CarInfo from '@components/CarInfo';
 import Modal from '@components/Modal';
 import useModal from '@hooks/useModal';
 import { Message } from '@utils/client-message';
+import { InitialState } from '@reducers/.';
 
 const StyledWaitingDriverMenu = styled.section`
   height: 100%;
@@ -46,8 +48,9 @@ const WaitingDriver = () => {
   const [isModal, openModal, closeModal] = useModal();
   const [didCloseModal, setDidCloseModal] = useState(false);
   const [carInfo, setCarInfo] = useState({ carNumber: '', carType: 'small' } as CarInfoType);
+  const { id } = useSelector((state: InitialState) => state.order || {});
   useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
-    variables: { orderId: '5fc45539e439ea40e869bf47' },
+    variables: { orderId: id },
     onCompleted: (data) => {
       setCarInfo({
         carNumber: data.getOrderCarInfo.carInfo?.carNumber,
@@ -56,14 +59,14 @@ const WaitingDriver = () => {
     },
   });
   const { data } = useCustomQuery<GetOrderInfo>(GET_ORDER, {
-    variables: { orderId: '5fc45539e439ea40e869bf47' },
+    variables: { orderId: id },
   });
   const destination = {
     lat: data?.getOrderInfo.order?.startingPoint.coordinates[0] as number,
-    lng: data?.getOrderInfo.order?.destination.coordinates[1] as number,
+    lng: data?.getOrderInfo.order?.startingPoint.coordinates[1] as number,
   };
   useSubscription<SubDriverLocation>(SUB_DRIVER_LOCATION, {
-    variables: { orderId: '5fc45539e439ea40e869bf47' },
+    variables: { orderId: id },
     onSubscriptionData: ({ subscriptionData }) => {
       const driverNewLocation = {
         lat: subscriptionData.data?.subDriverLocation.coordinates[0] as number,
