@@ -8,12 +8,13 @@ import MapFrame from '@components/MapFrame';
 import OrderLog from '@components/OrderLog';
 import Modal from '@components/Modal';
 import OrderModalItem from '@components/OrderModalItem';
-import { GET_UNASSIGNED_ORDERS, UPDATE_ORDER_LIST } from '@queries/order.queries';
+import { GET_UNASSIGNED_ORDERS, UPDATE_ORDER_LIST, SUB_NEW_ORDER } from '@queries/order.queries';
 import useModal from '@hooks/useModal';
 import {
   GetUnassignedOrders,
   GetUnassignedOrders_getUnassignedOrders_unassignedOrders as Order,
 } from '@/types/api';
+import { DRIVER } from '@utils/enums';
 
 const StyledOrderLogList = styled.section`
   height: 100%;
@@ -47,11 +48,24 @@ const Main: FC = () => {
       setOrderData(newOrderList);
     },
   });
-
+  const { data: addedOrder, loading } = useSubscription(SUB_NEW_ORDER);
   const onClickOrder = (order: Order) => {
     openModal();
     setOrderItem(order);
   };
+
+  useEffect(() => {
+    if (!loading && addedOrder) {
+      const { newOrder } = addedOrder.subNewOrder;
+      openModal();
+      setOrderItem(newOrder);
+
+      const timer = setTimeout(() => {
+        closeModal();
+      }, DRIVER.NEW_ORDER_DURATION);
+      return () => clearTimeout(timer);
+    }
+  }, [addedOrder]);
 
   useEffect(() => {
     setOrderData(unassignedOrders);
