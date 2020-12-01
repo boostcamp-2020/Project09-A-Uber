@@ -18,14 +18,20 @@ interface Query {
 
 const getOrder = async ({ orderId, userId, userType }: GetOrderProps) => {
   try {
-    const query: Query = {
-      _id: orderId,
-      status: 'active',
-    };
-    if (userType === loginType.user) query.user = userId;
-    if (userType === loginType.driver) query.driver = userId;
-
-    const order = (await Order.findOne(query)) as OrderType | null;
+    let order;
+    if (userType === loginType.user) {
+      order = (await Order.findOne({
+        _id: orderId,
+        status: 'activate',
+        user: userId,
+      })) as OrderType | null;
+    } else if (userType === loginType.driver) {
+      order = (await Order.findOne({
+        _id: orderId,
+        status: 'activate',
+        driver: userId,
+      })) as OrderType | null;
+    }
 
     if (!order) {
       return { result: 'fail', order: null, error: Message.OrderNotFound };

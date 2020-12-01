@@ -4,5 +4,5 @@ type LocationWithOrderId {
 }
 
 type Subscription {
-    subLocation(orderId: String!): LocationWithOrderId!
+    subDriverLocation(orderId: String!): LocationWithOrderId!
 }

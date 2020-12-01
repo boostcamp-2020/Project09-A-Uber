@@ -12,7 +12,7 @@ const resolvers: Resolvers = {
         curLocation: { coordinates: [lat, lng] },
       });
       pubsub.publish(UPDATE_DRIVER_LOCATION, {
-        subLocation: { coordinates: [lat, lng], orderId },
+        subDriverLocation: { coordinates: [lat, lng], orderId },
       });
 
       if (result === 'fail') {
