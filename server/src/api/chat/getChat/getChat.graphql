@@ -1,6 +1,6 @@
 type ChatResponse {
   result: String!
-  chat: [Chat]
+  chat: [Chat]!
   error: String
 }
 

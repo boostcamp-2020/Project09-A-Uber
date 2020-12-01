@@ -8,7 +8,7 @@ const resolvers: Resolvers = {
       const { result, chat, error } = await getChatList(chatId);
 
       if (result === 'fail' || error) {
-        return { result, error };
+        return { result, error, chat };
       }
 
       return { result, chat };
