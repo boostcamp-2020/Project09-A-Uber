@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useSubscription } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import MapFrame from '@components/MapFrame';
 import { GET_ORDER, GET_ORDER_CAR_INFO } from '@queries/order.queries';
@@ -44,6 +45,7 @@ const StyledWaitingDriverMenu = styled.section`
 
 // TODO: 출발지, 목적지 재지정 필요
 const WaitingDriver = () => {
+  const history = useHistory();
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [driverLocation, setDriverLocation] = useState({ lat: 0, lng: 0 });
   const [isModal, openModal, closeModal] = useModal();
@@ -81,6 +83,10 @@ const WaitingDriver = () => {
     },
   });
 
+  const onClickChatRoom = useCallback(() => {
+    history.push(`/chatroom/${id}`);
+  }, [id]);
+
   return (
     <>
       <MapFrame
@@ -91,7 +97,9 @@ const WaitingDriver = () => {
       >
         <StyledWaitingDriverMenu>
           <div className="chat-with-driver">
-            <Button type="primary">드라이버와 채팅하기</Button>
+            <Button type="primary" onClick={onClickChatRoom}>
+              드라이버와 채팅하기
+            </Button>
           </div>
         </StyledWaitingDriverMenu>
       </MapFrame>
