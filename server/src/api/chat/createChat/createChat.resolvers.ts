@@ -11,11 +11,11 @@ const resolvers: Resolvers = {
         writer,
         createdAt,
       };
-      const { result, error } = await insertChat(payload);
+      const { result, chat, error } = await insertChat(payload);
 
-      if (result === 'fail' || error) return { result, error };
+      if (result === 'fail' || error) return { result, chat, error };
 
-      return { result: 'success' };
+      return { result, chat };
     },
   },
 };
