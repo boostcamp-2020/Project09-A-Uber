@@ -63,7 +63,7 @@ const SearchDriver: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isModal, onOpenModal, onCloseModal] = useModal();
-  const { refetch } = useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
+  const { callQuery } = useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
     skip: true,
   });
   const { id: orderId } = useSelector((state: InitialState) => state.order || {});
@@ -78,7 +78,7 @@ const SearchDriver: FC = () => {
   }, []);
 
   const onOpenOrderModal = useCallback(async () => {
-    const { data } = await refetch({ orderId });
+    const { data } = await callQuery({ orderId });
     const { carInfo: carInfoData } = data.getOrderCarInfo;
     if (!carInfoData) {
       return;
