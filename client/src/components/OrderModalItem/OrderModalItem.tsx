@@ -1,7 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import React, { FC } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from 'antd-mobile';
 
+import { addOrderId } from '@reducers/order';
 import styled from '@theme/styled';
 import { useCustomMutation } from '@hooks/useApollo';
 import { APPROVAL_ORDER } from '@queries/order.queries';
@@ -46,6 +48,7 @@ const StyledOrderItem = styled.div`
 `;
 
 const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
+  const dispatch = useDispatch();
   const [approvalOrder] = useCustomMutation<ApprovalOrder>(APPROVAL_ORDER, {
     onCompleted: ({ approvalOrder: approvalResult }) => {
       if (approvalResult.result === 'success') {
@@ -55,6 +58,7 @@ const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
   });
 
   const onClickApprovalOrder = () => {
+    dispatch(addOrderId(order._id));
     approvalOrder({ variables: { orderId: order._id } });
   };
 
