@@ -24,6 +24,7 @@ export const GET_ORDER = gql`
           address
           coordinates
         }
+        status
       }
       error
     }
