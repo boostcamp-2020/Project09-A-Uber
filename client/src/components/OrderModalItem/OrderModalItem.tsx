@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { FC } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button } from 'antd-mobile';
 
@@ -48,6 +49,7 @@ const StyledOrderItem = styled.div`
 `;
 
 const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [approvalOrder] = useCustomMutation<ApprovalOrder>(APPROVAL_ORDER, {
     onCompleted: ({ approvalOrder: approvalResult }) => {
@@ -60,6 +62,7 @@ const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
   const onClickApprovalOrder = () => {
     dispatch(addOrderId(order._id));
     approvalOrder({ variables: { orderId: order._id } });
+    history.push('/driver/goToOrigin');
   };
 
   return (
