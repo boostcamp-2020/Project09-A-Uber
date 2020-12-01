@@ -88,6 +88,24 @@ export const UPDATE_ORDER_LIST = gql`
   }
 `;
 
+export const SUB_NEW_ORDER = gql`
+  subscription SubNewOrder {
+    subNewOrder {
+      newOrder {
+        _id
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
+      }
+    }
+  }
+`;
+
 export const CANCEL_ORDER = gql`
   mutation CancelOrder($orderId: String!) {
     cancelOrder(orderId: $orderId) {
