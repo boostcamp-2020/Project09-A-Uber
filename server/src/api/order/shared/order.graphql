@@ -1,6 +1,6 @@
 enum OrderStatus {
     close
-    wating
+    waiting
     active
 }
 
