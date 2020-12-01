@@ -8,9 +8,9 @@ import { Button, Toast } from 'antd-mobile';
 import { addOrderId } from '@reducers/order';
 import styled from '@theme/styled';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
-import { APPROVAL_ORDER, GET_ORDER } from '@queries/order.queries';
+import { APPROVAL_ORDER, GET_ORDER_BY_ID } from '@queries/order.queries';
 import {
-  GetOrderInfo,
+  getOrderById,
   ApprovalOrder,
   GetUnassignedOrders_getUnassignedOrders_unassignedOrders as UnassignedOrder,
 } from '@/types/api';
@@ -55,7 +55,7 @@ const StyledOrderItem = styled.div`
 const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { callQuery } = useCustomQuery<GetOrderInfo>(GET_ORDER, { skip: true });
+  const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
   const [approvalOrder] = useCustomMutation<ApprovalOrder>(APPROVAL_ORDER, {
     onCompleted: ({ approvalOrder: approvalResult }) => {
       if (approvalResult.result === 'success') {
@@ -67,18 +67,18 @@ const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
   const onClickApprovalOrder = useCallback(() => {
     (async () => {
       const { data } = await callQuery({ orderId: order._id });
-      const { order: orderData } = data.getOrderInfo;
-      if (orderData?.status !== 'wating') {
-        closeModal();
+      const status = data?.getOrderById?.order?.status;
+      if (status === 'active') {
         Toast.fail(Message.FailureMatchingOrder, TOAST_DURATION.MATCHING_FAILURE);
-        return;
+        closeModal();
+      }
+      if (status === 'waiting') {
+        dispatch(addOrderId(order._id));
+        approvalOrder({ variables: { orderId: order._id } });
+        history.push('/driver/goToOrigin');
       }
     })();
-
-    dispatch(addOrderId(order._id));
-    approvalOrder({ variables: { orderId: order._id } });
-    history.push('/driver/goToOrigin');
-  }, []);
+  }, [order]);
 
   return (
     <StyledOrderItem>
