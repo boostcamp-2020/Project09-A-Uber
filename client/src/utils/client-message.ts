@@ -10,4 +10,5 @@ export const Message = {
   ExpiryDateGuidance: '예시: MM/YY',
   DriverAjacent: '차량이 곧 도착합니다.',
   DriverMatchingCompolete: '차량이 매칭되었습니다',
+  FailureCancelOrder: '드라이버 호출 취소에 실패했습니다',
 };
