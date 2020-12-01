@@ -1,4 +1,6 @@
 import OrderModel from '@models/order';
+import getChatList from '@services/chat/getChat';
+import { Message } from '@util/server-message';
 
 interface Props {
   chatId: string;
@@ -9,12 +11,18 @@ interface Props {
 
 const insertChat = async ({ writer, createdAt, chatId, content }: Props) => {
   try {
-    await OrderModel.updateOne(
+    const { ok: isUpdated } = await OrderModel.updateOne(
       { _id: chatId },
       { $push: { chat: { writer, content, createdAt } } },
     );
 
-    return { result: 'success' };
+    if (!isUpdated) {
+      return { result: 'fail', chat: null, error: Message.ChatNotCreated };
+    }
+
+    const { chat, result } = await getChatList(chatId);
+
+    return { result, chat };
   } catch (err) {
     return { result: 'fail', error: err.message };
   }
