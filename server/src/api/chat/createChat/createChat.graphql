@@ -1,0 +1,9 @@
+type CreateChatResponse {
+  result: String!
+  error: String
+  chat: Chat
+}
+
+type Mutation {
+  createChat(chatId: String!, content: String!, writer: String!, createdAt: String!): CreateChatResponse!
+}

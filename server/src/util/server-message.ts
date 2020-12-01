@@ -6,4 +6,5 @@ export const Message = {
   NotSignedUpUser: '해당 아이디가 존재하지 않습니다.',
   NotDriverUser: '드라이버만 요청이 가능합니다.',
   OrderNotFound: '해당 오더가 존재하지 않습니다.',
+  ChatNotCreated: '채팅이 정상적으로 생성 되지 않았습니다.',
 };

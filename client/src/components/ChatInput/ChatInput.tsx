@@ -1,9 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 
 import Input from '@components/Input';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
-import useChange from '@hooks/useChange';
+
+interface Props {
+  chatContent: string;
+  onClickSubmitButton: () => void;
+  onChangeChatContent: (e: ChangeEvent<HTMLInputElement>) => void;
+}
 
 const StyledChatInput = styled.div`
   display: flex;
@@ -30,9 +35,7 @@ const StyledChatInput = styled.div`
   }
 `;
 
-const ChatInput: FC = () => {
-  const [chatContent, , onChangeChatContent] = useChange('');
-
+const ChatInput: FC<Props> = ({ chatContent, onClickSubmitButton, onChangeChatContent }) => {
   return (
     <StyledChatInput>
       <Input
@@ -41,7 +44,9 @@ const ChatInput: FC = () => {
         value={chatContent}
         onChange={onChangeChatContent}
       ></Input>
-      <Button type="primary">전송</Button>
+      <Button type="primary" onClick={onClickSubmitButton}>
+        전송
+      </Button>
     </StyledChatInput>
   );
 };
