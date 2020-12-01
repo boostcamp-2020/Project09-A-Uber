@@ -58,3 +58,11 @@ export const UPDATE_DRIVER_LOCATION = gql`
     }
   }
 `;
+
+export const SUB_DRIVER_LOCATION = gql`
+  subscription SubDriverLocation($orderId: String!) {
+    subDriverLocation(orderId: $orderId) {
+      coordinates
+    }
+  }
+`;
