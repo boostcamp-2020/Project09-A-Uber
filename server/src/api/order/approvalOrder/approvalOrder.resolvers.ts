@@ -1,5 +1,6 @@
 import { Resolvers } from '@type/api';
 import approvalOrder from '@services/order/approvalOrder';
+import { UPDATE_ORDER_LIST } from '@api/order/updateOrderList/updateOrderList.resolvers';
 
 export const APPROVAL_ORDER = 'APPROVAL_ORDER';
 
@@ -13,6 +14,9 @@ const resolvers: Resolvers = {
       }
 
       pubsub.publish(APPROVAL_ORDER, { subApprovalOrder: { approvalOrderId: orderId } });
+      pubsub.publish(UPDATE_ORDER_LIST, {
+        updateOrderList: { result: 'success' },
+      });
 
       return { result };
     },
