@@ -9,7 +9,7 @@ const resolvers: Resolvers = {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator(UPDATE_DRIVER_LOCATION),
         (payload, variables) => {
-          return payload.subDriverLocation.orderId == variables.orderId;
+          return payload.subDriverLocation.orderId === variables.orderId;
         },
       ),
     },
