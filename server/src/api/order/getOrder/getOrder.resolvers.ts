@@ -5,7 +5,6 @@ import getOrder from '@services/order/getOrder';
 const resolvers: Resolvers = {
   Query: {
     getOrderInfo: async (_, { orderId }, { req }) => {
-      console.log('test');
       const { result, order, error } = await getOrder({
         orderId,
         userId: req.user?._id || '',
