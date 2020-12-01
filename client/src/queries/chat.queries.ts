@@ -21,3 +21,17 @@ export const GET_CHAT = gql`
     }
   }
 `;
+
+export const SUB_CHAT = gql`
+  subscription SubChat {
+    subChat {
+      result
+      error
+      chat {
+        createdAt
+        writer
+        content
+      }
+    }
+  }
+`;

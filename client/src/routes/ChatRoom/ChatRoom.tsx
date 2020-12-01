@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import HeaderWithBack from '@components/HeaderWithBack';
@@ -7,8 +7,14 @@ import ChatInput from '@components/ChatInput';
 import styled from '@theme/styled';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import { GET_USER_INFO } from '@queries/user.queries';
-import { CREATE_CHAT, GET_CHAT } from '@queries/chat.queries';
-import { GetUserInfo, GetChat, GetUserInfo_getUserInfo_user as User } from '@/types/api';
+import { CREATE_CHAT, GET_CHAT, SUB_CHAT } from '@queries/chat.queries';
+import {
+  GetUserInfo,
+  GetChat,
+  GetUserInfo_getUserInfo_user as User,
+  GetChat_getChat_chat as ChatType,
+  SubChat,
+} from '@/types/api';
 import useChange from '@/hooks/useChange';
 
 interface ChatID {
@@ -35,17 +41,32 @@ const ChatRoom: FC = () => {
     variables: { chatId },
   });
   const [CreateChat] = useCustomMutation(CREATE_CHAT);
-  const [chatContent, , onChangeChatContent] = useChange('');
+  const [chatContent, setChatContent, onChangeChatContent] = useChange('');
   const chatList = chatData?.getChat.chat;
 
   const onClickBackButton = () => {
     history.push('/signin');
   };
 
+  useEffect(() => {
+    subscribeToMore({
+      document: SUB_CHAT,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+
+        const { subChat } = (subscriptionData.data as unknown) as SubChat;
+        const newChat = subChat.chat as ChatType;
+
+        return { ...prev, getChat: { ...prev.getChat, chat: [...prev.getChat.chat, newChat] } };
+      },
+    });
+  }, []);
+
   const onClickSubmitButton = async () => {
     await CreateChat({
-      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: 'test' },
+      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
     });
+    setChatContent('');
   };
 
   return (
