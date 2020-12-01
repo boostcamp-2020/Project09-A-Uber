@@ -5,13 +5,13 @@ import getChatList from '@services/chat/getChat';
 const resolvers: Resolvers = {
   Query: {
     getChat: async (_, { chatId }) => {
-      const { result, chat, error } = await getChatList(chatId);
+      const { result, chats, error } = await getChatList(chatId);
 
       if (result === 'fail' || error) {
-        return { result, error, chat };
+        return { result, error, chats };
       }
 
-      return { result, chat };
+      return { result, chats };
     },
   },
 };

@@ -13,7 +13,7 @@ export const GET_CHAT = gql`
   query GetChat($chatId: String!) {
     getChat(chatId: $chatId) {
       result
-      chat {
+      chats {
         writer
         content
         createdAt

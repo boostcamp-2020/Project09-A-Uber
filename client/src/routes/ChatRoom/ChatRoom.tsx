@@ -12,7 +12,7 @@ import {
   GetUserInfo,
   GetChat,
   GetUserInfo_getUserInfo_user as User,
-  GetChat_getChat_chat as ChatType,
+  GetChat_getChat_chats as ChatType,
   SubChat,
 } from '@/types/api';
 import useChange from '@/hooks/useChange';
@@ -42,7 +42,7 @@ const ChatRoom: FC = () => {
   });
   const [CreateChat] = useCustomMutation(CREATE_CHAT);
   const [chatContent, setChatContent, onChangeChatContent] = useChange('');
-  const chatList = chatData?.getChat.chat;
+  const chatList = chatData?.getChat.chats;
 
   const onClickBackButton = () => {
     history.goBack();
@@ -56,8 +56,9 @@ const ChatRoom: FC = () => {
 
         const { subChat } = (subscriptionData.data as unknown) as SubChat;
         const newChat = subChat.chat as ChatType;
+        console.log(prev);
 
-        return { ...prev, getChat: { ...prev.getChat, chat: [...prev.getChat.chat, newChat] } };
+        return { ...prev, getChat: { ...prev.getChat, chats: [...prev.getChat.chats, newChat] } };
       },
     });
   }, []);
