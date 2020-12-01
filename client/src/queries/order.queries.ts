@@ -31,6 +31,18 @@ export const GET_ORDER = gql`
   }
 `;
 
+export const GET_ORDER_BY_ID = gql`
+  query getOrderById($orderId: String!) {
+    getOrderById(orderId: $orderId) {
+      result
+      order {
+        status
+      }
+      error
+    }
+  }
+`;
+
 export const GET_UNASSIGNED_ORDERS = gql`
   query GetUnassignedOrders {
     getUnassignedOrders {
