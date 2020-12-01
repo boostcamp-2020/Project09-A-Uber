@@ -20,9 +20,14 @@ const insertChat = async ({ writer, createdAt, chatId, content }: Props) => {
       return { result: 'fail', chat: null, error: Message.ChatNotCreated };
     }
 
-    const { chat, result } = await getChatList(chatId);
+    // const { chat, result } = await getChatList(chatId);
+    const newChat = {
+      writer,
+      createdAt,
+      content,
+    };
 
-    return { result, chat };
+    return { result: 'success', chat: newChat };
   } catch (err) {
     return { result: 'fail', error: err.message };
   }
