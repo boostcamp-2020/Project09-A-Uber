@@ -9,6 +9,7 @@ import ChatRoom from '@routes/ChatRoom';
 import SignIn from '@/routes/SignIn';
 import Home from '@routes/Home';
 import UserMain from '@routes/User/Main';
+import UserWaitingDriver from '@routes/User/WaitingDriver';
 import DriverMain from '@routes/Driver/Main';
 import DriverGoToOrigin from '@routes/Driver/GoToOrigin';
 import DriverGoToDestination from '@routes/Driver/GoToDestination';
@@ -34,6 +35,7 @@ const App: FC = () => (
           <Switch>
             <Route exact path="/" component={auth(Home)} />
             <Route exact path="/user" component={auth(UserMain, 'user')} />
+            <Route exact path="/user/waitingDriver" component={auth(UserWaitingDriver, 'user')} />
             <Route exact path="/driver" component={auth(DriverMain, 'driver')} />
             <Route exact path="/driver/goToOrigin" component={auth(DriverGoToOrigin, 'driver')} />
             <Route
