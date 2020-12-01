@@ -5,11 +5,11 @@ import { UPDATE_DRIVER_LOCATION } from '@api/user/updateDriverLocation/updateDri
 
 const resolvers: Resolvers = {
   Subscription: {
-    subLocation: {
+    subDriverLocation: {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator(UPDATE_DRIVER_LOCATION),
         (payload, variables) => {
-          return payload.subLocation.orderId == variables.orderId;
+          return payload.subDriverLocation.orderId === variables.orderId;
         },
       ),
     },
