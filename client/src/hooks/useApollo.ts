@@ -29,7 +29,7 @@ const errorHandler = async <TData>(
   apolloClient: ApolloClient<object>,
   request: (...args: any) => TData,
 ) => {
-  const { statusCode } = error.networkError as ServerParseError;
+  const { statusCode } = (error.networkError as ServerParseError) || 0;
   if (statusCode !== 401) {
     throw new ApolloError(error);
   }
@@ -50,24 +50,41 @@ export const useCustomQuery = <TData = any, TVariables = OperationVariables>(
   const queryResult = useQuery<TData, TVariables>(query, {
     ...options,
     onError: (error: ApolloError) => {
-      errorHandler(error, apolloClient, queryResult.refetch).catch((apolloError) => {
-        if (options?.onError) {
-          options.onError(apolloError);
-        }
-      });
+      errorHandler(error, apolloClient, queryResult.refetch)
+        .then(async (reQueryResult) => {
+          const { data } = await reQueryResult;
+          onStartCompleted(data);
+        })
+        .catch((apolloError) => {
+          if (options?.onError) {
+            options.onError(apolloError);
+          }
+        });
     },
   });
 
   const callQuery = async (variables?: Partial<TVariables>) => {
     try {
-      return await queryResult.refetch(variables);
+      const result = await queryResult.refetch(variables);
+      onStartCompleted(result.data);
+      return result;
     } catch (error) {
-      const result = await errorHandler(error, apolloClient, queryResult.refetch);
+      const result = await errorHandler(error, apolloClient, queryResult.refetch).catch(
+        (err) => err,
+      );
+      onStartCompleted(result.data);
+
       return result;
     }
   };
 
   return { ...queryResult, callQuery };
+
+  function onStartCompleted(data: TData) {
+    if (options?.onCompleted) {
+      options.onCompleted(data);
+    }
+  }
 };
 
 export const useCustomMutation = <TData = any, TVariables = OperationVariables>(
