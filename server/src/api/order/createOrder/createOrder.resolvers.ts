@@ -1,15 +1,20 @@
 import { Resolvers } from '@type/api';
 import createOrder from '@services/order/createOrder';
-
 import { UPDATE_ORDER_LIST } from '@api/order/updateOrderList/updateOrderList.resolvers';
+
+export const CREATE_NEW_ORDER = 'CREATE_NEW_ORDER';
 
 const resolvers: Resolvers = {
   Mutation: {
     createOrder: async (_, { startingPoint, destination }, { req, pubsub }) => {
-      const { result, orderId, error } = await createOrder({
+      const { result, orderId, error, createdOrder } = await createOrder({
         startingPoint,
         destination,
         user: req.user?._id || '',
+      });
+
+      pubsub.publish(CREATE_NEW_ORDER, {
+        subNewOrder: { newOrder: createdOrder },
       });
 
       if (result === 'fail' || error) {
