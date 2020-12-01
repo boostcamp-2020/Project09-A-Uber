@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import MapFrame from '@/components/MapFrame';
 import { GET_ORDER } from '@queries/order.queries';
-import { GetOrderInfo } from '@/types/api';
-import { useCustomQuery } from '@hooks/useApollo';
+import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
+import { GetOrderInfo, UpdateDriverLocation } from '@/types/api';
+import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import { Button } from 'antd-mobile';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
@@ -39,11 +40,16 @@ const GoToDestination: FC = () => {
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [destination, setDestination] = useState({ lat: 0, lng: 0 });
   const { callQuery } = useCustomQuery<GetOrderInfo>(GET_ORDER, { skip: true });
-
+  const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
+    UPDATE_DRIVER_LOCATION,
+  );
   const updateCurrentLocation = async () => {
     const currLocation = await getUserLocation();
 
     if (currLocation) {
+      updateDriverLocationMutation({
+        variables: { lat: currLocation.lat, lng: currLocation.lng },
+      });
       setCurrentLocation(currLocation);
     }
   };
