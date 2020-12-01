@@ -44,6 +44,7 @@ const WaitingDriver = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [driverLocation, setDriverLocation] = useState({ lat: 0, lng: 0 });
   const [isModal, openModal, closeModal] = useModal();
+  const [didCloseModal, setDidCloseModal] = useState(false);
   const [carInfo, setCarInfo] = useState({ carNumber: '', carType: 'small' } as CarInfoType);
   useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
     variables: { orderId: '5fc45539e439ea40e869bf47' },
@@ -69,8 +70,9 @@ const WaitingDriver = () => {
         lng: subscriptionData.data?.subDriverLocation.coordinates[1] as number,
       };
       setDriverLocation(driverNewLocation);
-      if (calcLocationDistance(driverNewLocation, destination) < 100) {
+      if (didCloseModal === false && calcLocationDistance(driverNewLocation, destination) < 100) {
         openModal();
+        setDidCloseModal(true);
       }
     },
   });
