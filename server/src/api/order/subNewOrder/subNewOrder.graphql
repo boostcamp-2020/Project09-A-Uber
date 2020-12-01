@@ -1,0 +1,7 @@
+type subNewOrderResponse {
+    newOrder: Order
+}
+
+type Subscription {
+    subNewOrder: subNewOrderResponse!
+}
