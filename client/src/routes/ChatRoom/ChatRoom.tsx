@@ -45,7 +45,7 @@ const ChatRoom: FC = () => {
   const chatList = chatData?.getChat.chat;
 
   const onClickBackButton = () => {
-    history.push('/signin');
+    history.goBack();
   };
 
   useEffect(() => {
