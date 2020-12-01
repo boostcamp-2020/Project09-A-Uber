@@ -14,7 +14,7 @@ const resolvers: Resolvers = {
       };
       const { result, chat, error } = await insertChat(payload);
 
-      pubsub.publish(NEW_CHAT, { subChat: { result, chat, error } });
+      pubsub.publish(NEW_CHAT, { subChat: { result, chat, error, orderId: chatId } });
 
       if (result === 'fail' || error) return { result, chat, error };
 
