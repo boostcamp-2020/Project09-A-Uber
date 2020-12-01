@@ -10,4 +10,6 @@ export enum TOAST_DURATION {
 
 export enum DRIVER {
   ABJACENT_DISTANCE = 100,
+  BASE_TAXI_FEE = 3000,
+  INCRESE_TAXI_FEE = 100,
 }
