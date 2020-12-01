@@ -5,7 +5,11 @@ import getOrder from '@services/order/getOrder';
 const resolvers: Resolvers = {
   Query: {
     getOrderInfo: async (_, { orderId }, { req }) => {
-      const { result, order, error } = await getOrder({ orderId, driverId: req.user?._id || '' });
+      const { result, order, error } = await getOrder({
+        orderId,
+        userId: req.user?._id || '',
+        userType: req.user?.type,
+      });
 
       if (!order && result === 'fail') {
         return { result: 'fail', order, error };
