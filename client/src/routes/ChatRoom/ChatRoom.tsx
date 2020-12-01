@@ -56,15 +56,14 @@ const ChatRoom: FC = () => {
 
         const { subChat } = (subscriptionData.data as unknown) as SubChat;
         const newChat = subChat.chat as ChatType;
-        console.log(prev);
 
         return { ...prev, getChat: { ...prev.getChat, chats: [...prev.getChat.chats, newChat] } };
       },
     });
   }, []);
 
-  const onClickSubmitButton = async () => {
-    await CreateChat({
+  const onClickSubmitButton = () => {
+    CreateChat({
       variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
     });
     setChatContent('');
