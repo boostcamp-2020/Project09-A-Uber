@@ -18,12 +18,12 @@ interface Query {
 
 const getOrder = async ({ orderId, userId, userType }: GetOrderProps) => {
   try {
-    let query: Query = {
+    const query: Query = {
       _id: orderId,
       status: 'active',
     };
-    if (userType === loginType.user) query = { ...query, user: userId };
-    if (userType === loginType.driver) query = { ...query, driver: userId };
+    if (userType === loginType.user) query.user = userId;
+    if (userType === loginType.driver) query.driver = userId;
 
     const order = (await Order.findOne(query)) as OrderType | null;
 
