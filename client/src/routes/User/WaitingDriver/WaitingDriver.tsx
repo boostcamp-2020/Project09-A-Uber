@@ -24,7 +24,7 @@ const StyledWaitingDriverMenu = styled.section`
   display: flex;
   align-items: flex-end;
 
-  & > .cancel-order-btn {
+  & > .chat-with-driver {
     width: 100%;
 
     & > .am-button {
@@ -86,8 +86,8 @@ const WaitingDriver = () => {
         directions={directions}
       >
         <StyledWaitingDriverMenu>
-          <div className="cancel-order-btn">
-            <Button type="warning">취소</Button>
+          <div className="chat-with-driver">
+            <Button type="primary">드라이버와 채팅하기</Button>
           </div>
         </StyledWaitingDriverMenu>
       </MapFrame>
