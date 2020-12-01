@@ -10,6 +10,7 @@ import SignIn from '@/routes/SignIn';
 import Home from '@routes/Home';
 import UserMain from '@routes/User/Main';
 import DriverMain from '@routes/Driver/Main';
+import DriverGoToOrigin from '@routes/Driver/GoToOrigin';
 import Signup from '@routes/Signup';
 import SearchDriver from '@routes/SearchDriver';
 
@@ -33,6 +34,7 @@ const App: FC = () => (
             <Route exact path="/" component={auth(Home)} />
             <Route exact path="/user" component={auth(UserMain, 'user')} />
             <Route exact path="/driver" component={auth(DriverMain, 'driver')} />
+            <Route exact path="/driver/goToOrigin" component={auth(DriverGoToOrigin, 'driver')} />
             <Route exact path="/user/searchDriver" component={auth(SearchDriver, 'user')} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={Signup} />
