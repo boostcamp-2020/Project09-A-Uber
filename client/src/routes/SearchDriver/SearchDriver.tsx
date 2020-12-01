@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { Button, ActivityIndicator } from 'antd-mobile';
+import { Button, ActivityIndicator, Toast } from 'antd-mobile';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
@@ -9,9 +9,9 @@ import Header from '@components/HeaderWithMenu';
 import Modal from '@components/Modal';
 import CarInfo from '@components/CarInfo';
 import { InitialState } from '@reducers/.';
-import { SUB_APPROVAL_ORDER, GET_ORDER_CAR_INFO } from '@queries/order.queries';
-import { SubApprovalOrder, GetOrderCarInfo } from '@/types/api';
-import { useCustomQuery } from '@hooks/useApollo';
+import { SUB_APPROVAL_ORDER, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@queries/order.queries';
+import { SubApprovalOrder, GetOrderCarInfo, CancelOrder } from '@/types/api';
+import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import useModal from '@hooks/useModal';
 import { addCarInfo } from '@reducers/order';
 import { Message } from '@utils/client-message';
@@ -71,11 +71,24 @@ const SearchDriver: FC = () => {
   const { data: approvalOrder } = useSubscription<SubApprovalOrder>(SUB_APPROVAL_ORDER, {
     variables: { orderId },
   });
+  const [cancelOrderMutation] = useCustomMutation<CancelOrder>(CANCEL_ORDER, {
+    onCompleted: ({ cancelOrder }) => {
+      if (cancelOrder.result === 'fail') {
+        Toast.fail(Message.FailureCancelOrder);
+        return;
+      }
+      history.push('/user');
+    },
+  });
 
   const onClickModalCloseHandler = useCallback(() => {
     onCloseModal();
     history.push('/user/waiting');
   }, []);
+
+  const onClickCancelOrderHandler = useCallback(() => {
+    cancelOrderMutation({ variables: { orderId } });
+  }, [orderId]);
 
   const onOpenOrderModal = useCallback(async () => {
     const { data } = await callQuery({ orderId });
@@ -102,7 +115,9 @@ const SearchDriver: FC = () => {
             주변에 운행이 가능한 드라이버를 탐색중입니다
             {!isModal && <ActivityIndicator size="large" />}
           </div>
-          <Button type="warning">탐색 취소</Button>
+          <Button type="warning" onClick={onClickCancelOrderHandler}>
+            탐색 취소
+          </Button>
         </section>
       </StyledSearchDriver>
       <Modal visible={isModal} onClose={onClickModalCloseHandler}>
