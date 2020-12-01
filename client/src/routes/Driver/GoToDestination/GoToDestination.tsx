@@ -7,6 +7,8 @@ import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import { Button } from 'antd-mobile';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
+import { DRIVER } from '@utils/enums';
+import { numberWithCommas } from '@utils/numberWithCommas';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -16,6 +18,8 @@ const StyledGoToDestinationMenu = styled.div`
 
   & span {
     text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
   }
 
   & .am-button {
@@ -39,6 +43,7 @@ const GoToDestination: FC = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [destination, setDestination] = useState({ lat: 0, lng: 0 });
+  const [taxiFee, setTaxiFee] = useState(DRIVER.BASE_TAXI_FEE);
   const { callQuery } = useCustomQuery<GetOrderInfo>(GET_ORDER, { skip: true });
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
@@ -47,6 +52,7 @@ const GoToDestination: FC = () => {
     const currLocation = await getUserLocation();
 
     if (currLocation) {
+      setTaxiFee((pre) => pre + DRIVER.INCRESE_TAXI_FEE);
       updateDriverLocationMutation({
         variables: { lat: currLocation.lat, lng: currLocation.lng },
       });
@@ -75,7 +81,7 @@ const GoToDestination: FC = () => {
       directions={directions}
     >
       <StyledGoToDestinationMenu>
-        <span>요금부분: TODO</span>
+        <span>현재요금: {numberWithCommas(taxiFee)}</span>
         <Button className="driver-chat-btn">손님과의 채팅</Button>
         <Button className="driver-arrive-btn" type="primary">
           도착완료
