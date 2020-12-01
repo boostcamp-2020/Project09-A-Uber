@@ -67,7 +67,6 @@ export const SUB_APPROVAL_ORDER = gql`
   }
 `;
 
-
 export const GET_ORDER_CAR_INFO = gql`
   query GetOrderCarInfo($orderId: String!) {
     getOrderCarInfo(orderId: $orderId) {
@@ -85,6 +84,15 @@ export const UPDATE_ORDER_LIST = gql`
   subscription UpdateOrderList {
     updateOrderList {
       result
+    }
+  }
+`;
+
+export const CANCEL_ORDER = gql`
+  mutation CancelOrder($orderId: String!) {
+    cancelOrder(orderId: $orderId) {
+      result
+      error
     }
   }
 `;
