@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 
@@ -45,7 +46,7 @@ const GoToOrigin = () => {
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
-
+  const history = useHistory();
   const order = data?.getOrderInfo.order;
 
   const updateCurrentLocation = async () => {
@@ -58,6 +59,10 @@ const GoToOrigin = () => {
       });
     }
   };
+
+  const onClickStartDrive = useCallback(() => {
+    history.push('/driver/goToDestination');
+  }, []);
 
   useEffect(() => {
     const updateCurrentLocationInterval = setInterval(updateCurrentLocation, 5000);
@@ -81,7 +86,9 @@ const GoToOrigin = () => {
         <StyledDriverGoToOriginMenu>
           <div className="driver-start-order-btn">
             <div className="driver-start-order-info">손님이 탑승하시고 나서 눌러주세요.</div>
-            <Button type="primary">운행시작</Button>
+            <Button onClick={onClickStartDrive} type="primary">
+              운행시작
+            </Button>
           </div>
         </StyledDriverGoToOriginMenu>
       </MapFrame>
