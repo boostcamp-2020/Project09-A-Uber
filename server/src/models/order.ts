@@ -7,7 +7,7 @@ import chatSchema from './chat';
 const orderSchema = new Schema({
   id: Schema.Types.ObjectId,
   user: { type: Schema.Types.ObjectId, required: true },
-  driver: Schema.Types.ObjectId,
+  driver: { type: Schema.Types.ObjectId, ref: 'User' },
   amount: Number,
   payment: { type: paymentSchema, required: false },
   startingPoint: { type: locationSchema, required: true },
