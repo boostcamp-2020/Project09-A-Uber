@@ -11,8 +11,9 @@ const resolvers: Resolvers = {
         userType: req.user?.type,
         curLocation: { coordinates: [lat, lng] },
       });
+      console.log(orderId);
       pubsub.publish(UPDATE_DRIVER_LOCATION, {
-        subLocation: { coordinates: [lat, lng], orderId },
+        subDriverLocation: { coordinates: [lat, lng], orderId },
       });
 
       if (result === 'fail') {
