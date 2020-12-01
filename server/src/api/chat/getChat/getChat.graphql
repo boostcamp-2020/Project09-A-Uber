@@ -1,9 +1,9 @@
-type ChatResponse {
+type GetChatResponse {
   result: String!
-  chat: [Chat]!
+  chats: [Chat]!
   error: String
 }
 
 type Query {
-  getChat(chatId: String!): ChatResponse!
+  getChat(chatId: String!): GetChatResponse!
 }
