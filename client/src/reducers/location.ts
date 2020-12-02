@@ -2,6 +2,7 @@ import { Location } from '.';
 
 export const UPDATE_LOCATION_ORIGIN = 'UPDATE_LOCATION_ORIGIN';
 export const UPDATE_LOCATION_DESTINATION = 'UPDATE_LOCATION_DESTINATION';
+export const UPDATE_LOCATION_ALL = 'UPDATE_LOCATION_ALL';
 
 // updateLocationOrigin
 export interface UpdateLocationOrigin {
@@ -25,4 +26,17 @@ export const updateLocationDestination = (location: Location): UpdateLocationDes
   location,
 });
 
-export type LocationActions = UpdateLocationOrigin | UpdateLocationDestination;
+// updateLocationAll
+export interface UpdateLocationAll {
+  type: typeof UPDATE_LOCATION_ALL;
+  origin: Location;
+  destination: Location;
+}
+
+export const updateLocationALL = (origin: Location, destination: Location): UpdateLocationAll => ({
+  type: UPDATE_LOCATION_ALL,
+  origin,
+  destination,
+});
+
+export type LocationActions = UpdateLocationOrigin | UpdateLocationDestination | UpdateLocationAll;

@@ -1,6 +1,11 @@
 import { CarInfo } from '@/types/api';
 import { OrderActions, ADD_ORDER_ID, ADD_CAR_INFO } from './order';
-import { LocationActions, UPDATE_LOCATION_ORIGIN, UPDATE_LOCATION_DESTINATION } from './location';
+import {
+  LocationActions,
+  UPDATE_LOCATION_ORIGIN,
+  UPDATE_LOCATION_DESTINATION,
+  UPDATE_LOCATION_ALL,
+} from './location';
 
 interface Driver {
   licenseNumber: string;
@@ -62,6 +67,18 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
           location: {
             ...state.order.location,
             destination: action.location,
+          },
+        },
+      };
+    case UPDATE_LOCATION_ALL:
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          location: {
+            ...state.order.location,
+            origin: action.origin,
+            destination: action.destination,
           },
         },
       };
