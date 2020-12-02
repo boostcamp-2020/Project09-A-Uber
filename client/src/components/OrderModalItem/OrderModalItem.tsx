@@ -1,5 +1,3 @@
-/* eslint-disable no-useless-return */
-/* eslint-disable no-underscore-dangle */
 import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
