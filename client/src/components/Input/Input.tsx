@@ -9,6 +9,7 @@ interface Props {
   title?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   placeholder?: string;
   allow?: boolean;
   inValidMessage?: string;
@@ -62,11 +63,21 @@ const StyledInput = styled.div`
 `;
 
 const Input = forwardRef<HTMLInputElement, Props>(
-  ({ title, placeholder, allow, value, onChange, type, className, inValidMessage }, ref) => (
+  (
+    { title, placeholder, allow, value, onChange, type, className, inValidMessage, onKeyPress },
+    ref,
+  ) => (
     <StyledInput className={className}>
       {title && <h1>{title}</h1>}
       <div>
-        <input type={type} value={value} onChange={onChange} placeholder={placeholder} ref={ref} />
+        <input
+          type={type}
+          value={value}
+          onChange={onChange}
+          onKeyPress={onKeyPress}
+          placeholder={placeholder}
+          ref={ref}
+        />
         {allow !== undefined &&
           (allow ? <img src={allowedImg} alt="allow" /> : <img src={warningImg} alt="awrning" />)}
       </div>
