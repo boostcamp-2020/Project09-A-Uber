@@ -9,13 +9,6 @@ interface GetOrderProps {
   userType?: LoginType;
 }
 
-interface Query {
-  _id: string;
-  user?: string;
-  driver?: string;
-  status: string;
-}
-
 const getOrder = async ({ orderId, userId, userType }: GetOrderProps) => {
   try {
     let order;
