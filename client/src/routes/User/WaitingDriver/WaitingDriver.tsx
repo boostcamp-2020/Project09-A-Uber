@@ -6,14 +6,16 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import MapFrame from '@components/MapFrame';
-import { GET_ORDER, GET_ORDER_CAR_INFO } from '@queries/order.queries';
+import { GET_ORDER, GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
 import { SUB_DRIVER_LOCATION } from '@queries/user.queries';
 import {
   GetOrderInfo,
   SubDriverLocation,
   GetOrderCarInfo,
   CarInfo as CarInfoType,
+  SubOrderCallStatus,
 } from '@/types/api';
+import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
 import CarInfo from '@components/CarInfo';
@@ -79,6 +81,14 @@ const WaitingDriver = () => {
       if (didCloseModal === false && calcLocationDistance(driverNewLocation, destination) < 100) {
         openModal();
         setDidCloseModal(true);
+      }
+    },
+  });
+  useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
+    variables: { orderId: id },
+    onSubscriptionData: ({ subscriptionData }) => {
+      if (subscriptionData.data?.subOrderCallStatus.status === OrderCallStatus.startedDrive) {
+        history.push('/user/goToDestination');
       }
     },
   });
