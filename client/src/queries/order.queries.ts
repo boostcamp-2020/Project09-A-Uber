@@ -72,10 +72,11 @@ export const APPROVAL_ORDER = gql`
   }
 `;
 
-export const SUB_APPROVAL_ORDER = gql`
-  subscription SubApprovalOrder($orderId: String, $isDriver: Boolean) {
-    subApprovalOrder(orderId: $orderId, isDriver: $isDriver) {
-      approvalOrderId
+export const SUB_ORDER_CALL_STATUS = gql`
+  subscription SubOrderCallStatus($orderId: String!) {
+    subOrderCallStatus(orderId: $orderId) {
+      orderId
+      status
     }
   }
 `;
