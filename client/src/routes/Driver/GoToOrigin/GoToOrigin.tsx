@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import styled from '@theme/styled';
 
 import MapFrame from '@components/MapFrame';
-import { GET_ORDER } from '@queries/order.queries';
+import { GET_ORDER, START_DRIVING } from '@queries/order.queries';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
-import { GetOrderInfo, UpdateDriverLocation } from '@/types/api';
+import { GetOrderInfo, UpdateDriverLocation, StartDriving } from '@/types/api';
 import getUserLocation from '@utils/getUserLocation';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import { InitialState } from '@reducers/.';
@@ -48,6 +48,13 @@ const GoToOrigin = () => {
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
+  const [startDrivingMutation] = useCustomMutation<StartDriving>(START_DRIVING, {
+    onCompleted: ({ startDriving }) => {
+      if (startDriving?.result === 'success') {
+        history.push('/driver/goToDestination');
+      }
+    },
+  });
   const history = useHistory();
   const order = data?.getOrderInfo.order;
 
@@ -63,8 +70,8 @@ const GoToOrigin = () => {
   };
 
   const onClickStartDrive = useCallback(() => {
-    history.push('/driver/goToDestination');
-  }, []);
+    startDrivingMutation({ variables: { orderId: id } });
+  }, [id]);
 
   useEffect(() => {
     const updateCurrentLocationInterval = setInterval(updateCurrentLocation, 5000);
