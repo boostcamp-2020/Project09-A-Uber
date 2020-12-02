@@ -1,7 +1,0 @@
-type SubApprovalOrder {
-    approvalOrderId: String!
-}
-
-type Subscription {
-    subApprovalOrder(orderId: String, isDriver: Boolean): SubApprovalOrder!
-}

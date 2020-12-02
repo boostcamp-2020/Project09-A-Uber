@@ -1,8 +1,10 @@
 import { Resolvers } from '@type/api';
 import approvalOrder from '@services/order/approvalOrder';
 import { UPDATE_ORDER_LIST } from '@api/order/updateOrderList/updateOrderList.resolvers';
-
-export const APPROVAL_ORDER = 'APPROVAL_ORDER';
+import {
+  ORDER_CALL_STATUS,
+  OrderCallStatus,
+} from '@api/order/subOrderCallStatus/subOrderCallStatus.resolvers';
 
 const resolvers: Resolvers = {
   Mutation: {
@@ -13,7 +15,9 @@ const resolvers: Resolvers = {
         return { result, error };
       }
 
-      pubsub.publish(APPROVAL_ORDER, { subApprovalOrder: { approvalOrderId: orderId } });
+      pubsub.publish(ORDER_CALL_STATUS, {
+        subOrderCallStatus: { orderId, status: OrderCallStatus.APPROVAL },
+      });
       pubsub.publish(UPDATE_ORDER_LIST, {
         updateOrderList: { result: 'success' },
       });

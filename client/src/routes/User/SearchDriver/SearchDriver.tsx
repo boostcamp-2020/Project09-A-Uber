@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Button, ActivityIndicator, Toast } from 'antd-mobile';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
@@ -9,8 +9,9 @@ import Header from '@components/HeaderWithMenu';
 import Modal from '@components/Modal';
 import CarInfo from '@components/CarInfo';
 import { InitialState } from '@reducers/.';
-import { SUB_APPROVAL_ORDER, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@queries/order.queries';
-import { SubApprovalOrder, GetOrderCarInfo, CancelOrder } from '@/types/api';
+import { SUB_ORDER_CALL_STATUS, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@queries/order.queries';
+import { SubOrderCallStatus, GetOrderCarInfo, CancelOrder } from '@/types/api';
+import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import useModal from '@hooks/useModal';
 import { addCarInfo } from '@reducers/order';
@@ -68,8 +69,13 @@ const SearchDriver: FC = () => {
   });
   const { id: orderId } = useSelector((state: InitialState) => state.order || {});
   const { carInfo } = useSelector((state: InitialState) => state.order || {});
-  const { data: approvalOrder } = useSubscription<SubApprovalOrder>(SUB_APPROVAL_ORDER, {
+  useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId },
+    onSubscriptionData: ({ subscriptionData }) => {
+      if (subscriptionData.data?.subOrderCallStatus.status === OrderCallStatus.approval) {
+        onOpenOrderModal();
+      }
+    },
   });
   const [cancelOrderMutation] = useCustomMutation<CancelOrder>(CANCEL_ORDER, {
     onCompleted: ({ cancelOrder }) => {
@@ -99,12 +105,6 @@ const SearchDriver: FC = () => {
     dispatch(addCarInfo(carInfoData));
     onOpenModal();
   }, [orderId]);
-
-  useEffect(() => {
-    if (orderId && approvalOrder && orderId === approvalOrder?.subApprovalOrder.approvalOrderId) {
-      onOpenOrderModal();
-    }
-  }, [orderId, approvalOrder]);
 
   return (
     <>
