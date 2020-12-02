@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import HeaderWithBack from '@components/HeaderWithBack';
@@ -34,6 +34,7 @@ const StyledChatMain = styled.div`
 
 const ChatRoom: FC = () => {
   const history = useHistory();
+  const chatRef = useRef<HTMLDivElement>(null);
   const { chatId } = useParams<ChatID>();
   const { data: userInfo } = useCustomQuery<GetUserInfo>(GET_USER_INFO);
   const { _id: userId } = userInfo?.getUserInfo.user as User;
@@ -46,6 +47,21 @@ const ChatRoom: FC = () => {
 
   const onClickBackButton = () => {
     history.goBack();
+  };
+
+  const onClickSubmitButton = () => {
+    CreateChat({
+      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
+    });
+    setChatContent('');
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    CreateChat({
+      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
+    });
+    setChatContent('');
   };
 
   useEffect(() => {
@@ -63,17 +79,14 @@ const ChatRoom: FC = () => {
     });
   }, []);
 
-  const onClickSubmitButton = () => {
-    CreateChat({
-      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
-    });
-    setChatContent('');
-  };
+  useEffect(() => {
+    chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
+  }, [chatList]);
 
   return (
     <StyledChatRoom>
       <HeaderWithBack onClick={onClickBackButton} className="green-header" />
-      <StyledChatMain>
+      <StyledChatMain ref={chatRef}>
         {chatList &&
           chatList?.length !== 0 &&
           chatList.map((item) => (
@@ -84,6 +97,7 @@ const ChatRoom: FC = () => {
         chatContent={chatContent}
         onChangeChatContent={onChangeChatContent}
         onClickSubmitButton={onClickSubmitButton}
+        onSubmit={onSubmit}
       ></ChatInput>
     </StyledChatRoom>
   );
