@@ -1,0 +1,14 @@
+enum OrderCallStatus {
+    approval
+    staredDrive
+    compeletedDrive
+}
+
+type SubOrderCallStatus {
+    orderId: String!
+    status: OrderCallStatus!
+}
+
+type Subscription {
+    subOrderCallStatus(orderId: String!): SubOrderCallStatus!
+}
