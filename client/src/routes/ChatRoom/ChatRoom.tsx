@@ -56,6 +56,15 @@ const ChatRoom: FC = () => {
     setChatContent('');
   };
 
+  const onKeyPressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      CreateChat({
+        variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
+      });
+      setChatContent('');
+    }
+  };
+
   useEffect(() => {
     subscribeToMore({
       document: SUB_CHAT,
@@ -89,6 +98,7 @@ const ChatRoom: FC = () => {
         chatContent={chatContent}
         onChangeChatContent={onChangeChatContent}
         onClickSubmitButton={onClickSubmitButton}
+        onKeyPressEnter={onKeyPressEnter}
       ></ChatInput>
     </StyledChatRoom>
   );

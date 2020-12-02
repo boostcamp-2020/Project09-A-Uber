@@ -8,6 +8,7 @@ interface Props {
   chatContent: string;
   onClickSubmitButton: () => void;
   onChangeChatContent: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyPressEnter: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const StyledChatInput = styled.div`
@@ -35,7 +36,12 @@ const StyledChatInput = styled.div`
   }
 `;
 
-const ChatInput: FC<Props> = ({ chatContent, onClickSubmitButton, onChangeChatContent }) => {
+const ChatInput: FC<Props> = ({
+  chatContent,
+  onClickSubmitButton,
+  onChangeChatContent,
+  onKeyPressEnter,
+}) => {
   return (
     <StyledChatInput>
       <Input
@@ -43,6 +49,7 @@ const ChatInput: FC<Props> = ({ chatContent, onClickSubmitButton, onChangeChatCo
         placeholder="채팅을 입력해 주세요."
         value={chatContent}
         onChange={onChangeChatContent}
+        onKeyPress={onKeyPressEnter}
       ></Input>
       <Button type="primary" onClick={onClickSubmitButton}>
         전송
