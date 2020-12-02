@@ -72,7 +72,7 @@ const Main: FC = () => {
     >
       <AutoLocation locationType="origin" />
       <AutoLocation locationType="destination" />
-      <EstimatedTime directions={directions} origin={origin} destination={destination} />
+      <EstimatedTime directions={directions} />
       <StyledButton type="primary" onClick={onClickSearchDriver}>
         라이더 탐색
       </StyledButton>
