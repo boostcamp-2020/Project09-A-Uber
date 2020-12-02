@@ -15,7 +15,7 @@ const StyledChatInput = styled.div`
   align-items: center;
   position: sticky;
   bottom: 0;
-  padding: 0.5rem;
+  padding: 1.5rem;
 
   & > div {
     width: 80%;
