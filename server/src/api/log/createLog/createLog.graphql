@@ -1,8 +1,0 @@
-type CreateLogResponse {
-  result: String!
-  error: String
-}
-
-type Mutation {
-  createLog(orderId: String!, paymentAmount: Int!): CreateLogResponse! @auth
-}
