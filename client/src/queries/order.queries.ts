@@ -128,3 +128,12 @@ export const CANCEL_ORDER = gql`
     }
   }
 `;
+
+export const START_DRIVING = gql`
+  mutation StartDriving($orderId: String!) {
+    startDriving(orderId: $orderId) {
+      result
+      error
+    }
+  }
+`;
