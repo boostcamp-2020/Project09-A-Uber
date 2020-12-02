@@ -10,7 +10,7 @@ const logSchema = new Schema({
   origin: { type: locationSchema, required: true },
   destination: { type: locationSchema, required: true },
   paymentAmount: Number,
-  createdAt: Schema.Types.Date,
+  createdAt: { type: Date, default: Date.now },
 });
 
 export default model('Log', logSchema);
