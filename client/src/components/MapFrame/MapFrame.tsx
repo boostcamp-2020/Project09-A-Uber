@@ -2,7 +2,8 @@ import React, { FC, useState, useEffect } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 
 import styled from '@theme/styled';
-import GoogleMap, { Location } from '@components/GoogleMap';
+import GoogleMap from '@components/GoogleMap';
+import { Location } from '@reducers//';
 import HeaderWithMenu from '@components/HeaderWithMenu';
 
 interface Props {

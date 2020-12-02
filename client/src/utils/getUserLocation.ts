@@ -1,4 +1,4 @@
-import { Location } from '@components/GoogleMap';
+import { Location } from '@reducers/.';
 
 const getUserLocation = async (): Promise<Location | void> => {
   try {
