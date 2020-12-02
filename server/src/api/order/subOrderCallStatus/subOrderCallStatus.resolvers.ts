@@ -7,7 +7,7 @@ export const ORDER_CALL_STATUS = 'ORDER_CALL_STATUS';
 export const enum OrderCallStatus {
   APPROVAL = 'approval',
   STARED_DRIVE = 'startedDrive',
-  COMPELETED_DRIVE = 'compeletedDrive',
+  COMPLETED_DRIVE = 'completedDrive',
 }
 
 const resolvers: Resolvers = {

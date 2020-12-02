@@ -1,5 +1,5 @@
 export enum OrderCallStatus {
   approval = 'approval',
-  compeletedDrive = 'compeletedDrive',
+  completedDrive = 'completedDrive',
   startedDrive = 'startedDrive',
 }
