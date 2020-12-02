@@ -1,0 +1,9 @@
+type GetCompletedOrdersResponse {
+  result: String!
+  completedOrders: [Order!]
+  error: String
+}
+
+type Query {
+  getCompletedOrders: GetCompletedOrdersResponse! @auth
+}
