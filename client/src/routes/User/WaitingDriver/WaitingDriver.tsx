@@ -6,10 +6,9 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import MapFrame from '@components/MapFrame';
-import { GET_ORDER, GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
+import { GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
 import { SUB_DRIVER_LOCATION } from '@queries/user.queries';
 import {
-  GetOrderInfo,
   SubDriverLocation,
   GetOrderCarInfo,
   CarInfo as CarInfoType,
@@ -53,7 +52,9 @@ const WaitingDriver = () => {
   const [isModal, openModal, closeModal] = useModal();
   const [didCloseModal, setDidCloseModal] = useState(false);
   const [carInfo, setCarInfo] = useState({ carNumber: '', carType: 'small' } as CarInfoType);
-  const { id } = useSelector((state: InitialState) => state.order || {});
+  const { id } = useSelector(({ order }: InitialState) => order || {});
+  const { origin: userOrigin } = useSelector(({ order }: InitialState) => order.location);
+
   useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
     variables: { orderId: id },
     onCompleted: (data) => {
@@ -63,13 +64,7 @@ const WaitingDriver = () => {
       } as CarInfoType);
     },
   });
-  const { data } = useCustomQuery<GetOrderInfo>(GET_ORDER, {
-    variables: { orderId: id },
-  });
-  const destination = {
-    lat: data?.getOrderInfo.order?.startingPoint.coordinates[0] as number,
-    lng: data?.getOrderInfo.order?.startingPoint.coordinates[1] as number,
-  };
+
   useSubscription<SubDriverLocation>(SUB_DRIVER_LOCATION, {
     variables: { orderId: id },
     onSubscriptionData: ({ subscriptionData }) => {
@@ -78,7 +73,11 @@ const WaitingDriver = () => {
         lng: subscriptionData.data?.subDriverLocation.coordinates[1] as number,
       };
       setDriverLocation(driverNewLocation);
-      if (didCloseModal === false && calcLocationDistance(driverNewLocation, destination) < 100) {
+      if (
+        didCloseModal === false &&
+        userOrigin &&
+        calcLocationDistance(driverNewLocation, userOrigin) < 100
+      ) {
         openModal();
         setDidCloseModal(true);
       }
@@ -101,7 +100,7 @@ const WaitingDriver = () => {
     <>
       <MapFrame
         origin={driverLocation}
-        destination={destination}
+        destination={userOrigin}
         setDirections={setDirections}
         directions={directions}
       >
