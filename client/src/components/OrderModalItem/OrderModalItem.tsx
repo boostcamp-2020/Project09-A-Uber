@@ -68,13 +68,15 @@ const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
       const status = data?.getOrderById?.order?.status;
       if (status === 'active') {
         Toast.fail(Message.FailureMatchingOrder, TOAST_DURATION.MATCHING_FAILURE);
-        closeModal();
+        return closeModal();
       }
       if (status === 'waiting') {
         dispatch(addOrderId(order._id));
         approvalOrder({ variables: { orderId: order._id } });
-        history.push('/driver/goToOrigin');
+        return history.push('/driver/goToOrigin');
       }
+      Toast.fail(Message.FailureClosedOrder, TOAST_DURATION.MATCHING_FAILURE);
+      return closeModal();
     })();
   }, [order]);
 
