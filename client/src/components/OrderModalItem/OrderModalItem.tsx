@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { Button, Toast } from 'antd-mobile';
 
 import { addOrderId } from '@reducers/order';
+import { updateLocationALL } from '@reducers/location';
+import { Location } from '@reducers/.';
 import styled from '@theme/styled';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import { APPROVAL_ORDER, GET_ORDER_BY_ID } from '@queries/order.queries';
@@ -11,6 +13,7 @@ import {
   getOrderById,
   ApprovalOrder,
   GetUnassignedOrders_getUnassignedOrders_unassignedOrders as UnassignedOrder,
+  GetUnassignedOrders_getUnassignedOrders_unassignedOrders_startingPoint as ServerLocation,
 } from '@/types/api';
 import { TOAST_DURATION } from '@utils/enums';
 import { Message } from '@utils/client-message';
@@ -19,6 +22,12 @@ interface Props {
   order: UnassignedOrder;
   closeModal: () => void;
 }
+
+const localLocationMapper = (location: ServerLocation): Location => ({
+  address: location.address,
+  lat: location.coordinates[0],
+  lng: location.coordinates[1],
+});
 
 const StyledOrderItem = styled.div`
   font-size: 1rem;
@@ -72,6 +81,12 @@ const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
       }
       if (status === 'waiting') {
         dispatch(addOrderId(order._id));
+        dispatch(
+          updateLocationALL({
+            origin: localLocationMapper(order.startingPoint),
+            destination: localLocationMapper(order.destination),
+          }),
+        );
         approvalOrder({ variables: { orderId: order._id } });
         return history.push('/driver/goToOrigin');
       }
