@@ -19,18 +19,18 @@ export interface InitialState {
     name: string;
     driver?: Driver;
   };
-  order?: {
+  order: {
     id?: string;
     carInfo?: CarInfo;
-  };
-  location: {
-    isFixCenter: boolean;
-    origin?: Location;
-    destination?: Location;
+    location: {
+      isFixCenter: boolean;
+      origin?: Location;
+      destination?: Location;
+    };
   };
 }
 
-const initialState: InitialState = { location: { isFixCenter: false } };
+const initialState: InitialState = { order: { location: { isFixCenter: false } } };
 
 type Action = OrderActions | LocationActions;
 
@@ -44,9 +44,27 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
 
     // location
     case UPDATE_LOCATION_ORIGIN:
-      return { ...state, location: { ...state.location, origin: action.location } };
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          location: {
+            ...state.order.location,
+            origin: action.location,
+          },
+        },
+      };
     case UPDATE_LOCATION_DESTINATION:
-      return { ...state, location: { ...state.location, destination: action.location } };
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          location: {
+            ...state.order.location,
+            destination: action.location,
+          },
+        },
+      };
 
     default:
       return state;
