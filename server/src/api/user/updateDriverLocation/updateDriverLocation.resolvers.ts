@@ -17,7 +17,7 @@ const resolvers: Resolvers = {
         return { result, error };
       }
 
-      const { inquiryResult, order, inquiryError } = await getActiveDriverOrder(
+      const { result: inquiryResult, order, error: inquiryError } = await getActiveDriverOrder(
         req.user?._id || '',
       );
       if (inquiryResult === 'success' && order) {
