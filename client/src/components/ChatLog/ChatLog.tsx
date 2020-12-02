@@ -5,7 +5,7 @@ import styled from '@theme/styled';
 interface Props {
   writer?: string;
   content?: string;
-  createdAt?: string;
+  createdAt?: string | null;
   type: string;
 }
 
