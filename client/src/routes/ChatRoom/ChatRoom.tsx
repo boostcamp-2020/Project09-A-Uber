@@ -56,13 +56,12 @@ const ChatRoom: FC = () => {
     setChatContent('');
   };
 
-  const onKeyPressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      CreateChat({
-        variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
-      });
-      setChatContent('');
-    }
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    CreateChat({
+      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
+    });
+    setChatContent('');
   };
 
   useEffect(() => {
@@ -98,7 +97,7 @@ const ChatRoom: FC = () => {
         chatContent={chatContent}
         onChangeChatContent={onChangeChatContent}
         onClickSubmitButton={onClickSubmitButton}
-        onKeyPressEnter={onKeyPressEnter}
+        onSubmit={onSubmit}
       ></ChatInput>
     </StyledChatRoom>
   );
