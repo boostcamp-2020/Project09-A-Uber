@@ -3,5 +3,5 @@ type subNewOrderResponse {
 }
 
 type Subscription {
-    subNewOrder: subNewOrderResponse!
+    subNewOrder(lat: Float!, lng: Float!): subNewOrderResponse!
 }
