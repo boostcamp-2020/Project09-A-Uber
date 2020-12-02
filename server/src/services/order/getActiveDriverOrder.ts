@@ -7,9 +7,9 @@ const getActiveDriverOrder = async (driverId: string) => {
       driver: driverId,
       status: 'active',
     })) as OrderType | null;
-    return { inquiryResult: 'success', order };
+    return { result: 'success', order };
   } catch (err) {
-    return { inquiryResult: 'fail', inquiryError: err.message };
+    return { result: 'fail', error: err.message };
   }
 };
 
