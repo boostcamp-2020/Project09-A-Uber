@@ -2,7 +2,7 @@ import React, { FC, useRef, useEffect } from 'react';
 
 import { DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
-import { Location } from './GoogleMap';
+import { Location } from '@reducers/.';
 
 interface Props {
   origin: Location;

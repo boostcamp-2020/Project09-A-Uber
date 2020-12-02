@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 
 import styled from '@theme/styled';
-import { Location } from '@components/GoogleMap';
+import { Location } from '@reducers/.';
 
 interface Props {
   directions: google.maps.DirectionsResult | undefined;

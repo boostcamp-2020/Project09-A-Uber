@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import AutoLocation from '@components/AutoLocation';
 import MapFrame from '@components/MapFrame';
 import EstimatedTime from '@components/EstimatedTime';
-import { Location } from '@components/GoogleMap';
+import { Location } from '@reducers/.';
 import { useCustomMutation } from '@hooks/useApollo';
 import { CREATE_ORDER } from '@queries/order.queries';
 import { CreateOrder } from '@/types/api';
