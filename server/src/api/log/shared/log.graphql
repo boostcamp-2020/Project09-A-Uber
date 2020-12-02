@@ -1,0 +1,9 @@
+type Log {
+  _id: String!
+  order: String!
+  driver: String!
+  origin: Location!
+  destination: Location!
+  paymentAmount: Number!
+  createdAt: String
+}
