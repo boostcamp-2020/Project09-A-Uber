@@ -6,7 +6,7 @@ export const ORDER_CALL_STATUS = 'ORDER_CALL_STATUS';
 // eslint-disable-next-line no-shadow
 export const enum OrderCallStatus {
   APPROVAL = 'approval',
-  STARED_DRIVE = 'startedDrive',
+  STARTED_DRIVE = 'startedDrive',
   COMPLETED_DRIVE = 'completedDrive',
 }
 
