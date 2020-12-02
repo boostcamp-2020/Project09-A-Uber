@@ -54,9 +54,15 @@ const ChatInput: FC<Props> = ({
           value={chatContent}
           onChange={onChangeChatContent}
         ></Input>
-        <Button type="primary" onClick={onClickSubmitButton}>
-          전송
-        </Button>
+        {chatContent ? (
+          <Button type="primary" onClick={onClickSubmitButton}>
+            전송
+          </Button>
+        ) : (
+          <Button type="primary" disabled onClick={onClickSubmitButton}>
+            전송
+          </Button>
+        )}
       </form>
     </StyledChatInput>
   );
