@@ -4,6 +4,6 @@ type Log {
   driver: String!
   origin: Location!
   destination: Location!
-  paymentAmount: Number!
+  paymentAmount: Int!
   createdAt: String
 }
