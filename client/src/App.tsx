@@ -14,7 +14,7 @@ import DriverMain from '@routes/Driver/Main';
 import DriverGoToOrigin from '@routes/Driver/GoToOrigin';
 import DriverGoToDestination from '@routes/Driver/GoToDestination';
 import Signup from '@routes/Signup';
-import SearchDriver from '@routes/SearchDriver';
+import SearchDriver from '@routes/User/SearchDriver';
 
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';

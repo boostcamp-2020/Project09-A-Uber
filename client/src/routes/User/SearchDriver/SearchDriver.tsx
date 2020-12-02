@@ -83,7 +83,7 @@ const SearchDriver: FC = () => {
 
   const onClickModalCloseHandler = useCallback(() => {
     onCloseModal();
-    history.push('/user/waiting');
+    history.push('/user/waitingDriver');
   }, []);
 
   const onClickCancelOrderHandler = useCallback(() => {

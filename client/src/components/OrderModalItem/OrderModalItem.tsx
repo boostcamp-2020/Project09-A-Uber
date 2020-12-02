@@ -1,16 +1,19 @@
-/* eslint-disable no-underscore-dangle */
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Button } from 'antd-mobile';
+import { Button, Toast } from 'antd-mobile';
 
 import { addOrderId } from '@reducers/order';
 import styled from '@theme/styled';
-import { useCustomMutation } from '@hooks/useApollo';
-import { APPROVAL_ORDER } from '@queries/order.queries';
+import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
+import { APPROVAL_ORDER, GET_ORDER_BY_ID } from '@queries/order.queries';
 import {
+  getOrderById,
   ApprovalOrder,
   GetUnassignedOrders_getUnassignedOrders_unassignedOrders as UnassignedOrder,
 } from '@/types/api';
+import { TOAST_DURATION } from '@utils/enums';
+import { Message } from '@utils/client-message';
 
 interface Props {
   order: UnassignedOrder;
@@ -48,7 +51,9 @@ const StyledOrderItem = styled.div`
 `;
 
 const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
+  const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
   const [approvalOrder] = useCustomMutation<ApprovalOrder>(APPROVAL_ORDER, {
     onCompleted: ({ approvalOrder: approvalResult }) => {
       if (approvalResult.result === 'success') {
@@ -57,10 +62,21 @@ const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
     },
   });
 
-  const onClickApprovalOrder = () => {
-    dispatch(addOrderId(order._id));
-    approvalOrder({ variables: { orderId: order._id } });
-  };
+  const onClickApprovalOrder = useCallback(() => {
+    (async () => {
+      const { data } = await callQuery({ orderId: order._id });
+      const status = data?.getOrderById?.order?.status;
+      if (status === 'active') {
+        Toast.fail(Message.FailureMatchingOrder, TOAST_DURATION.MATCHING_FAILURE);
+        closeModal();
+      }
+      if (status === 'waiting') {
+        dispatch(addOrderId(order._id));
+        approvalOrder({ variables: { orderId: order._id } });
+        history.push('/driver/goToOrigin');
+      }
+    })();
+  }, [order]);
 
   return (
     <StyledOrderItem>

@@ -9,26 +9,19 @@ interface GetOrderProps {
   userType?: LoginType;
 }
 
-interface Query {
-  _id: string;
-  user?: string;
-  driver?: string;
-  status: string;
-}
-
 const getOrder = async ({ orderId, userId, userType }: GetOrderProps) => {
   try {
     let order;
     if (userType === loginType.user) {
       order = (await Order.findOne({
         _id: orderId,
-        status: 'activate',
+        status: 'active',
         user: userId,
       })) as OrderType | null;
     } else if (userType === loginType.driver) {
       order = (await Order.findOne({
         _id: orderId,
-        status: 'activate',
+        status: 'active',
         driver: userId,
       })) as OrderType | null;
     }
