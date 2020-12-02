@@ -6,6 +6,12 @@ interface Driver {
   status: string;
 }
 
+export interface Location {
+  address?: string;
+  lat: number;
+  lng: number;
+}
+
 export interface InitialState {
   user?: {
     _id: string;
@@ -16,9 +22,14 @@ export interface InitialState {
     id?: string;
     carInfo?: CarInfo;
   };
+  location: {
+    isFixCenter: boolean;
+    origin?: Location;
+    destination?: Location;
+  };
 }
 
-const initialState: InitialState = {};
+const initialState: InitialState = { location: { isFixCenter: false } };
 
 type Action = OrderActions;
 
