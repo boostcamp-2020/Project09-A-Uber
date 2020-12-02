@@ -12,15 +12,12 @@ const resolvers: Resolvers = {
         destination,
         user: req.user?._id || '',
       });
-
-      pubsub.publish(CREATE_NEW_ORDER, {
-        subNewOrder: { newOrder: createdOrder },
-      });
-
       if (result === 'fail' || error) {
         return { result, error };
       }
-
+      pubsub.publish(CREATE_NEW_ORDER, {
+        subNewOrder: { newOrder: createdOrder },
+      });
       pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
 
       return { result, orderId };
