@@ -51,7 +51,9 @@ const Main: FC = () => {
       setOrderData(newOrderList);
     },
   });
-  const { data: addedOrder, loading } = useSubscription(SUB_NEW_ORDER);
+  const { data: addedOrder, loading } = useSubscription(SUB_NEW_ORDER, {
+    variables: { lat: currentLocation.lat, lng: currentLocation.lng },
+  });
   const onClickOrder = (order: Order) => {
     openModal();
     setOrderItem(order);
@@ -65,7 +67,11 @@ const Main: FC = () => {
   };
 
   useEffect(() => {
-    setInterval(updateCurrentLocation, DRIVER.NEXT_LOCATION_UPDATE_TIME);
+    const locationUpdateTimer = setInterval(
+      updateCurrentLocation,
+      DRIVER.NEXT_LOCATION_UPDATE_TIME,
+    );
+    return () => clearInterval(locationUpdateTimer);
   }, []);
 
   useEffect(() => {
