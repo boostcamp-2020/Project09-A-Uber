@@ -17,7 +17,7 @@ const resolvers: Resolvers = {
           };
           const driverLocation = variables;
           return (
-            calcLocationDistance(newOrderStartingPoint, driverLocation) <= ORDER.POSSOBLE_DISTANCE
+            calcLocationDistance(newOrderStartingPoint, driverLocation) <= ORDER.POSSIBLE_DISTANCE
           );
         },
       ),
