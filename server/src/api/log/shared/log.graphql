@@ -1,9 +1,0 @@
-type Log {
-  _id: String!
-  order: String!
-  driver: String!
-  origin: Location!
-  destination: Location!
-  paymentAmount: Int!
-  createdAt: String
-}
