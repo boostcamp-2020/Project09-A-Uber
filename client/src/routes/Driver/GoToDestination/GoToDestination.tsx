@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import MapFrame from '@/components/MapFrame';
 import { GET_ORDER } from '@queries/order.queries';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
@@ -9,6 +10,8 @@ import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
 import { DRIVER } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
+import { useSelector } from 'react-redux';
+import { InitialState } from '@reducers/.';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -40,14 +43,19 @@ const StyledGoToDestinationMenu = styled.div`
 `;
 
 const GoToDestination: FC = () => {
+  const history = useHistory();
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [destination, setDestination] = useState({ lat: 0, lng: 0 });
   const [taxiFee, setTaxiFee] = useState(DRIVER.BASE_TAXI_FEE);
+  const { id } = useSelector((state: InitialState) => state.order || {});
   const { callQuery } = useCustomQuery<GetOrderInfo>(GET_ORDER, { skip: true });
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
+  const onClickChatRoom = () => {
+    history.push(`/chatroom/${id}`);
+  };
   const updateCurrentLocation = async () => {
     const currLocation = await getUserLocation();
 
@@ -62,7 +70,7 @@ const GoToDestination: FC = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await callQuery({ orderId: '5fc39490270c0a452ebfde4a' });
+      const result = await callQuery({ orderId: id });
       const lat = result?.data.getOrderInfo.order?.destination.coordinates[0] as number;
       const lng = result?.data.getOrderInfo.order?.destination.coordinates[1] as number;
       setDestination({ lat, lng });
@@ -82,7 +90,9 @@ const GoToDestination: FC = () => {
     >
       <StyledGoToDestinationMenu>
         <span>현재요금: {numberWithCommas(taxiFee)}</span>
-        <Button className="driver-chat-btn">손님과의 채팅</Button>
+        <Button className="driver-chat-btn" onClick={onClickChatRoom}>
+          손님과의 채팅
+        </Button>
         <Button className="driver-arrive-btn" type="primary">
           도착완료
         </Button>

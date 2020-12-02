@@ -24,6 +24,19 @@ export const GET_ORDER = gql`
           address
           coordinates
         }
+        status
+      }
+      error
+    }
+  }
+`;
+
+export const GET_ORDER_BY_ID = gql`
+  query getOrderById($orderId: String!) {
+    getOrderById(orderId: $orderId) {
+      result
+      order {
+        status
       }
       error
     }

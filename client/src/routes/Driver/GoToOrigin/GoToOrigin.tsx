@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd-mobile';
+import { useSelector } from 'react-redux';
 import styled from '@theme/styled';
 
 import MapFrame from '@components/MapFrame';
 import { GET_ORDER } from '@queries/order.queries';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
 import { GetOrderInfo, UpdateDriverLocation } from '@/types/api';
-import { Location } from '@components/GoogleMap/GoogleMap';
 import getUserLocation from '@utils/getUserLocation';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
+import { InitialState } from '@reducers/.';
 
 const StyledDriverGoToOriginMenu = styled.section`
   height: 100%;
@@ -40,8 +41,9 @@ const StyledDriverGoToOriginMenu = styled.section`
 const GoToOrigin = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
+  const { id } = useSelector((state: InitialState) => state.order || {});
   const { data } = useCustomQuery<GetOrderInfo>(GET_ORDER, {
-    variables: { orderId: '5fc45539e439ea40e869bf47' },
+    variables: { orderId: id },
   });
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
@@ -74,24 +76,26 @@ const GoToOrigin = () => {
 
   return (
     <>
-      <MapFrame
-        origin={currentLocation}
-        destination={{
-          lat: order?.startingPoint.coordinates[0] as number,
-          lng: order?.startingPoint.coordinates[1] as number,
-        }}
-        setDirections={setDirections}
-        directions={directions}
-      >
-        <StyledDriverGoToOriginMenu>
-          <div className="driver-start-order-btn">
-            <div className="driver-start-order-info">손님이 탑승하시고 나서 눌러주세요.</div>
-            <Button onClick={onClickStartDrive} type="primary">
-              운행시작
-            </Button>
-          </div>
-        </StyledDriverGoToOriginMenu>
-      </MapFrame>
+      {order && (
+        <MapFrame
+          origin={currentLocation}
+          destination={{
+            lat: Number(order?.startingPoint.coordinates[0].toFixed(8)),
+            lng: Number(order?.startingPoint.coordinates[1].toFixed(8)),
+          }}
+          setDirections={setDirections}
+          directions={directions}
+        >
+          <StyledDriverGoToOriginMenu>
+            <div className="driver-start-order-btn">
+              <div className="driver-start-order-info">손님이 탑승하시고 나서 눌러주세요.</div>
+              <Button onClick={onClickStartDrive} type="primary">
+                운행시작
+              </Button>
+            </div>
+          </StyledDriverGoToOriginMenu>
+        </MapFrame>
+      )}
     </>
   );
 };
