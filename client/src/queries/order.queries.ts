@@ -103,8 +103,8 @@ export const UPDATE_ORDER_LIST = gql`
 `;
 
 export const SUB_NEW_ORDER = gql`
-  subscription SubNewOrder {
-    subNewOrder {
+  subscription SubNewOrder($lat: Float!, $lng: Float!) {
+    subNewOrder(lat: $lat, lng: $lng) {
       newOrder {
         _id
         startingPoint {
