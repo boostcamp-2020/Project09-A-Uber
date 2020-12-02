@@ -9,7 +9,7 @@ const resolvers: Resolvers = {
         paymentAmount,
       });
 
-      if (result === 'fail') return { result: 'fail', error };
+      if (result === 'fail') return { result, error };
 
       return { result: 'success' };
     },
