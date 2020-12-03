@@ -5,9 +5,9 @@ export const GET_USER_WITH_ORDER = gql`
     getUserWithOrder {
       result
       user {
+        _id
         email
         type
-        _id
       }
       order {
         _id
@@ -19,7 +19,6 @@ export const GET_USER_WITH_ORDER = gql`
           address
           coordinates
         }
-        status
       }
       error
     }
