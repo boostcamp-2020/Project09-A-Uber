@@ -1,5 +1,6 @@
 import { Resolvers } from '@type/api';
 
+import startDriving from '@services/order/startDriving';
 import {
   ORDER_CALL_STATUS,
   OrderCallStatus,
@@ -7,11 +8,15 @@ import {
 
 const resolvers: Resolvers = {
   Mutation: {
-    startDriving: (_, { orderId }, { pubsub }) => {
+    startDriving: async (_, { orderId }, { pubsub }) => {
+      const { result, error } = await startDriving(orderId);
+
+      if (result === 'fail') return { result, error };
+
       pubsub.publish(ORDER_CALL_STATUS, {
         subOrderCallStatus: { orderId, status: OrderCallStatus.STARTED_DRIVE },
       });
-      return { result: 'success' };
+      return { result };
     },
   },
 };
