@@ -1,12 +1,24 @@
 import { gql } from '@apollo/client';
 
-export const GET_USER_INFO = gql`
-  query GetUserInfo {
-    getUserInfo {
+export const GET_USER_WITH_ORDER = gql`
+  query GetUserWithOrder {
+    getUserWithOrder {
+      result
       user {
+        _id
         email
         type
+      }
+      order {
         _id
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
       }
       error
     }
