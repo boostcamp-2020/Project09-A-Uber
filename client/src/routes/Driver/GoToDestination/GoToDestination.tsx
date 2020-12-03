@@ -5,15 +5,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import MapFrame from '@/components/MapFrame';
 import Modal from '@components/Modal';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
-import { COMPLETE_ORDER } from '@queries/order.queries';
-import { UpdateDriverLocation, CompleteOrder } from '@/types/api';
-import { useCustomMutation } from '@hooks/useApollo';
+import { COMPLETE_ORDER, GET_ORDER_BY_ID } from '@queries/order.queries';
+import {
+  UpdateDriverLocation,
+  CompleteOrder,
+  getOrderById,
+  getOrderById_getOrderById_order as OrderType,
+} from '@/types/api';
+import { useCustomMutation, useCustomQuery } from '@hooks/useApollo';
 import { Button } from 'antd-mobile';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
 import useModal from '@hooks/useModal';
 import { DRIVER } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
+import calcDriveTime from '@utils/calcDriveTime';
 
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
@@ -47,21 +53,37 @@ const StyledGoToDestinationMenu = styled.div`
   }
 `;
 
+const OrderInfo = styled.div`
+  font-size: 1rem;
+
+  & .order-info-title {
+    margin-bottom: 2rem;
+  }
+
+  & div {
+    margin: 0.8rem 0;
+  }
+`;
+
 const GoToDestination: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [orderInfo, setorderInfo] = useState<OrderType | null>();
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [taxiFee, setTaxiFee] = useState(DRIVER.BASE_TAXI_FEE);
   const [isVisibleModal, openModal, closeModal] = useModal();
   const { id } = useSelector(({ order }: InitialState) => order || {});
   const { destination } = useSelector(({ order }: InitialState) => order.location || {});
+  const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
   const [completeOrderMutation] = useCustomMutation<CompleteOrder>(COMPLETE_ORDER, {
-    onCompleted: ({ completeOrder }) => {
+    onCompleted: async ({ completeOrder }) => {
       if (completeOrder.result === 'success') {
+        const { data } = await callQuery({ orderId: id });
+        setorderInfo(data?.getOrderById?.order);
         openModal();
       }
     },
@@ -133,7 +155,15 @@ const GoToDestination: FC = () => {
         </StyledGoToDestinationMenu>
       </MapFrame>
       <Modal visible={isVisibleModal} onClose={onCompleteOrderHandler}>
-        운행이 완료되었습니다
+        {orderInfo && (
+          <OrderInfo>
+            <div className="order-info-title">운행이 완료되었습니다</div>
+            <div>출발지: {orderInfo?.startingPoint.address}</div>
+            <div>목적지: {orderInfo?.destination.address}</div>
+            <div>결제비: {orderInfo?.amount}</div>
+            <div>이동시간: {calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}</div>
+          </OrderInfo>
+        )}
       </Modal>
     </>
   );

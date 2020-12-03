@@ -8,12 +8,18 @@ import { useSubscription } from '@apollo/react-hooks';
 import MapFrame from '@components/MapFrame';
 import Modal from '@components/Modal';
 import getUserLocation from '@utils/getUserLocation';
-import { SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
-import { SubOrderCallStatus } from '@/types/api';
+import { SUB_ORDER_CALL_STATUS, GET_ORDER_BY_ID } from '@queries/order.queries';
+import {
+  SubOrderCallStatus,
+  getOrderById,
+  getOrderById_getOrderById_order as OrderType,
+} from '@/types/api';
+import { useCustomQuery } from '@hooks/useApollo';
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import useModal from '@hooks/useModal';
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
+import calcDriveTime from '@utils/calcDriveTime';
 
 // TODO: user/waitingDriver의 스타일과 유사, 추후 리팩터링 필요
 const StyledUserGoToDestinationMenu = styled.section`
@@ -37,6 +43,18 @@ const StyledUserGoToDestinationMenu = styled.section`
   }
 `;
 
+const OrderInfo = styled.div`
+  font-size: 1rem;
+
+  & .order-info-title {
+    margin-bottom: 2rem;
+  }
+
+  & div {
+    margin: 0.8rem 0;
+  }
+`;
+
 const GoToDestination: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -45,6 +63,8 @@ const GoToDestination: FC = () => {
   const { destination } = useSelector(({ order }: InitialState) => order.location || {});
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState<Location>();
+  const [orderInfo, setorderInfo] = useState<OrderType | null>();
+  const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
 
   const onClickChatRoom = useCallback(() => {
     history.push(`/chatroom/${orderId}`);
@@ -72,8 +92,10 @@ const GoToDestination: FC = () => {
 
   useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId },
-    onSubscriptionData: ({ subscriptionData }) => {
+    onSubscriptionData: async ({ subscriptionData }) => {
       if (subscriptionData.data?.subOrderCallStatus.status === OrderCallStatus.completedDrive) {
+        const { data } = await callQuery({ orderId });
+        setorderInfo(data?.getOrderById?.order);
         openModal();
       }
     },
@@ -106,8 +128,15 @@ const GoToDestination: FC = () => {
         </MapFrame>
       )}
       <Modal visible={isVisibleModal} onClose={onCompleteOrderHandler}>
-        {/* TODO: 택시 요금 표시 필요 */}
-        운행 완료
+        {orderInfo && (
+          <OrderInfo>
+            <div className="order-info-title">운행이 완료되었습니다</div>
+            <div>출발지: {orderInfo?.startingPoint.address}</div>
+            <div>목적지: {orderInfo?.destination.address}</div>
+            <div>결제비: {orderInfo?.amount}</div>
+            <div>이동시간: {calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}</div>
+          </OrderInfo>
+        )}
       </Modal>
     </>
   );
