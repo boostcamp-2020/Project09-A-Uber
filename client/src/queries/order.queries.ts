@@ -139,8 +139,8 @@ export const START_DRIVING = gql`
 `;
 
 export const COMPLETE_ORDER = gql`
-  mutation CompleteOrder($orderId: String!) {
-    completeOrder(orderId: $orderId) {
+  mutation CompleteOrder($orderId: String!, $amount: Int!) {
+    completeOrder(orderId: $orderId, amount: $amount) {
       result
       error
     }
