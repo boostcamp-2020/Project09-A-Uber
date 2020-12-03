@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useSubscription } from '@apollo/client';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import {
@@ -62,22 +62,34 @@ const Main: FC = () => {
     setOrderItem(order);
   };
 
-  const updateCurrentLocation = async () => {
-    const curLocation = await getUserLocation();
-    if (curLocation) {
+
+  const updateInitLocation = useCallback((location: Location | void) => {
+    if (location) {
       updateDriverLocation({
-        variables: curLocation,
+        variables: location,
       });
-      setCurrentLocation(curLocation);
+      setCurrentLocation(location);
     }
-  };
+  }, []);
+
+  const watchUpdateCurrentLocation = useCallback((location: Position) => {
+    const updateLocation = {
+      lat: location.coords.latitude,
+      lng: location.coords.longitude,
+    }
+    setCurrentLocation(updateLocation);
+    updateDriverLocation({
+      variables: updateLocation,
+    });
+  }, []);
 
   useEffect(() => {
-    const locationUpdateTimer = setInterval(
-      updateCurrentLocation,
-      DRIVER.NEXT_LOCATION_UPDATE_TIME,
-    );
-    return () => clearInterval(locationUpdateTimer);
+    getUserLocation().then(updateInitLocation);
+    const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
+
+    return () => {
+      navigator.geolocation.clearWatch(watchLocation);
+    };
   }, []);
 
   useEffect(() => {

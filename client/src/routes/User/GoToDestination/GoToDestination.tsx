@@ -49,15 +49,18 @@ const GoToDestination: FC = () => {
     }
   }, []);
 
+  const watchUpdateCurrentLocation = useCallback((location: Position) => {
+    setCurrentLocation({
+      lat: location.coords.latitude,
+      lng: location.coords.longitude,
+    });
+  }, []);
+
   useEffect(() => {
     updateCurrentLocation();
-    const updateCurrentLocationInterval = setInterval(
-      updateCurrentLocation,
-      USER.USER_LOCATOIN_UPDATE_TIME,
-    );
-
+    const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
     return () => {
-      clearInterval(updateCurrentLocationInterval);
+      navigator.geolocation.clearWatch(watchLocation);
     };
   }, []);
 
