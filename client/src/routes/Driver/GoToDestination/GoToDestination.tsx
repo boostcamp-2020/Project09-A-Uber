@@ -1,18 +1,22 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import MapFrame from '@/components/MapFrame';
+import Modal from '@components/Modal';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
-import { UpdateDriverLocation } from '@/types/api';
+import { COMPLETE_ORDER } from '@queries/order.queries';
+import { UpdateDriverLocation, CompleteOrder } from '@/types/api';
 import { useCustomMutation } from '@hooks/useApollo';
 import { Button } from 'antd-mobile';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
+import useModal from '@hooks/useModal';
 import { DRIVER } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
 
 import { InitialState, Location } from '@reducers/.';
+import { resetOrder } from '@reducers/order';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -44,18 +48,39 @@ const StyledGoToDestinationMenu = styled.div`
 `;
 
 const GoToDestination: FC = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [taxiFee, setTaxiFee] = useState(DRIVER.BASE_TAXI_FEE);
+  const [isVisibleModal, openModal, closeModal] = useModal();
   const { id } = useSelector(({ order }: InitialState) => order || {});
   const { destination } = useSelector(({ order }: InitialState) => order.location || {});
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
+  const [completeOrderMutation] = useCustomMutation<CompleteOrder>(COMPLETE_ORDER, {
+    onCompleted: ({ completeOrder }) => {
+      if (completeOrder.result === 'success') {
+        openModal();
+      }
+    },
+  });
+
   const onClickChatRoom = () => {
     history.push(`/chatroom/${id}`);
   };
+
+  const onCompleteOrderHandler = useCallback(() => {
+    closeModal();
+    dispatch(resetOrder());
+    history.push(`/driver`);
+  }, []);
+
+  const onClickOrderCompleteHandler = useCallback(() => {
+    completeOrderMutation({ variables: { orderId: id, amount: taxiFee } });
+  }, [id, taxiFee]);
+
   const updateInitLocation = useCallback((location: Location | void) => {
     if (location) {
       setCurrentLocation(location);
@@ -86,22 +111,31 @@ const GoToDestination: FC = () => {
   }, []);
 
   return (
-    <MapFrame
-      origin={currentLocation}
-      destination={destination}
-      setDirections={setDirections}
-      directions={directions}
-    >
-      <StyledGoToDestinationMenu>
-        <span>현재요금: {numberWithCommas(taxiFee)}</span>
-        <Button className="driver-chat-btn" onClick={onClickChatRoom}>
-          손님과의 채팅
-        </Button>
-        <Button className="driver-arrive-btn" type="primary">
-          도착완료
-        </Button>
-      </StyledGoToDestinationMenu>
-    </MapFrame>
+    <>
+      <MapFrame
+        origin={currentLocation}
+        destination={destination}
+        setDirections={setDirections}
+        directions={directions}
+      >
+        <StyledGoToDestinationMenu>
+          <span>현재요금: {numberWithCommas(taxiFee)}</span>
+          <Button className="driver-chat-btn" onClick={onClickChatRoom}>
+            손님과의 채팅
+          </Button>
+          <Button
+            className="driver-arrive-btn"
+            type="primary"
+            onClick={onClickOrderCompleteHandler}
+          >
+            도착완료
+          </Button>
+        </StyledGoToDestinationMenu>
+      </MapFrame>
+      <Modal visible={isVisibleModal} onClose={onCompleteOrderHandler}>
+        운행이 완료되었습니다
+      </Modal>
+    </>
   );
 };
 

@@ -2,12 +2,18 @@ import React, { FC, useState, useCallback, useEffect } from 'react';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSubscription } from '@apollo/react-hooks';
 
 import MapFrame from '@components/MapFrame';
+import Modal from '@components/Modal';
 import getUserLocation from '@utils/getUserLocation';
-import { USER } from '@utils/enums';
+import { SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
+import { SubOrderCallStatus } from '@/types/api';
+import { OrderCallStatus } from '@/types/orderCallStatus';
+import useModal from '@hooks/useModal';
 import { InitialState, Location } from '@reducers/.';
+import { resetOrder } from '@reducers/order';
 
 // TODO: user/waitingDriver의 스타일과 유사, 추후 리팩터링 필요
 const StyledUserGoToDestinationMenu = styled.section`
@@ -32,7 +38,9 @@ const StyledUserGoToDestinationMenu = styled.section`
 `;
 
 const GoToDestination: FC = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+  const [isVisibleModal, openModal, closeModal] = useModal();
   const { id: orderId } = useSelector(({ order }: InitialState) => order || {});
   const { destination } = useSelector(({ order }: InitialState) => order.location || {});
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
@@ -40,6 +48,12 @@ const GoToDestination: FC = () => {
 
   const onClickChatRoom = useCallback(() => {
     history.push(`/chatroom/${orderId}`);
+  }, []);
+
+  const onCompleteOrderHandler = useCallback(() => {
+    closeModal();
+    dispatch(resetOrder());
+    history.push(`/user`);
   }, []);
 
   const updateCurrentLocation = useCallback(async () => {
@@ -55,6 +69,15 @@ const GoToDestination: FC = () => {
       lng: location.coords.longitude,
     });
   }, []);
+
+  useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
+    variables: { orderId },
+    onSubscriptionData: ({ subscriptionData }) => {
+      if (subscriptionData.data?.subOrderCallStatus.status === OrderCallStatus.completedDrive) {
+        openModal();
+      }
+    },
+  });
 
   useEffect(() => {
     updateCurrentLocation();
@@ -82,6 +105,10 @@ const GoToDestination: FC = () => {
           </StyledUserGoToDestinationMenu>
         </MapFrame>
       )}
+      <Modal visible={isVisibleModal} onClose={onCompleteOrderHandler}>
+        {/* TODO: 택시 요금 표시 필요 */}
+        운행 완료
+      </Modal>
     </>
   );
 };
