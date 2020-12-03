@@ -1,8 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useSubscription } from '@apollo/client';
-import { useCustomQuery } from '@hooks/useApollo';
-
+import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
+import {
+  UpdateDriverLocation,
+  GetUnassignedOrders,
+  GetUnassignedOrders_getUnassignedOrders_unassignedOrders as Order,
+} from '@/types/api';
 import styled from '@theme/styled';
 import MapFrame from '@components/MapFrame';
 import OrderLog from '@components/OrderLog';
@@ -11,11 +15,9 @@ import OrderModalItem from '@components/OrderModalItem';
 import { Location } from '@reducers/.';
 import getUserLocation from '@utils/getUserLocation';
 import { GET_UNASSIGNED_ORDERS, UPDATE_ORDER_LIST, SUB_NEW_ORDER } from '@queries/order.queries';
+import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
 import useModal from '@hooks/useModal';
-import {
-  GetUnassignedOrders,
-  GetUnassignedOrders_getUnassignedOrders_unassignedOrders as Order,
-} from '@/types/api';
+
 import { DRIVER } from '@utils/enums';
 
 const StyledOrderLogList = styled.section`
@@ -44,6 +46,7 @@ const Main: FC = () => {
   const [isModal, openModal, closeModal] = useModal();
   const [orderItem, setOrderItem] = useState<Order>();
   const [currentLocation, setCurrentLocation] = useState<Location>({ lat: 0, lng: 0 });
+  const [updateDriverLocation] = useCustomMutation<UpdateDriverLocation>(UPDATE_DRIVER_LOCATION);
   const { data } = useSubscription(UPDATE_ORDER_LIST, {
     onSubscriptionData: async () => {
       const newData = await callQuery();
@@ -59,16 +62,24 @@ const Main: FC = () => {
     setOrderItem(order);
   };
 
+
   const updateInitLocation = useCallback((location: Location | void) => {
     if (location) {
+      updateDriverLocation({
+        variables: location,
+      });
       setCurrentLocation(location);
     }
   }, []);
 
   const watchUpdateCurrentLocation = useCallback((location: Position) => {
-    setCurrentLocation({
+    const updateLocation = {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
+    }
+    setCurrentLocation(updateLocation);
+    updateDriverLocation({
+      variables: updateLocation,
     });
   }, []);
 
