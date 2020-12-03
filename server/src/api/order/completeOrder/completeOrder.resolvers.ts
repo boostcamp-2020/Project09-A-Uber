@@ -8,8 +8,8 @@ import {
 
 const resolvers: Resolvers = {
   Mutation: {
-    completeOrder: async (_, { orderId }, { pubsub }) => {
-      const { result, error } = await completeOrder(orderId);
+    completeOrder: async (_, { orderId, amount }, { pubsub }) => {
+      const { result, error } = await completeOrder(orderId, amount);
 
       if (result === 'fail' || error) {
         return { result, error };

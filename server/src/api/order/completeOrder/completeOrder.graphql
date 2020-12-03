@@ -4,5 +4,5 @@ type CompleteOrderResponse {
 }
 
 type Mutation {
-    completeOrder(orderId: String!): CompleteOrderResponse! @auth
+    completeOrder(orderId: String!, amount: Int!): CompleteOrderResponse! @auth
 }
