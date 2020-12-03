@@ -6,6 +6,7 @@ import {
   UPDATE_LOCATION_DESTINATION,
   UPDATE_LOCATION_ALL,
 } from './location';
+import { UserAction, ADD_USER_INFO_WITH_ORDER } from './user';
 
 interface Driver {
   licenseNumber: string;
@@ -18,14 +19,31 @@ export interface Location {
   lng: number;
 }
 
+export interface User {
+  _id: string;
+  name: string;
+  driver?: Driver;
+  type: string;
+}
+
+export interface Order {
+  _id?: string | null;
+  carInfo?: CarInfo;
+  location: {
+    origin?: Location;
+    destination?: Location;
+  };
+}
+
 export interface InitialState {
   user?: {
     _id: string;
     name: string;
     driver?: Driver;
+    type: string;
   };
   order: {
-    id?: string;
+    id?: string | null;
     carInfo?: CarInfo;
     location: {
       isFixCenter: boolean;
@@ -37,7 +55,7 @@ export interface InitialState {
 
 const initialState: InitialState = { order: { location: { isFixCenter: false } } };
 
-type Action = OrderActions | LocationActions;
+type Action = OrderActions | LocationActions | UserAction;
 
 const reducer = (state: InitialState = initialState, action: Action): InitialState => {
   switch (action.type) {
@@ -84,7 +102,25 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
           },
         },
       };
+    case ADD_USER_INFO_WITH_ORDER: {
+      const order = action.order
+        ? {
+            ...state.order,
+            id: action.order._id,
+            location: {
+              ...state.order.location,
+              origin: action.order.location.origin,
+              destination: action.order.location.destination,
+            },
+          }
+        : state.order;
 
+      return {
+        ...state,
+        user: action.user,
+        order,
+      };
+    }
     default:
       return state;
   }
