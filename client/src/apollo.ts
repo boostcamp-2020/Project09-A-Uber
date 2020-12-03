@@ -3,8 +3,8 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { OperationDefinitionNode } from 'graphql';
 
-const URI = process.env.API_URI || 'http://localhost:4000';
-const SOCKET_URI = process.env.SOCKET_URI || 'ws://localhost:4000';
+const URI = process.env.REACT_APP_API_URI || 'http://localhost:4000';
+const SOCKET_URI = process.env.REACT_APP_SOCKET_URI || 'ws://localhost:4000';
 
 const httpLink = new HttpLink({
   uri: `${URI}/graphql`,
