@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd-mobile';
 import { useSelector } from 'react-redux';
@@ -38,13 +38,11 @@ const StyledDriverGoToOriginMenu = styled.section`
   }
 `;
 
-const GoToOrigin = () => {
+const GoToOrigin: FC = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
-  const { id } = useSelector((state: InitialState) => state.order || {});
-  const { data } = useCustomQuery<GetOrderInfo>(GET_ORDER, {
-    variables: { orderId: id },
-  });
+  const { id } = useSelector(({ order }: InitialState) => order || {});
+  const { origin: userOrigin } = useSelector(({ order }: InitialState) => order.location || {});
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
@@ -56,7 +54,6 @@ const GoToOrigin = () => {
     },
   });
   const history = useHistory();
-  const order = data?.getOrderInfo.order;
 
   const updateCurrentLocation = async () => {
     const currLocation = await getUserLocation();
@@ -83,13 +80,10 @@ const GoToOrigin = () => {
 
   return (
     <>
-      {order && (
+      {userOrigin && (
         <MapFrame
           origin={currentLocation}
-          destination={{
-            lat: Number(order?.startingPoint.coordinates[0].toFixed(8)),
-            lng: Number(order?.startingPoint.coordinates[1].toFixed(8)),
-          }}
+          destination={userOrigin}
           setDirections={setDirections}
           directions={directions}
         >
