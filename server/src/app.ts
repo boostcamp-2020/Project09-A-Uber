@@ -1,7 +1,7 @@
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import express, { Express } from 'express';
 import { createServer, Server } from 'http';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import compression from 'compression';
@@ -41,7 +41,11 @@ class App {
   }
 
   private middlewares() {
+    const corsOptions: CorsOptions = {
+      credentials: true,
+    };
     if (prod) {
+      corsOptions.origin = /ikeytax\.tk$/;
       this.app.use(helmet());
       this.app.use(hpp());
       this.app.use(morgan('combined'));
@@ -52,25 +56,18 @@ class App {
         }),
       );
     } else {
+      corsOptions.origin = 'http://localhost:3000';
       this.app.use(morgan('dev'));
       this.app.use(express.json());
-      this.app.use(
-        cors({
-          origin: 'http://localhost:3000',
-          credentials: true,
-        }),
-      );
     }
+    this.app.use(cors(corsOptions));
     this.app.use(cookieParser());
     this.app.use(compression());
     passportInit();
     this.apolloServer.applyMiddleware({
       app: this.app,
       path: GRAPHQL_ENDPOINT,
-      cors: {
-        origin: 'http://localhost:3000',
-        credentials: true,
-      },
+      cors: corsOptions,
     });
     this.apolloServer.installSubscriptionHandlers(this.server);
   }
