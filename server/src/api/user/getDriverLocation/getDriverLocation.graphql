@@ -1,0 +1,14 @@
+type DriverLocation {
+    lat: Float!
+    lng: Float!
+}
+
+type getDriverLocationResponse {
+    result: String!
+    driverLocation: DriverLocation
+    error: String
+}
+
+type Query {
+    getDriverLocation(orderId: String!): getDriverLocationResponse!
+}
