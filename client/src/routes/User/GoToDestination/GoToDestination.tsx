@@ -134,7 +134,7 @@ const GoToDestination: FC = () => {
             <div>출발지: {orderInfo?.startingPoint.address}</div>
             <div>목적지: {orderInfo?.destination.address}</div>
             <div>결제비: {orderInfo?.amount}</div>
-            <div>이동시간: {calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}분</div>
+            <div>이동시간: {calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}</div>
           </OrderInfo>
         )}
       </Modal>
