@@ -5,12 +5,12 @@ import { useSelector } from 'react-redux';
 import styled from '@theme/styled';
 
 import MapFrame from '@components/MapFrame';
-import { GET_ORDER, START_DRIVING } from '@queries/order.queries';
+import { START_DRIVING } from '@queries/order.queries';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
-import { GetOrderInfo, UpdateDriverLocation, StartDriving } from '@/types/api';
+import { UpdateDriverLocation, StartDriving } from '@/types/api';
 import getUserLocation from '@utils/getUserLocation';
-import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
-import { InitialState } from '@reducers/.';
+import { useCustomMutation } from '@hooks/useApollo';
+import { InitialState, Location } from '@reducers/.';
 
 const StyledDriverGoToOriginMenu = styled.section`
   height: 100%;
@@ -55,26 +55,34 @@ const GoToOrigin: FC = () => {
   });
   const history = useHistory();
 
-  const updateCurrentLocation = async () => {
-    const currLocation = await getUserLocation();
-
-    if (currLocation) {
-      setCurrentLocation(currLocation);
+  const updateInitLocation = useCallback((location: Location | void) => {
+    if (location) {
+      setCurrentLocation(location);
       updateDriverLocationMutation({
-        variables: { lat: currLocation.lat, lng: currLocation.lng },
+        variables: { lat: currentLocation.lat, lng: currentLocation.lng },
       });
     }
-  };
+  }, []);
+
+  const watchUpdateCurrentLocation = useCallback((location: Position) => {
+    setCurrentLocation({
+      lat: location.coords.latitude,
+      lng: location.coords.longitude,
+    });
+    updateDriverLocationMutation({
+      variables: { lat: location.coords.latitude, lng: location.coords.longitude },
+    });
+  }, []);
 
   const onClickStartDrive = useCallback(() => {
     startDrivingMutation({ variables: { orderId: id } });
   }, [id]);
 
   useEffect(() => {
-    const updateCurrentLocationInterval = setInterval(updateCurrentLocation, 5000);
-
+    getUserLocation().then(updateInitLocation);
+    const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
     return () => {
-      clearInterval(updateCurrentLocationInterval);
+      navigator.geolocation.clearWatch(watchLocation);
     };
   }, []);
 
