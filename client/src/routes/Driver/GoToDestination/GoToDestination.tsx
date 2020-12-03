@@ -59,19 +59,15 @@ const GoToDestination: FC = () => {
   const updateInitLocation = useCallback((location: Location | void) => {
     if (location) {
       setCurrentLocation(location);
-      updateDriverLocationMutation({
-        variables: { lat: currentLocation.lat, lng: currentLocation.lng },
-      });
+      updateDriverLocationMutation({ variables: location });
     }
   }, []);
 
   const watchUpdateCurrentLocation = useCallback((location: Position) => {
-    setCurrentLocation({
-      lat: location.coords.latitude,
-      lng: location.coords.longitude,
-    });
+    const updateLocation = { lat: location.coords.latitude, lng: location.coords.longitude };
+    setCurrentLocation(updateLocation);
     updateDriverLocationMutation({
-      variables: { lat: location.coords.latitude, lng: location.coords.longitude },
+      variables: updateLocation,
     });
   }, []);
 
