@@ -1,5 +1,5 @@
 import { CarInfo } from '@/types/api';
-import { OrderActions, ADD_ORDER_ID, ADD_CAR_INFO } from './order';
+import { OrderActions, ADD_ORDER_ID, ADD_CAR_INFO, RESET_ORDER } from './order';
 import {
   LocationActions,
   UPDATE_LOCATION_ORIGIN,
@@ -46,6 +46,8 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
       return { ...state, order: { ...state.order, id: action.orderId } };
     case ADD_CAR_INFO:
       return { ...state, order: { ...state.order, carInfo: action.carInfo } };
+    case RESET_ORDER:
+      return { ...state, order: { location: { isFixCenter: false } } };
 
     // location
     case UPDATE_LOCATION_ORIGIN:
