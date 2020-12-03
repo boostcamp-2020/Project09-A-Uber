@@ -137,3 +137,12 @@ export const START_DRIVING = gql`
     }
   }
 `;
+
+export const COMPLETE_ORDER = gql`
+  mutation CompleteOrder($orderId: String!) {
+    completeOrder(orderId: $orderId) {
+      result
+      error
+    }
+  }
+`;
