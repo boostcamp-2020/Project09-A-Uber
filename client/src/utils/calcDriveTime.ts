@@ -1,9 +1,12 @@
 const calcDriveTime = (start: string | null, end: string | null) => {
   if (start && end) {
-    const startTime = new Date(start).getTime();
-    const endTime = new Date(end).getTime();
+    const startTime = new Date(Number(start)).getTime();
+    const endTime = new Date(Number(end)).getTime();
+    const diff = Math.abs(startTime - endTime);
 
-    return 0;
+    const totalTimeMinutes = Math.floor(diff / 1000 / 60);
+
+    return totalTimeMinutes;
   }
   return 0;
 };
