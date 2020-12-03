@@ -14,6 +14,7 @@ const orderSchema = new Schema({
   destination: { type: locationSchema, required: true },
   status: { type: String, enum: ['close', 'active', 'waiting'], required: true },
   chat: [chatSchema],
+  createdAt: { type: Date, default: Date.now },
   startedAt: Schema.Types.Date,
   completedAt: Schema.Types.Date,
 });
