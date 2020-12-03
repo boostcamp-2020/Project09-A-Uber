@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import MapFrame from '@/components/MapFrame';
 import Modal from '@components/Modal';
@@ -16,6 +16,7 @@ import { DRIVER } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
 
 import { InitialState, Location } from '@reducers/.';
+import { resetOrder } from '@reducers/order';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -47,6 +48,7 @@ const StyledGoToDestinationMenu = styled.div`
 `;
 
 const GoToDestination: FC = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
@@ -71,6 +73,7 @@ const GoToDestination: FC = () => {
 
   const onCompleteOrderHandler = useCallback(() => {
     closeModal();
+    dispatch(resetOrder());
     history.push(`/driver`);
   }, []);
 
