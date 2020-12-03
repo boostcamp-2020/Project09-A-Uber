@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-
 export enum TOAST_DURATION {
   SIGNUP_SUCCESS = 1,
   SIGNUP_FAILURE = 3,
@@ -15,4 +13,8 @@ export enum DRIVER {
   INCRESE_TAXI_FEE = 100,
   NEW_ORDER_DURATION = 5000,
   NEXT_LOCATION_UPDATE_TIME = 5000,
+}
+
+export enum USER {
+  USER_LOCATOIN_UPDATE_TIME = 3000,
 }

@@ -6,8 +6,8 @@ const getUserLocation = async (): Promise<Location | void> => {
       window.navigator.geolocation.getCurrentPosition(
         (position) => {
           res({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
+            lat: Number(position.coords.latitude.toFixed(8)),
+            lng: Number(position.coords.longitude.toFixed(8)),
           });
         },
         (err) => {

@@ -15,6 +15,7 @@ import DriverGoToOrigin from '@routes/Driver/GoToOrigin';
 import DriverGoToDestination from '@routes/Driver/GoToDestination';
 import Signup from '@routes/Signup';
 import SearchDriver from '@routes/User/SearchDriver';
+import UserGoToDestination from '@routes/User/GoToDestination';
 
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
@@ -36,6 +37,11 @@ const App: FC = () => (
             <Route exact path="/" component={auth(Home)} />
             <Route exact path="/user" component={auth(UserMain, 'user')} />
             <Route exact path="/user/waitingDriver" component={auth(UserWaitingDriver, 'user')} />
+            <Route
+              exact
+              path="/user/goToDestination"
+              component={auth(UserGoToDestination, 'user')}
+            />
             <Route exact path="/driver" component={auth(DriverMain, 'driver')} />
             <Route exact path="/driver/goToOrigin" component={auth(DriverGoToOrigin, 'driver')} />
             <Route
