@@ -20,6 +20,7 @@ const createOrder = async ({ user, startingPoint, destination }: CreateOrderProp
       destination,
       payment: userPayment.get('payment'),
       status: 'waiting',
+      startedAt: new Date(),
     });
     return { result: 'success', orderId: createdOrder.get('_id'), createdOrder };
   } catch (err) {
