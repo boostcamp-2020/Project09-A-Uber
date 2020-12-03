@@ -1,0 +1,8 @@
+type CompleteOrderResponse {
+    result: String!
+    error: String
+}
+
+type Mutation {
+    completeOrder(orderId: String!): CompleteOrderResponse! @auth
+}
