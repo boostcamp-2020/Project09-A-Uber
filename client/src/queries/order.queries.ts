@@ -37,6 +37,18 @@ export const GET_ORDER_BY_ID = gql`
       result
       order {
         status
+        amount
+        startedAt
+        completedAt
+        driver
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
       }
       error
     }
