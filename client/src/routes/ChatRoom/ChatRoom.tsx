@@ -1,21 +1,16 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import HeaderWithBack from '@components/HeaderWithBack';
 import ChatLog from '@components/ChatLog';
 import ChatInput from '@components/ChatInput';
 import styled from '@theme/styled';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
-import { GET_USER_INFO } from '@queries/user.queries';
 import { CREATE_CHAT, GET_CHAT, SUB_CHAT } from '@queries/chat.queries';
-import {
-  GetUserInfo,
-  GetChat,
-  GetUserInfo_getUserInfo_user as User,
-  GetChat_getChat_chats as ChatType,
-  SubChat,
-} from '@/types/api';
+import { GetChat, GetChat_getChat_chats as ChatType, SubChat } from '@/types/api';
 import useChange from '@/hooks/useChange';
+import { InitialState, User } from '@reducers/.';
 
 interface ChatID {
   chatId: string;
@@ -36,8 +31,7 @@ const ChatRoom: FC = () => {
   const history = useHistory();
   const chatRef = useRef<HTMLDivElement>(null);
   const { chatId } = useParams<ChatID>();
-  const { data: userInfo } = useCustomQuery<GetUserInfo>(GET_USER_INFO);
-  const { _id: userId } = userInfo?.getUserInfo.user as User;
+  const { _id: userId } = useSelector((state: InitialState) => state?.user || ({} as User));
   const { data: chatData, subscribeToMore } = useCustomQuery<GetChat>(GET_CHAT, {
     variables: { chatId },
   });
