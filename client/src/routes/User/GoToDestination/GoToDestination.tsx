@@ -2,7 +2,7 @@ import React, { FC, useState, useCallback, useEffect } from 'react';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
 
 import MapFrame from '@components/MapFrame';
@@ -13,6 +13,7 @@ import { SubOrderCallStatus } from '@/types/api';
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import useModal from '@hooks/useModal';
 import { InitialState, Location } from '@reducers/.';
+import { resetOrder } from '@reducers/order';
 
 // TODO: user/waitingDriver의 스타일과 유사, 추후 리팩터링 필요
 const StyledUserGoToDestinationMenu = styled.section`
@@ -37,6 +38,7 @@ const StyledUserGoToDestinationMenu = styled.section`
 `;
 
 const GoToDestination: FC = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [isVisibleModal, openModal, closeModal] = useModal();
   const { id: orderId } = useSelector(({ order }: InitialState) => order || {});
@@ -50,6 +52,7 @@ const GoToDestination: FC = () => {
 
   const onCompleteOrderHandler = useCallback(() => {
     closeModal();
+    dispatch(resetOrder());
     history.push(`/user`);
   }, []);
 
