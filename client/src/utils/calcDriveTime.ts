@@ -2,13 +2,20 @@ const calcDriveTime = (start: string | null, end: string | null) => {
   if (start && end) {
     const startTime = new Date(Number(start)).getTime();
     const endTime = new Date(Number(end)).getTime();
-    const diff = Math.abs(startTime - endTime);
+    let diffInMilliSeconds = Math.abs(startTime - endTime);
 
-    const totalTimeMinutes = Math.floor(diff / 1000 / 60);
+    const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+    diffInMilliSeconds -= hours * 3600;
+    const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+    diffInMilliSeconds -= minutes * 60;
 
-    return totalTimeMinutes;
+    let totalTimeInString = '';
+    if (hours > 0) totalTimeInString += `${hours}시간 `;
+    if (minutes > 0) totalTimeInString += `${minutes}분`;
+
+    return totalTimeInString;
   }
-  return 0;
+  return `0분`;
 };
 
 export default calcDriveTime;
