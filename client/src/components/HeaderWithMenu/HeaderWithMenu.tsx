@@ -8,7 +8,12 @@ interface Props {
   className?: string;
 }
 
-const StyledHeaderWithMenu = styled.header<{ isMenuOpen: boolean }>`
+interface StyledProps {
+  className: string;
+  isMenuOpen: boolean;
+}
+
+const StyledHeaderWithMenu = styled.header<StyledProps>`
   display: flex;
   height: 3rem;
   width: 100%;
