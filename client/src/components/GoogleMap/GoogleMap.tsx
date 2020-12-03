@@ -2,14 +2,9 @@ import React, { FC, useState, useEffect, useCallback } from 'react';
 
 import { GoogleMap as GoogleMapComponent, Marker } from '@react-google-maps/api';
 import getUserLocation from '@utils/getUserLocation';
+import { Location } from '@reducers/.';
 
 import Directions from './Directions';
-
-export interface Location {
-  address?: string;
-  lat: number;
-  lng: number;
-}
 
 interface Props {
   origin?: Location;

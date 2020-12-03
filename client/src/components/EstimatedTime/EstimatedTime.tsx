@@ -1,12 +1,11 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
 
 import styled from '@theme/styled';
-import { Location } from '@components/GoogleMap';
+import { InitialState } from '@reducers/.';
 
 interface Props {
   directions: google.maps.DirectionsResult | undefined;
-  origin?: Location;
-  destination?: Location;
 }
 
 const StyledEstimatedTime = styled.div`
@@ -24,7 +23,8 @@ const StyledEstimatedTime = styled.div`
   }
 `;
 
-const EstimatedTime: FC<Props> = ({ directions, origin, destination }) => {
+const EstimatedTime: FC<Props> = ({ directions }) => {
+  const { origin, destination } = useSelector(({ order }: InitialState) => order.location);
   const estimatedTime = directions?.routes[0].legs[0].duration;
   const estimatedDistance = directions?.routes[0].legs[0].distance;
 

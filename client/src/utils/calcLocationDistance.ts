@@ -1,4 +1,4 @@
-import { Location } from '@components/GoogleMap';
+import { Location } from '@reducers/.';
 
 const rad = (x: number): number => {
   return (x * Math.PI) / 180;
