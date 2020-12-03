@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -12,7 +12,7 @@ import getUserLocation from '@utils/getUserLocation';
 import { DRIVER } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
 
-import { InitialState } from '@reducers/.';
+import { InitialState, Location } from '@reducers/.';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -56,22 +56,32 @@ const GoToDestination: FC = () => {
   const onClickChatRoom = () => {
     history.push(`/chatroom/${id}`);
   };
-  const updateCurrentLocation = async () => {
-    const currLocation = await getUserLocation();
-
-    if (currLocation) {
-      setTaxiFee((pre) => pre + DRIVER.INCRESE_TAXI_FEE);
-      updateDriverLocationMutation({
-        variables: { lat: currLocation.lat, lng: currLocation.lng },
-      });
-      setCurrentLocation(currLocation);
+  const updateInitLocation = useCallback((location: Location | void) => {
+    if (location) {
+      setCurrentLocation(location);
+      updateDriverLocationMutation({ variables: location });
     }
-  };
+  }, []);
+
+  const watchUpdateCurrentLocation = useCallback((location: Position) => {
+    const updateLocation = { lat: location.coords.latitude, lng: location.coords.longitude };
+    setCurrentLocation(updateLocation);
+    updateDriverLocationMutation({
+      variables: updateLocation,
+    });
+  }, []);
+
+  const updateTaxiFee = useCallback(() => {
+    setTaxiFee(taxiFee + DRIVER.INCRESE_TAXI_FEE);
+  }, [taxiFee]);
 
   useEffect(() => {
-    const updateCurrentLocationInterval = setInterval(updateCurrentLocation, 5000);
+    getUserLocation().then(updateInitLocation);
+    const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
+    const updateTaxiFeeInterval = setInterval(updateTaxiFee, 5000);
     return () => {
-      clearInterval(updateCurrentLocationInterval);
+      clearInterval(updateTaxiFeeInterval);
+      navigator.geolocation.clearWatch(watchLocation);
     };
   }, []);
 
