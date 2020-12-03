@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'emotion-theming';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
