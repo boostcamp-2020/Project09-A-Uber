@@ -7,7 +7,7 @@ import { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
 import { GetUserInfo } from '@/types/api';
 import { useCustomQuery } from '@hooks/useApollo';
 
-const AUTH_TYPE_MESSAGE = '로 로그인이 필요합니다';
+const AUTH_TYPE_MESSAGE = '로그인이 필요합니다';
 
 const AUTH_MESSAGE = '로그인이 필요합니다';
 
