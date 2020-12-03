@@ -8,7 +8,7 @@ import MapFrame from '@components/MapFrame';
 import OrderLog from '@components/OrderLog';
 import Modal from '@components/Modal';
 import OrderModalItem from '@components/OrderModalItem';
-import { Location } from '@components/GoogleMap';
+import { Location } from '@reducers/.';
 import getUserLocation from '@utils/getUserLocation';
 import { GET_UNASSIGNED_ORDERS, UPDATE_ORDER_LIST, SUB_NEW_ORDER } from '@queries/order.queries';
 import useModal from '@hooks/useModal';
