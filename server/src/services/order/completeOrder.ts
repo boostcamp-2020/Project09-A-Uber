@@ -1,9 +1,10 @@
 import Order from '@models/order';
 
-const completeOrder = async (orderId: string) => {
+const completeOrder = async (orderId: string, amount: number) => {
   try {
     await Order.findByIdAndUpdate(orderId, {
       status: 'close',
+      amount,
       completedAt: Date.now(),
     });
     return { result: 'success' };
