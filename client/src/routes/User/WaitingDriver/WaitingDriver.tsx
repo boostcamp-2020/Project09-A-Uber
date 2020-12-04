@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useSubscription } from '@apollo/react-hooks';
@@ -7,12 +7,14 @@ import { useHistory } from 'react-router-dom';
 
 import MapFrame from '@components/MapFrame';
 import { GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
-import { SUB_DRIVER_LOCATION } from '@queries/user.queries';
+import { SUB_DRIVER_LOCATION, GET_DRIVER_LOCATION } from '@queries/user.queries';
 import {
   SubDriverLocation,
   GetOrderCarInfo,
   CarInfo as CarInfoType,
   SubOrderCallStatus,
+  getDriverLocation,
+  getDriverLocation_getDriverLocation_driverLocation as driverLocation,
 } from '@/types/api';
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';
@@ -54,6 +56,15 @@ const WaitingDriver = () => {
   const [carInfo, setCarInfo] = useState({ carNumber: '', carType: 'small' } as CarInfoType);
   const { id } = useSelector(({ order }: InitialState) => order || {});
   const { origin: userOrigin } = useSelector(({ order }: InitialState) => order.location);
+
+  useCustomQuery<getDriverLocation>(GET_DRIVER_LOCATION, {
+    variables: { orderId: id },
+    onCompleted: (data) => {
+      if (data.getDriverLocation.driverLocation) {
+        setDriverLocation(data.getDriverLocation.driverLocation);
+      }
+    },
+  });
 
   useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
     variables: { orderId: id },

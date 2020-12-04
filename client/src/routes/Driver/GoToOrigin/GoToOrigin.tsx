@@ -55,15 +55,6 @@ const GoToOrigin: FC = () => {
   });
   const history = useHistory();
 
-  const updateInitLocation = useCallback((location: Location | void) => {
-    if (location) {
-      setCurrentLocation(location);
-      updateDriverLocationMutation({
-        variables: { lat: currentLocation.lat, lng: currentLocation.lng },
-      });
-    }
-  }, []);
-
   const watchUpdateCurrentLocation = useCallback((location: Position) => {
     setCurrentLocation({
       lat: location.coords.latitude,
@@ -79,7 +70,6 @@ const GoToOrigin: FC = () => {
   }, [id]);
 
   useEffect(() => {
-    getUserLocation().then(updateInitLocation);
     const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
     return () => {
       navigator.geolocation.clearWatch(watchLocation);
