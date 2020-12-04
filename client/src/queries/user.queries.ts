@@ -25,6 +25,19 @@ export const GET_USER_WITH_ORDER = gql`
   }
 `;
 
+export const GET_DRIVER_LOCATION = gql`
+  query getDriverLocation($orderId: String!) {
+    getDriverLocation(orderId: $orderId) {
+      result
+      driverLocation {
+        lat
+        lng
+      }
+      error
+    }
+  }
+`;
+
 export const SIGNIN = gql`
   mutation Signin($email: String!, $password: String!, $loginType: String!) {
     signin(email: $email, password: $password, loginType: $loginType) {
