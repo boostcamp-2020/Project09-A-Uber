@@ -60,7 +60,7 @@ const WaitingDriver = () => {
   useCustomQuery<getDriverLocation>(GET_DRIVER_LOCATION, {
     variables: { orderId: id },
     onCompleted: (data) => {
-      if (data && data.getDriverLocation && data.getDriverLocation.driverLocation) {
+      if (data.getDriverLocation.driverLocation) {
         setDriverLocation(data.getDriverLocation.driverLocation);
       }
     },
