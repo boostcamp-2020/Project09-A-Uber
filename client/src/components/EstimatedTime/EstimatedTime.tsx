@@ -11,6 +11,7 @@ interface Props {
 const StyledEstimatedTime = styled.div`
   display: flex;
   justify-content: center;
+  width: 100%;
   margin-top: 1.5rem;
   font-size: 1rem;
 
