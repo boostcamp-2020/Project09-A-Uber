@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import MapFrame from '@components/MapFrame';
+import EstimatedTime from '@components/EstimatedTime';
 import { GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
 import { SUB_DRIVER_LOCATION, GET_DRIVER_LOCATION } from '@queries/user.queries';
 import {
@@ -28,10 +29,12 @@ import { InitialState } from '@reducers/.';
 const StyledWaitingDriverMenu = styled.section`
   height: 100%;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
 
   & > .chat-with-driver {
     width: 100%;
+    margin-top: 0.8rem;
 
     & > .am-button {
       display: flex;
@@ -116,6 +119,7 @@ const WaitingDriver = () => {
         directions={directions}
       >
         <StyledWaitingDriverMenu>
+          <EstimatedTime directions={directions} />
           <div className="chat-with-driver">
             <Button type="primary" onClick={onClickChatRoom}>
               드라이버와 채팅하기
