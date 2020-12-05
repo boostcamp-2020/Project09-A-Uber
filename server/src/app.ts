@@ -49,12 +49,6 @@ class App {
       this.app.use(helmet());
       this.app.use(hpp());
       this.app.use(morgan('combined'));
-      this.app.use(
-        cors({
-          origin: /ikeytax\.tk$/,
-          credentials: true,
-        }),
-      );
     } else {
       corsOptions.origin = 'http://localhost:3000';
       this.app.use(morgan('dev'));
