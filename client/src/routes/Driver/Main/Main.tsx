@@ -15,7 +15,7 @@ import OrderModalItem from '@components/OrderModalItem';
 import { Location } from '@reducers/.';
 import getUserLocation from '@utils/getUserLocation';
 import { GET_UNASSIGNED_ORDERS, UPDATE_ORDER_LIST, SUB_NEW_ORDER } from '@queries/order';
-import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
+import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import useModal from '@hooks/useModal';
 
 import { DRIVER } from '@utils/enums';

@@ -6,7 +6,7 @@ import styled from '@theme/styled';
 
 import MapFrame from '@components/MapFrame';
 import { START_DRIVING } from '@queries/order';
-import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
+import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { UpdateDriverLocation, StartDriving } from '@/types/api';
 import getUserLocation from '@utils/getUserLocation';
 import { useCustomMutation } from '@hooks/useApollo';

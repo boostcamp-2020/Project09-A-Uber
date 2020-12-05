@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Toast } from 'antd-mobile';
 import { useMutation } from '@apollo/react-hooks';
-import { SIGNUP_DRIVER } from '@queries/user.queries';
+import { SIGNUP_DRIVER } from '@queries/user';
 import { SignupDriver } from '@/types/api';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
