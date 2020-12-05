@@ -58,8 +58,13 @@ const AutoLocation: FC<Props> = ({ locationType }) => {
       } = suggestion;
 
       return (
-        <li key={`AutoLocation_${suggestion.place_id}`} onClick={handleSelect(suggestion)}>
-          <strong>{main_text}</strong> <small>{secondary_text}</small>
+        <li
+          key={`AutoLocation_${suggestion.place_id}`}
+          onClick={handleSelect(suggestion)}
+          onKeyDown={handleSelect(suggestion)}
+        >
+          <strong>{main_text}</strong>
+          <small>{secondary_text}</small>
         </li>
       );
     });
@@ -67,7 +72,7 @@ const AutoLocation: FC<Props> = ({ locationType }) => {
     <AutoLocationWrapper ref={registerRef} className="location-input">
       <span className="before-placeholder">▪</span>
       <input value={value} onChange={handleInput} placeholder="어디로 가시나요?" />
-      <StyledIcon type="cross" size="xxs" onClick={onClickCancleIcon}></StyledIcon>
+      <StyledIcon type="cross" size="xxs" onClick={onClickCancleIcon} />
       {status === 'OK' && <ul>{renderSuggestions()}</ul>}
     </AutoLocationWrapper>
   );

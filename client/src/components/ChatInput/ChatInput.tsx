@@ -53,7 +53,7 @@ const ChatInput: FC<Props> = ({
           placeholder="채팅을 입력해 주세요."
           value={chatContent}
           onChange={onChangeChatContent}
-        ></Input>
+        />
         <Button type="primary" disabled={!chatContent} onClick={onClickSubmitButton}>
           전송
         </Button>

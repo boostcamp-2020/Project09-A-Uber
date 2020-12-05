@@ -32,8 +32,8 @@ const CarInfo: FC<Props> = ({ carInfo, title }) => {
   return (
     <StyledCarInfo>
       <h1>{title}</h1>
-      <span>차량번호 : {carInfo?.carNumber}</span>
-      <span>차량타입: {carTypeMapper(carInfo?.carType)}</span>
+      <span>{`차량번호 : ${carInfo?.carNumber || ''}`}</span>
+      <span>{`차량타입: ${carTypeMapper(carInfo?.carType)} || '`}</span>
     </StyledCarInfo>
   );
 };
