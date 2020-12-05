@@ -6,7 +6,6 @@ import Log from './Log';
 const StyledOrderHistoryList = styled.div`
   padding: 0 1rem;
   overflow-y: scroll;
-  border: 1px solid blue;
   height: calc(100% - 3rem);
 `;
 
