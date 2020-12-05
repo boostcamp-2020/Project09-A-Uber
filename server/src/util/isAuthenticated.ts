@@ -1,7 +1,7 @@
 import { SchemaDirectiveVisitor } from 'apollo-server-express';
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 import passport from 'passport';
-import isVaildToken from '@util/isVaildToken';
+import isValidToken from '@util/isValidToken';
 
 const JWT_HEADER = process.env.JWT_HEADER as string;
 
@@ -16,8 +16,8 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
       const [, , { req, res, accessToken }] = args;
 
       if (accessToken) {
-        const isVaild = await isVaildToken(accessToken);
-        if (isVaild) {
+        const isValid = await isValidToken(accessToken);
+        if (isValid) {
           return resolve.apply(this, args);
         }
       }
