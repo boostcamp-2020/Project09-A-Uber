@@ -6,7 +6,7 @@ import {
   GetCompletedOrders,
   GetCompletedOrders_getCompletedOrders_completedOrders as CompletedOrders,
 } from '@/types/api';
-import { GET_COMPLETED_ORDER } from '@queries/order.queries';
+import { GET_COMPLETED_ORDER } from '@queries/order';
 import { useCustomQuery } from '@hooks/useApollo';
 import HeaderWithBack from '@components/HeaderWithBack';
 
