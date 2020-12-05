@@ -40,7 +40,7 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "pretypes": "graphql-codegen",
-    "types": "apollo codegen:generate src/types/api.d.ts --queries=src/queries/*.queries.ts --addTypename --localSchemaFile=schema.json --target typescript --outputFlat"
+    "types": "apollo codegen:generate src/types/api.d.ts --queries=src/queries/**/*.queries.ts --addTypename --localSchemaFile=schema.json --target typescript --outputFlat"
   },
   "eslintConfig": {
     "extends": [
