@@ -16,7 +16,11 @@ interface OrderHistoryListProps {
 const OrderHistoryList: FC<OrderHistoryListProps> = ({ orders }) => {
   return (
     <StyledOrderHistoryList>
-      {orders && orders.length !== 0 ? orders.map((order) => <Log order={order} />) : <>No Order</>}
+      {orders && orders.length !== 0 ? (
+        orders.map((order) => <Log order={order} key={`completed_order_${order._id}`} />)
+      ) : (
+        <>No Order</>
+      )}
     </StyledOrderHistoryList>
   );
 };
