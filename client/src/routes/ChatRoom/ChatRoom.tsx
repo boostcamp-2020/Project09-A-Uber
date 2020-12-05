@@ -7,7 +7,7 @@ import ChatLog from '@components/ChatLog';
 import ChatInput from '@components/ChatInput';
 import styled from '@theme/styled';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
-import { CREATE_CHAT, GET_CHAT, SUB_CHAT } from '@queries/chat.queries';
+import { CREATE_CHAT, GET_CHAT, SUB_CHAT } from '@/queries/chat';
 import { GetChat, GetChat_getChat_chats as ChatType, SubChat } from '@/types/api';
 import useChange from '@/hooks/useChange';
 import { InitialState, User } from '@reducers/.';
@@ -84,7 +84,7 @@ const ChatRoom: FC = () => {
         {chatList &&
           chatList?.length !== 0 &&
           chatList.map((item) => (
-            <ChatLog key={`chat_${item?.createdAt}`} {...item} type={userId}></ChatLog>
+            <ChatLog key={`chat_${item?.createdAt}`} {...item} type={userId} />
           ))}
       </StyledChatMain>
       <ChatInput
@@ -92,7 +92,7 @@ const ChatRoom: FC = () => {
         onChangeChatContent={onChangeChatContent}
         onClickSubmitButton={onClickSubmitButton}
         onSubmit={onSubmit}
-      ></ChatInput>
+      />
     </StyledChatRoom>
   );
 };
