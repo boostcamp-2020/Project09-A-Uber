@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import styled from '@theme/styled';
 
 import MapFrame from '@components/MapFrame';
-import { START_DRIVING } from '@queries/order.queries';
+import { START_DRIVING } from '@queries/order';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
 import { UpdateDriverLocation, StartDriving } from '@/types/api';
 import getUserLocation from '@utils/getUserLocation';
