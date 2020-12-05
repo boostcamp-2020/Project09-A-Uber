@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import MapFrame from '@/components/MapFrame';
 import Modal from '@components/Modal';
-import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
+import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { COMPLETE_ORDER, GET_ORDER_BY_ID } from '@/queries/order';
 import {
   UpdateDriverLocation,
