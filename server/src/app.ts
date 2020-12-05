@@ -34,7 +34,7 @@ class App {
     this.apolloServer = new ApolloServer({
       schema,
       context: (ctx) => buildContext({ ...ctx, pubsub: this.pubsub }),
-      playground: true,
+      playground: !prod,
     });
     this.server = createServer(this.app);
     this.middlewares();
