@@ -13,7 +13,7 @@ const StyledLog = styled.div`
     display: flex;
     margin-bottom: 0.4rem;
 
-    & div:nth-of-type(1) {
+    & .completed-order-info-title {
       margin-right: 2.3rem;
     }
   }
@@ -21,7 +21,7 @@ const StyledLog = styled.div`
   & .last-completed-order-info {
     display: flex;
 
-    & div:nth-of-type(1) {
+    & .completed-order-info-title {
       margin-right: 1.5rem;
     }
   }
@@ -35,16 +35,19 @@ const Log: FC<LogProps> = ({ order }) => {
   return (
     <StyledLog>
       <div className="completed-order-info">
-        <div>출발지</div> <div>{order.startingPoint.address}</div>
+        <div className="completed-order-info-title">출발지</div>{' '}
+        <div>{order.startingPoint.address}</div>
       </div>
       <div className="completed-order-info">
-        <div>도착지</div> <div>{order.destination.address}</div>
+        <div className="completed-order-info-title">도착지</div>{' '}
+        <div>{order.destination.address}</div>
       </div>
       <div className="completed-order-info">
-        <div>결제비</div> <div>{order.amount}원</div>
+        <div className="completed-order-info-title">결제비</div> <div>{order.amount}원</div>
       </div>
       <div className="last-completed-order-info">
-        <div>운행시간</div> <div>{calcDriveTime(order.startedAt, order.completedAt)}</div>
+        <div className="completed-order-info-title">운행시간</div>{' '}
+        <div>{calcDriveTime(order.startedAt, order.completedAt)}</div>
       </div>
     </StyledLog>
   );
