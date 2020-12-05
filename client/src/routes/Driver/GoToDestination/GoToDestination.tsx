@@ -119,7 +119,7 @@ const GoToDestination: FC = () => {
   }, []);
 
   const updateTaxiFee = useCallback(() => {
-    setTaxiFee(taxiFee + DRIVER.INCRESE_TAXI_FEE);
+    setTaxiFee((pre) => pre + DRIVER.INCRESE_TAXI_FEE);
   }, [taxiFee]);
 
   useEffect(() => {
