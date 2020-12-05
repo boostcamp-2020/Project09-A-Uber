@@ -12,12 +12,15 @@ import { buildContext } from 'graphql-passport';
 
 import schema from '@config/schema';
 import passportInit from '@passport/.';
+import localCookiesParser from '@util/cookiesParser';
 
 dotenv.config();
 
 const GRAPHQL_ENDPOINT = '/graphql';
 
 const prod = process.env.NODE_ENV === 'production';
+
+const JWT_HEADER = process.env.JWT_HEADER as string;
 
 class App {
   public app: Express;
@@ -33,8 +36,15 @@ class App {
     this.app = express();
     this.apolloServer = new ApolloServer({
       schema,
-      context: (ctx) => buildContext({ ...ctx, pubsub: this.pubsub }),
+      context: (ctx) => buildContext({ ...ctx, pubsub: this.pubsub, ...ctx.connection?.context }),
       playground: !prod,
+      subscriptions: {
+        onConnect: (_, __, context) => {
+          const cookies = localCookiesParser(context.request.headers.cookie || '');
+          const accessToken = cookies[JWT_HEADER];
+          return { accessToken };
+        },
+      },
     });
     this.server = createServer(this.app);
     this.middlewares();
