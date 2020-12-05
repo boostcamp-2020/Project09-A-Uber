@@ -1,6 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'prettier'],
   extends: [
     'airbnb-base',
     'plugin:import/errors',
@@ -14,7 +14,7 @@ module.exports = {
     'prettier/prettier': 0,
     'import/no-unresolved': 0,
     'import/extensions': 0,
-    "no-underscore-dangle": 0
+    'no-underscore-dangle': 0,
   },
   settings: {
     'import/resolver': {
