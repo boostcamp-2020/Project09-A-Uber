@@ -1,6 +1,7 @@
 import { SchemaDirectiveVisitor } from 'apollo-server-express';
 import { defaultFieldResolver, GraphQLField } from 'graphql';
 import passport from 'passport';
+import isVaildToken from '@util/isVaildToken';
 
 const JWT_HEADER = process.env.JWT_HEADER as string;
 
@@ -12,7 +13,15 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
     // eslint-disable-next-line no-param-reassign
     field.resolve = async function (...args) {
-      const [, , { req, res }] = args;
+      const [, , { req, res, accessToken }] = args;
+
+      if (accessToken) {
+        const isVaild = await isVaildToken(accessToken);
+        if (isVaild) {
+          return resolve.apply(this, args);
+        }
+      }
+
       if (!req.headers.authorization) {
         const cookie = req.cookies[JWT_HEADER];
         req.headers.authorization = cookie && `Bearer ${cookie}`;
