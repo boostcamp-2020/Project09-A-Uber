@@ -16,6 +16,7 @@ import DriverGoToDestination from '@routes/Driver/GoToDestination';
 import Signup from '@routes/Signup';
 import SearchDriver from '@routes/User/SearchDriver';
 import UserGoToDestination from '@routes/User/GoToDestination';
+import OrderHistory from '@routes/OrderHistory';
 
 import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
@@ -52,6 +53,7 @@ const App: FC = () => (
             <Route exact path="/user/searchDriver" component={auth(SearchDriver, 'user')} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={Signup} />
+            <Route exact path="/orderHistory" component={auth(OrderHistory)} />
             <Route exact path="/chatroom/:chatId" component={auth(ChatRoom)} />
           </Switch>
         </BrowserRouter>
