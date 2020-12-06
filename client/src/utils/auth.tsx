@@ -14,10 +14,7 @@ import { useCustomQuery } from '@hooks/useApollo';
 import { useDispatch } from 'react-redux';
 import { AddUserInfoWithOrder } from '@reducers/user';
 import { Order } from '@/reducers';
-
-const AUTH_TYPE_MESSAGE = '로그인이 필요합니다';
-
-const AUTH_MESSAGE = '로그인이 필요합니다';
+import { Message } from '@utils/client-message';
 
 const userTypeMapper = (type: ToggleFocus) => (type === FOCUS_USER ? '일반 사용자' : '드라이버');
 
@@ -118,7 +115,7 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
           },
         ]}
       >
-        {type ? `${userTypeMapper(type)}${AUTH_TYPE_MESSAGE}` : AUTH_MESSAGE}
+        {type ? `${userTypeMapper(type)}${Message.AuthTypeMessage}` : Message.AuthMessage}
       </Modal>
 
       {!loading && !modalOpen && <Component />}
