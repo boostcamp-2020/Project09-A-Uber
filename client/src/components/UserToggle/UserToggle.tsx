@@ -40,12 +40,16 @@ const UserToggle: FC<Props> = ({ focus, onClick }) => {
       <div
         className={focus === FOCUS_USER ? 'focus-toggle' : ''}
         onClick={() => onClick(FOCUS_USER)}
+        role="button"
+        tabIndex={-1}
       >
         일반 사용자
       </div>
       <div
         className={focus === FOCUS_DRIVER ? 'focus-toggle' : ''}
         onClick={() => onClick(FOCUS_DRIVER)}
+        role="button"
+        tabIndex={-1}
       >
         드라이버
       </div>

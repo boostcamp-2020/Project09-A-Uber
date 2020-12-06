@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Checkbox, Toast } from 'antd-mobile';
 import { useMutation } from '@apollo/react-hooks';
@@ -61,7 +61,7 @@ const SignIn: FC = () => {
   return (
     <StyledPageFrame>
       <StyledSignIn>
-        <img src={logo} alt="logo image" />
+        <img src={logo} alt="logo" />
         <UserToggle focus={loginType} onClick={onClickToggleHandler} />
         <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail} />
         <Input
