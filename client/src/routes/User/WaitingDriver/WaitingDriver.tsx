@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom';
 
 import MapFrame from '@components/MapFrame';
 import EstimatedTime from '@components/EstimatedTime';
-import { GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order.queries';
-import { SUB_DRIVER_LOCATION, GET_DRIVER_LOCATION } from '@queries/user.queries';
+import { GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order';
+import { SUB_DRIVER_LOCATION, GET_DRIVER_LOCATION } from '@queries/user';
 import {
   SubDriverLocation,
   GetOrderCarInfo,

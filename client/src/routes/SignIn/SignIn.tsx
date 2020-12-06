@@ -2,7 +2,7 @@ import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Checkbox, Toast } from 'antd-mobile';
 import { useMutation } from '@apollo/react-hooks';
-import { SIGNIN } from '@queries/user.queries';
+import { SIGNIN } from '@queries/user';
 import { Signin } from '@/types/api';
 import { StyledSignIn } from '@routes/SignIn/style';
 import StyledPageFrame from '@components/PageFrame';
@@ -63,13 +63,13 @@ const SignIn: FC = () => {
       <StyledSignIn>
         <img src={logo} alt="logo image" />
         <UserToggle focus={loginType} onClick={onClickToggleHandler} />
-        <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail}></Input>
+        <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail} />
         <Input
           type="password"
           placeholder="패스워드"
           value={password}
           onChange={onChangePassword}
-        ></Input>
+        />
         <div className="login-state">
           <Checkbox onChange={onChangeLoginState}>로그인 상태 유지</Checkbox>
         </div>

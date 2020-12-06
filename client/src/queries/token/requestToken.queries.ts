@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const REQUEST_TOKEN = gql`
+const REQUEST_TOKEN = gql`
   mutation RequestToken {
     requestToken {
       result
@@ -8,3 +8,5 @@ export const REQUEST_TOKEN = gql`
     }
   }
 `;
+
+export default REQUEST_TOKEN;

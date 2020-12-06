@@ -1,8 +1,8 @@
 type LocationWithOrderId {
-     coordinates: [Float]!
-     orderId: String!
+  coordinates: [Float]!
+  orderId: String!
 }
 
 type Subscription {
-    subDriverLocation(orderId: String!): LocationWithOrderId!
+  subDriverLocation(orderId: String!): LocationWithOrderId! @auth
 }
