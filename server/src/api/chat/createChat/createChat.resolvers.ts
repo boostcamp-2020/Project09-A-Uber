@@ -5,12 +5,11 @@ import { NEW_CHAT } from '@api/chat/subChat/subChat.resolvers';
 
 const resolvers: Resolvers = {
   Mutation: {
-    createChat: async (_, { chatId, content, writer, createdAt }, { pubsub }) => {
+    createChat: async (_, { chatId, content }, { req, pubsub }) => {
       const payload = {
         chatId,
         content,
-        writer,
-        createdAt,
+        writer: req.user?._id as string,
       };
       const { result, chat, error } = await insertChat(payload);
 

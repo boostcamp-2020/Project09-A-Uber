@@ -5,7 +5,6 @@ import styled from '@theme/styled';
 interface Props {
   writer?: string;
   content?: string;
-  createdAt?: string | null;
   type: string;
 }
 
@@ -28,7 +27,7 @@ const StyledChatLogWrapper = styled.div<Type>`
   }
 `;
 
-const ChatLog: FC<Props> = ({ content, createdAt, writer, type }) => {
+const ChatLog: FC<Props> = ({ content, writer, type }) => {
   return (
     <StyledChatLogWrapper type={type} writer={writer}>
       <span className="chat-content">{content}</span>

@@ -49,7 +49,8 @@ const StyledHeaderWithMenu = styled.header<StyledProps>`
     border-right: 1px solid ${({ theme }) => theme.PRIMARY};
     transition: 0.5s;
 
-    & button {
+    & .am-button {
+      position: inherit;
       font-size: 1.2rem;
     }
   }
