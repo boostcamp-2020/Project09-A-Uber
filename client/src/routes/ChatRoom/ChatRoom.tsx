@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useSubscription } from '@apollo/client';
@@ -54,9 +54,9 @@ const ChatRoom: FC = () => {
     },
   });
 
-  const onClickBackButton = () => {
+  const onClickBackButton = useCallback(() => {
     history.goBack();
-  };
+  }, []);
 
   const onClickSubmitButton = () => {
     CreateChat({
