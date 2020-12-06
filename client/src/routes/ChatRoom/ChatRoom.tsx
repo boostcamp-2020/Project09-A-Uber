@@ -36,21 +36,22 @@ const ChatRoom: FC = () => {
   const [chatContent, setChatContent, onChangeChatContent] = useChange('');
   const [chats, setChats] = useState<(ChatType | null)[]>([]);
   const [CreateChat] = useCustomMutation(CREATE_CHAT);
-  const { data: chatData } = useCustomQuery<GetChat>(GET_CHAT, {
-    variables: { chatId },
-    onCompleted: (data) => {
-      if (data.getChat.result === 'success') {
-        setChats(data.getChat.chats);
-      }
-    },
-  });
-  const { data } = useSubscription(SUB_CHAT, {
+  useSubscription(SUB_CHAT, {
     variables: {
       chatId,
     },
     onSubscriptionData: ({ subscriptionData }) => {
       const { chat } = subscriptionData.data.subChat;
       setChats([...chats, chat]);
+    },
+  });
+
+  useCustomQuery<GetChat>(GET_CHAT, {
+    variables: { chatId },
+    onCompleted: (data) => {
+      if (data.getChat.result === 'success') {
+        setChats(data.getChat.chats);
+      }
     },
   });
 

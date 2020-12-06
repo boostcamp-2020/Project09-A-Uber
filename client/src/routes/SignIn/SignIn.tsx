@@ -53,7 +53,6 @@ const SignIn: FC = () => {
     },
     [loginType],
   );
-
   const onChangeLoginState = useCallback(() => {
     setIsLoginState(!isLoginState);
   }, []);
