@@ -35,7 +35,7 @@ const App: FC = () => (
         <GlobalStyle />
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={auth(Home)} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/user" component={auth(UserMain, 'user')} />
             <Route exact path="/user/waitingDriver" component={auth(UserWaitingDriver, 'user')} />
             <Route
@@ -53,7 +53,7 @@ const App: FC = () => (
             <Route exact path="/user/searchDriver" component={auth(SearchDriver, 'user')} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/orderHistory" component={auth(OrderHistory)} />
+            <Route exact path="/orderHistory" component={auth(OrderHistory, 'anyUser')} />
             <Route exact path="/chatroom/:chatId" component={auth(ChatRoom, 'anyUser')} />
           </Switch>
         </BrowserRouter>
