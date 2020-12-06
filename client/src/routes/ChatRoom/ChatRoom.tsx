@@ -35,10 +35,13 @@ const ChatRoom: FC = () => {
   const { _id: userId } = useSelector((state: InitialState) => state?.user || ({} as User));
   const [chatContent, setChatContent, onChangeChatContent] = useChange('');
   const [chats, setChats] = useState<(ChatType | null)[]>([]);
-  const { data: chatData, loading } = useCustomQuery<GetChat>(GET_CHAT, {
-    variables: { chatId },
-  });
   const [CreateChat] = useCustomMutation(CREATE_CHAT);
+  const { data: chatData } = useCustomQuery<GetChat>(GET_CHAT, {
+    variables: { chatId },
+    onCompleted: (data) => {
+      setChats(data.getChat.chats);
+    },
+  });
   const { data } = useSubscription(SUB_CHAT, {
     variables: {
       chatId,
@@ -71,13 +74,6 @@ const ChatRoom: FC = () => {
   useEffect(() => {
     chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
   }, [chats]);
-
-  useEffect(() => {
-    if (!loading) {
-      const chats = chatData?.getChat.chats as [ChatType];
-      setChats(chats);
-    }
-  }, [loading]);
 
   return (
     <StyledChatRoom>
