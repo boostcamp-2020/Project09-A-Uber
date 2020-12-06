@@ -5,14 +5,13 @@ interface Props {
   chatId: string;
   content: string;
   writer: string;
-  createdAt: string;
 }
 
-const insertChat = async ({ writer, createdAt, chatId, content }: Props) => {
+const insertChat = async ({ writer, chatId, content }: Props) => {
   try {
     const { ok: isUpdated } = await OrderModel.updateOne(
       { _id: chatId },
-      { $push: { chat: { writer, content, createdAt } } },
+      { $push: { chat: { writer, content } } },
     );
 
     if (!isUpdated) {
@@ -21,7 +20,6 @@ const insertChat = async ({ writer, createdAt, chatId, content }: Props) => {
 
     const newChat = {
       writer,
-      createdAt,
       content,
     };
 

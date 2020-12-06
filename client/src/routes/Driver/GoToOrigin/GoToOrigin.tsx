@@ -8,9 +8,8 @@ import MapFrame from '@components/MapFrame';
 import { START_DRIVING } from '@queries/order';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { UpdateDriverLocation, StartDriving } from '@/types/api';
-import getUserLocation from '@utils/getUserLocation';
 import { useCustomMutation } from '@hooks/useApollo';
-import { InitialState, Location } from '@reducers/.';
+import { InitialState } from '@reducers/.';
 
 const StyledDriverGoToOriginMenu = styled.section`
   height: 100%;
@@ -55,6 +54,10 @@ const GoToOrigin: FC = () => {
   });
   const history = useHistory();
 
+  const onClickChatRoom = () => {
+    history.push(`/chatroom/${id}`);
+  };
+
   const watchUpdateCurrentLocation = useCallback((location: Position) => {
     setCurrentLocation({
       lat: location.coords.latitude,
@@ -90,6 +93,9 @@ const GoToOrigin: FC = () => {
               <div className="driver-start-order-info">손님이 탑승하시고 나서 눌러주세요.</div>
               <Button onClick={onClickStartDrive} type="primary">
                 운행시작
+              </Button>
+              <Button className="driver-chat-btn" onClick={onClickChatRoom}>
+                손님과의 채팅
               </Button>
             </div>
           </StyledDriverGoToOriginMenu>

@@ -46,7 +46,8 @@ const StyledHeaderWithMenu = styled.header<StyledProps>`
     border-right: 1px solid ${({ theme }) => theme.PRIMARY};
     transition: 0.5s;
 
-    & button {
+    & .am-button {
+      position: inherit;
       font-size: 1.2rem;
     }
   }
@@ -68,7 +69,9 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
       <menu>
         <ul>
           <li>
-            <button onClick={onClickCompletedOrders}>이용 기록</button>
+            <button type="button" onClick={onClickCompletedOrders}>
+              이용 기록
+            </button>
           </li>
         </ul>
       </menu>
