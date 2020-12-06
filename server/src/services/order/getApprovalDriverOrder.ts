@@ -1,7 +1,7 @@
 import Order from '@models/order';
 import { Order as OrderType } from '@type/api';
 
-const getActiveDriverOrder = async (driverId: string) => {
+const getApprovalDriverOrder = async (driverId: string) => {
   try {
     const order = (await Order.findOne({ driver: driverId, status: 'approval' })
       .sort({ createdAt: -1 })
@@ -13,4 +13,4 @@ const getActiveDriverOrder = async (driverId: string) => {
   }
 };
 
-export default getActiveDriverOrder;
+export default getApprovalDriverOrder;
