@@ -1,5 +1,5 @@
 import { Resolvers } from '@type/api';
-import getActiveDriverOrder from '@services/order/getActiveDriverOrder';
+import getApprovalDriverOrder from '@services/order/getApprovalDriverOrder';
 import updateDriverLocation from '@services/user/updateDriverLocation';
 import { UPDATE_ORDER_LIST } from '@api/order/updateOrderList/updateOrderList.resolvers';
 
@@ -20,7 +20,7 @@ const resolvers: Resolvers = {
 
       pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
 
-      const { result: inquiryResult, order, error: inquiryError } = await getActiveDriverOrder(
+      const { result: inquiryResult, order, error: inquiryError } = await getApprovalDriverOrder(
         req.user?._id || '',
       );
       if (inquiryResult === 'success' && order) {

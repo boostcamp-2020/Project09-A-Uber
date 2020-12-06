@@ -19,6 +19,7 @@ const GET_USER_WITH_ORDER = gql`
           address
           coordinates
         }
+        status
       }
       error
     }

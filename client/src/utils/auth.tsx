@@ -8,15 +8,13 @@ import {
   GetUserWithOrder,
   GetUserWithOrder_getUserWithOrder_order as ResponseOrder,
   GetUserWithOrder_getUserWithOrder_user as ResponseUser,
+  OrderStatus,
 } from '@/types/api';
 import { useCustomQuery } from '@hooks/useApollo';
 import { useDispatch } from 'react-redux';
 import { AddUserInfoWithOrder } from '@reducers/user';
 import { Order } from '@/reducers';
-
-const AUTH_TYPE_MESSAGE = '로그인이 필요합니다';
-
-const AUTH_MESSAGE = '로그인이 필요합니다';
+import { Message } from '@utils/client-message';
 
 const userTypeMapper = (type: ToggleFocus) => (type === FOCUS_USER ? '일반 사용자' : '드라이버');
 
@@ -43,6 +41,27 @@ const serverLocationMapper = (order: ResponseOrder) =>
     },
   } as Order);
 
+const clientRoutingMapper = (
+  orderStatus: OrderStatus | undefined | null,
+  type: ToggleFocus | undefined,
+) => {
+  if (orderStatus === undefined) {
+    return type;
+  }
+  if (orderStatus === 'waiting') {
+    if (type === 'user') return 'user/searchDriver';
+    if (type === 'driver') return 'driver';
+  }
+  if (orderStatus === 'approval') {
+    if (type === 'user') return 'user/waitingDriver';
+    if (type === 'driver') return 'driver/goToOrigin';
+  }
+  if (orderStatus === 'startedDrive') {
+    if (type === 'user') return 'user/goToDestination';
+    if (type === 'driver') return 'driver/goToDestination';
+  }
+};
+
 const auth = (Component: FC, type?: ToggleFocus): FC => () => {
   const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
@@ -54,7 +73,7 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
         setModalOpen(true);
         return;
       }
-      if (type && getUserWithOrder.user.type !== type) {
+      if (type && type !== 'anyUser' && getUserWithOrder.user.type !== type) {
         setModalOpen(true);
       }
       const user = serverUserMapper(getUserWithOrder.user);
@@ -64,8 +83,13 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
       if (getUserWithOrder.order !== null) {
         order = serverLocationMapper(getUserWithOrder.order);
       }
-
       dispatch(AddUserInfoWithOrder(user, order));
+
+      const orderState = getUserWithOrder.order?.status;
+
+      if (type !== 'anyUser') {
+        history.push(`/${clientRoutingMapper(orderState, type)}`);
+      }
     },
     onError: () => {
       setModalOpen(true);
@@ -90,8 +114,9 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
           },
         ]}
       >
-        {type ? `${userTypeMapper(type)}${AUTH_TYPE_MESSAGE}` : AUTH_MESSAGE}
+        {type ? `${userTypeMapper(type)}${Message.AuthTypeMessage}` : Message.AuthMessage}
       </Modal>
+
       {!loading && !modalOpen && <Component />}
     </>
   );

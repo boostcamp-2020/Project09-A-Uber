@@ -15,13 +15,13 @@ const getOrder = async ({ orderId, userId, userType }: GetOrderProps) => {
     if (userType === loginType.user) {
       order = (await Order.findOne({
         _id: orderId,
-        status: 'active',
+        status: 'approval',
         user: userId,
       })) as OrderType | null;
     } else if (userType === loginType.driver) {
       order = (await Order.findOne({
         _id: orderId,
-        status: 'active',
+        status: 'approval',
         driver: userId,
       })) as OrderType | null;
     }
