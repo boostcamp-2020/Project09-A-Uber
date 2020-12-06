@@ -8,6 +8,7 @@ import {
   GetUserWithOrder,
   GetUserWithOrder_getUserWithOrder_order as ResponseOrder,
   GetUserWithOrder_getUserWithOrder_user as ResponseUser,
+  OrderStatus,
 } from '@/types/api';
 import { useCustomQuery } from '@hooks/useApollo';
 import { useDispatch } from 'react-redux';
@@ -43,6 +44,27 @@ const serverLocationMapper = (order: ResponseOrder) =>
     },
   } as Order);
 
+const clientRoutingMapper = (
+  orderStatus: OrderStatus | undefined | null,
+  type: ToggleFocus | undefined,
+) => {
+  if (orderStatus === undefined) {
+    return type;
+  }
+  if (orderStatus === 'waiting') {
+    if (type === 'user') return 'user/searchDriver';
+    if (type === 'driver') return 'driver';
+  }
+  if (orderStatus === 'approval') {
+    if (type === 'user') return 'user/waitingDriver';
+    if (type === 'driver') return 'driver/goToOrigin';
+  }
+  if (orderStatus === 'startedDrive') {
+    if (type === 'user') return 'user/goToDestination';
+    if (type === 'driver') return 'driver/goToDestination';
+  }
+};
+
 const auth = (Component: FC, type?: ToggleFocus): FC => () => {
   const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
@@ -70,22 +92,7 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
       const orderState = getUserWithOrder.order?.status;
 
       if (type !== 'anyUser') {
-        if (orderState === undefined) {
-          if (type === 'user') history.push('/user');
-          if (type === 'driver') history.push('/driver');
-        }
-        if (orderState === 'waiting') {
-          if (type === 'user') history.push('/user/searchDriver');
-          if (type === 'driver') history.push('/driver');
-        }
-        if (orderState === 'approval') {
-          if (type === 'user') history.push('/user/waitingDriver');
-          if (type === 'driver') history.push('/driver/goToOrigin');
-        }
-        if (orderState === 'startedDrive') {
-          if (type === 'user') history.push('/user/goToDestination');
-          if (type === 'driver') history.push('/driver/goToDestination');
-        }
+        history.push(`/${clientRoutingMapper(orderState, type)}`);
       }
     },
     onError: () => {
