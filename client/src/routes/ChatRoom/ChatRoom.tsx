@@ -45,7 +45,7 @@ const ChatRoom: FC = () => {
 
   const onClickSubmitButton = () => {
     CreateChat({
-      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
+      variables: { chatId, content: chatContent },
     });
     setChatContent('');
   };
@@ -53,7 +53,7 @@ const ChatRoom: FC = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     CreateChat({
-      variables: { chatId, writer: userId, createdAt: '2020-12-01', content: chatContent },
+      variables: { chatId, content: chatContent },
     });
     setChatContent('');
   };
@@ -84,7 +84,12 @@ const ChatRoom: FC = () => {
         {chatList &&
           chatList?.length !== 0 &&
           chatList.map((item) => (
-            <ChatLog key={`chat_${item?.createdAt}`} {...item} type={userId} />
+            <ChatLog
+              key={`chat_${item}`}
+              content={item?.content}
+              writer={item?.writer}
+              type={userId}
+            />
           ))}
       </StyledChatMain>
       <ChatInput
