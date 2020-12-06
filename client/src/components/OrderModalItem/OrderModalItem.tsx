@@ -75,7 +75,7 @@ const OrderModalItem: FC<Props> = ({ order, closeModal }) => {
     (async () => {
       const { data } = await callQuery({ orderId: order._id });
       const status = data?.getOrderById?.order?.status;
-      if (status === 'active') {
+      if (status === 'approval') {
         Toast.fail(Message.FailureMatchingOrder, TOAST_DURATION.MATCHING_FAILURE);
         return closeModal();
       }
