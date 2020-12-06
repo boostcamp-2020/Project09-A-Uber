@@ -1,7 +1,7 @@
 type subNewOrderResponse {
-    newOrder: Order
+  newOrder: Order
 }
 
 type Subscription {
-    subNewOrder(lat: Float!, lng: Float!): subNewOrderResponse!
+  subNewOrder(lat: Float!, lng: Float!): subNewOrderResponse! @auth
 }

@@ -1,14 +1,14 @@
 enum OrderCallStatus {
-    approval
-    startedDrive
-    completedDrive
+  approval
+  startedDrive
+  completedDrive
 }
 
 type SubOrderCallStatus {
-    orderId: String!
-    status: OrderCallStatus!
+  orderId: String!
+  status: OrderCallStatus!
 }
 
 type Subscription {
-    subOrderCallStatus(orderId: String!): SubOrderCallStatus!
+  subOrderCallStatus(orderId: String!): SubOrderCallStatus! @auth
 }
