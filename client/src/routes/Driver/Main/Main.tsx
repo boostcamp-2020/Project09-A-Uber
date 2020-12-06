@@ -14,8 +14,8 @@ import Modal from '@components/Modal';
 import OrderModalItem from '@components/OrderModalItem';
 import { Location } from '@reducers/.';
 import getUserLocation from '@utils/getUserLocation';
-import { GET_UNASSIGNED_ORDERS, UPDATE_ORDER_LIST, SUB_NEW_ORDER } from '@queries/order.queries';
-import { UPDATE_DRIVER_LOCATION } from '@queries/user.queries';
+import { GET_UNASSIGNED_ORDERS, UPDATE_ORDER_LIST, SUB_NEW_ORDER } from '@queries/order';
+import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import useModal from '@hooks/useModal';
 
 import { DRIVER } from '@utils/enums';
@@ -62,7 +62,6 @@ const Main: FC = () => {
     setOrderItem(order);
   };
 
-
   const updateInitLocation = useCallback((location: Location | void) => {
     if (location) {
       updateDriverLocation({
@@ -76,7 +75,7 @@ const Main: FC = () => {
     const updateLocation = {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
-    }
+    };
     setCurrentLocation(updateLocation);
     updateDriverLocation({
       variables: updateLocation,

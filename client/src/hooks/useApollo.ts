@@ -14,7 +14,7 @@ import {
   OperationVariables,
 } from '@apollo/react-hooks';
 import { DocumentNode } from 'graphql';
-import { REQUEST_TOKEN } from '@queries/token.queries';
+import { REQUEST_TOKEN } from '@queries/token';
 
 import { RequestToken } from '@/types/api';
 
