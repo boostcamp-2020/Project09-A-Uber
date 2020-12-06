@@ -49,12 +49,13 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
   const dispatch = useDispatch();
 
   const { loading } = useCustomQuery<GetUserWithOrder>(GET_USER_WITH_ORDER, {
+    fetchPolicy: 'no-cache',
     onCompleted: ({ getUserWithOrder }) => {
       if (!getUserWithOrder.user) {
         setModalOpen(true);
         return;
       }
-      if (type && getUserWithOrder.user.type !== type) {
+      if (type && type !== 'anyUser' && getUserWithOrder.user.type !== type) {
         setModalOpen(true);
       }
       const user = serverUserMapper(getUserWithOrder.user);
@@ -64,8 +65,28 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
       if (getUserWithOrder.order !== null) {
         order = serverLocationMapper(getUserWithOrder.order);
       }
-
       dispatch(AddUserInfoWithOrder(user, order));
+
+      const orderState = getUserWithOrder.order?.status;
+
+      if (type !== 'anyUser') {
+        if (orderState === undefined) {
+          if (type === 'user') history.push('/user');
+          if (type === 'driver') history.push('/driver');
+        }
+        if (orderState === 'waiting') {
+          if (type === 'user') history.push('/user/searchDriver');
+          if (type === 'driver') history.push('/driver');
+        }
+        if (orderState === 'approval') {
+          if (type === 'user') history.push('/user/waitingDriver');
+          if (type === 'driver') history.push('/driver/goToOrigin');
+        }
+        if (orderState === 'startedDrive') {
+          if (type === 'user') history.push('/user/goToDestination');
+          if (type === 'driver') history.push('/driver/goToDestination');
+        }
+      }
     },
     onError: () => {
       setModalOpen(true);
@@ -92,6 +113,7 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
       >
         {type ? `${userTypeMapper(type)}${AUTH_TYPE_MESSAGE}` : AUTH_MESSAGE}
       </Modal>
+
       {!loading && !modalOpen && <Component />}
     </>
   );
