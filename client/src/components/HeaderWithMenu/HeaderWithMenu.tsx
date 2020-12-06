@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import useToggle from '@hooks/useToggle';
 import { useHistory } from 'react-router-dom';
+import { Button } from 'antd-mobile';
 
 import styled from '@theme/styled';
 import MenuSVG from '@images/menuSVG.tsx';
@@ -46,7 +47,8 @@ const StyledHeaderWithMenu = styled.header<StyledProps>`
     border-right: 1px solid ${({ theme }) => theme.PRIMARY};
     transition: 0.5s;
 
-    & button {
+    & .am-button {
+      position: inherit;
       font-size: 1.2rem;
     }
   }
@@ -68,7 +70,7 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
       <menu>
         <ul>
           <li>
-            <button onClick={onClickCompletedOrders}>이용 기록</button>
+            <Button onClick={onClickCompletedOrders}>이용 기록</Button>
           </li>
         </ul>
       </menu>
