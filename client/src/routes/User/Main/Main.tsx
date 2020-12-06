@@ -8,7 +8,7 @@ import MapFrame from '@components/MapFrame';
 import EstimatedTime from '@components/EstimatedTime';
 import { Location, InitialState } from '@reducers/.';
 import { useCustomMutation } from '@hooks/useApollo';
-import { CREATE_ORDER } from '@queries/order.queries';
+import { CREATE_ORDER } from '@queries/order';
 import { CreateOrder } from '@/types/api';
 import { addOrderId } from '@reducers/order';
 

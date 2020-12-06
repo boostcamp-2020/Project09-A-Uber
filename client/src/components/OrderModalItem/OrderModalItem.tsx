@@ -8,7 +8,7 @@ import { updateLocationALL } from '@reducers/location';
 import { Location } from '@reducers/.';
 import styled from '@theme/styled';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
-import { APPROVAL_ORDER, GET_ORDER_BY_ID } from '@queries/order.queries';
+import { APPROVAL_ORDER, GET_ORDER_BY_ID } from '@/queries/order';
 import {
   getOrderById,
   ApprovalOrder,

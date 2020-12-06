@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
-import { SIGNUP_USER } from '@queries/user.queries';
+import { SIGNUP_USER } from '@queries/user';
 import { SignupUser } from '@/types/api';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';

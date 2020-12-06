@@ -8,7 +8,7 @@ import { useSubscription } from '@apollo/react-hooks';
 import MapFrame from '@components/MapFrame';
 import Modal from '@components/Modal';
 import getUserLocation from '@utils/getUserLocation';
-import { SUB_ORDER_CALL_STATUS, GET_ORDER_BY_ID } from '@queries/order.queries';
+import { SUB_ORDER_CALL_STATUS, GET_ORDER_BY_ID } from '@/queries/order';
 import {
   SubOrderCallStatus,
   getOrderById,
