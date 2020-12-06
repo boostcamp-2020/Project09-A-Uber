@@ -1,7 +1,8 @@
 enum OrderStatus {
-    close
-    waiting
-    active
+  waiting
+  approval
+  startedDrive
+  close
 }
 
 type Order {
