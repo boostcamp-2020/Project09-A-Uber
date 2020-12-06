@@ -89,10 +89,6 @@ const GoToDestination: FC = () => {
     },
   });
 
-  const onClickChatRoom = () => {
-    history.push(`/chatroom/${id}`);
-  };
-
   const onCompleteOrderHandler = useCallback(() => {
     closeModal();
     dispatch(resetOrder());
@@ -145,9 +141,6 @@ const GoToDestination: FC = () => {
             {'현재요금: '}
             {numberWithCommas(taxiFee)}
           </span>
-          <Button className="driver-chat-btn" onClick={onClickChatRoom}>
-            손님과의 채팅
-          </Button>
           <Button
             className="driver-arrive-btn"
             type="primary"
