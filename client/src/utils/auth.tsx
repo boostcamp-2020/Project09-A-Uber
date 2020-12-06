@@ -68,7 +68,6 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
   const dispatch = useDispatch();
 
   const { loading } = useCustomQuery<GetUserWithOrder>(GET_USER_WITH_ORDER, {
-    fetchPolicy: 'no-cache',
     onCompleted: ({ getUserWithOrder }) => {
       if (!getUserWithOrder.user) {
         setModalOpen(true);
