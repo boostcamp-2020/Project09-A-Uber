@@ -39,7 +39,9 @@ const ChatRoom: FC = () => {
   const { data: chatData } = useCustomQuery<GetChat>(GET_CHAT, {
     variables: { chatId },
     onCompleted: (data) => {
-      setChats(data.getChat.chats);
+      if (data.getChat.result === 'success') {
+        setChats(data.getChat.chats);
+      }
     },
   });
   const { data } = useSubscription(SUB_CHAT, {
