@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const CREATE_CHAT = gql`
-  mutation CreateChat($content: String!, $writer: String!, $createdAt: String!, $chatId: String!) {
-    createChat(content: $content, writer: $writer, createdAt: $createdAt, chatId: $chatId) {
+  mutation CreateChat($content: String!, $chatId: String!) {
+    createChat(content: $content, chatId: $chatId) {
       result
       error
     }
