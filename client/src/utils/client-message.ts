@@ -13,4 +13,6 @@ export const Message = {
   FailureCancelOrder: '드라이버 호출 취소에 실패했습니다',
   FailureMatchingOrder: '이미 매칭된 요청입니다.',
   FailureClosedOrder: '호출 취소된 오더입니다.',
+  AuthTypeMessage: '로그인이 필요합니다',
+  AuthMessage: '로그인이 필요합니다',
 };

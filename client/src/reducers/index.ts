@@ -113,7 +113,7 @@ const reducer = (state: InitialState = initialState, action: Action): InitialSta
               destination: action.order.location.destination,
             },
           }
-        : state.order;
+        : initialState.order;
 
       return {
         ...state,

@@ -2,7 +2,7 @@ import Order from '@models/order';
 
 const approvalOrder = async (driverId: string, orderId: string) => {
   try {
-    await Order.findByIdAndUpdate(orderId, { driver: driverId, status: 'active' });
+    await Order.findByIdAndUpdate(orderId, { driver: driverId, status: 'approval' });
 
     return { result: 'success' };
   } catch (err) {
