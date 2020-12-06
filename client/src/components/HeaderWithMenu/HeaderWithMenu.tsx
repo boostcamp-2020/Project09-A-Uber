@@ -2,6 +2,9 @@ import React, { FC } from 'react';
 import useToggle from '@hooks/useToggle';
 import { useHistory } from 'react-router-dom';
 
+import { useCustomMutation } from '@hooks/useApollo';
+import { LOGOUT } from '@queries/user';
+import { Logout } from '@/types/api';
 import styled from '@theme/styled';
 import MenuSVG from '@images/menuSVG.tsx';
 
@@ -55,10 +58,21 @@ const StyledHeaderWithMenu = styled.header<StyledProps>`
 
 const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
   const history = useHistory();
+  const [logoutMutation] = useCustomMutation<Logout>(LOGOUT, {
+    onCompleted: ({ logout }) => {
+      if (logout.result === 'success') {
+        history.push('/signin');
+      }
+    },
+  });
   const [menu, toggleMenu] = useToggle(false);
 
   const onClickCompletedOrders = () => {
     history.push('/orderHistory');
+  };
+
+  const onClickLogout = () => {
+    logoutMutation();
   };
 
   return (
@@ -71,6 +85,11 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
           <li>
             <button type="button" onClick={onClickCompletedOrders}>
               이용 기록
+            </button>
+          </li>
+          <li>
+            <button type="button" onClick={onClickLogout}>
+              로그아웃
             </button>
           </li>
         </ul>
