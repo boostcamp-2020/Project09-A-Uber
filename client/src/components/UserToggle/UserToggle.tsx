@@ -4,9 +4,8 @@ import styled from '@theme/styled';
 
 export const FOCUS_USER = 'user';
 export const FOCUS_DRIVER = 'driver';
-export const FOCUS_CHAT = 'anyUser';
 
-export type ToggleFocus = typeof FOCUS_USER | typeof FOCUS_DRIVER | typeof FOCUS_CHAT;
+export type ToggleFocus = typeof FOCUS_USER | typeof FOCUS_DRIVER;
 
 interface Props {
   focus: ToggleFocus;
