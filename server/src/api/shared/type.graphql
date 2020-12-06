@@ -18,7 +18,7 @@ input LocationInfo {
 }
 
 type Chat {
-    createdAt: String!
-    writer: String!
-    content: String!
+  createdAt: String
+  writer: String!
+  content: String!
 }
