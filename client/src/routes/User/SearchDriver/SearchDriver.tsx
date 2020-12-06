@@ -9,7 +9,7 @@ import Header from '@components/HeaderWithMenu';
 import Modal from '@components/Modal';
 import CarInfo from '@components/CarInfo';
 import { InitialState } from '@reducers/.';
-import { SUB_ORDER_CALL_STATUS, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@queries/order.queries';
+import { SUB_ORDER_CALL_STATUS, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@/queries/order';
 import { SubOrderCallStatus, GetOrderCarInfo, CancelOrder } from '@/types/api';
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';

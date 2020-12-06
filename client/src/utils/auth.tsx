@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Modal } from 'antd-mobile';
 
-import { GET_USER_WITH_ORDER } from '@queries/user.queries';
+import { GET_USER_WITH_ORDER } from '@queries/user';
 import { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
 import {
   GetUserWithOrder,
