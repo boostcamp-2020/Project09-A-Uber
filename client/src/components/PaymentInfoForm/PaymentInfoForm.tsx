@@ -59,7 +59,7 @@ const Banks = [
   '카카오뱅크',
 ];
 
-const PaymentInfoForm: FC<Props> = ({ name, email, password, phone, type }) => {
+const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
   const history = useHistory();
   const [signinUserMutation, { loading }] = useMutation<SignupUser>(SIGNUP_USER, {
     onCompleted: ({ signupUser }) => {

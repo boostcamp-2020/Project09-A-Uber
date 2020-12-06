@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useSubscription } from '@apollo/client';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';

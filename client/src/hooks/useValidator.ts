@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 export default <T extends { value: string } = HTMLInputElement>(
   initialState: string,
