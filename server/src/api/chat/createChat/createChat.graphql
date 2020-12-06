@@ -5,5 +5,5 @@ type CreateChatResponse {
 }
 
 type Mutation {
-  createChat(chatId: String!, content: String!, writer: String!, createdAt: String!): CreateChatResponse!
+  createChat(chatId: String!, content: String!): CreateChatResponse! @auth
 }
