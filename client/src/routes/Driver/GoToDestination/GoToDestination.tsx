@@ -141,7 +141,10 @@ const GoToDestination: FC = () => {
         directions={directions}
       >
         <StyledGoToDestinationMenu>
-          <span>현재요금: {numberWithCommas(taxiFee)}</span>
+          <span>
+            {'현재요금: '}
+            {numberWithCommas(taxiFee)}
+          </span>
           <Button className="driver-chat-btn" onClick={onClickChatRoom}>
             손님과의 채팅
           </Button>
@@ -158,10 +161,22 @@ const GoToDestination: FC = () => {
         {orderInfo && (
           <OrderInfo>
             <div className="order-info-title">운행이 완료되었습니다</div>
-            <div>출발지: {orderInfo?.startingPoint.address}</div>
-            <div>목적지: {orderInfo?.destination.address}</div>
-            <div>결제비: {orderInfo?.amount}</div>
-            <div>이동시간: {calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}</div>
+            <div>
+              {'출발지: '}
+              {orderInfo?.startingPoint.address}
+            </div>
+            <div>
+              {'목적지: '}
+              {orderInfo?.destination.address}
+            </div>
+            <div>
+              {'결제비: '}
+              {orderInfo?.amount}
+            </div>
+            <div>
+              {'이동시간: '}
+              {calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}
+            </div>
           </OrderInfo>
         )}
       </Modal>
