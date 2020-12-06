@@ -6,7 +6,6 @@ import { Message } from '@util/server-message';
 interface Payload {
   user?: string;
   driver?: string;
-  status: string;
 }
 
 const getUserWithOrder = async (userId: string, userType: string) => {
@@ -17,7 +16,7 @@ const getUserWithOrder = async (userId: string, userType: string) => {
       return { result: 'fail', user: null, error: Message.NotSignedUpUser };
     }
 
-    const payload: Payload = { status: 'active' };
+    const payload: Payload = {};
 
     if (userType === 'user') {
       payload.user = userId;
@@ -27,8 +26,10 @@ const getUserWithOrder = async (userId: string, userType: string) => {
     }
 
     const [order] =
-      (((await Order.find(payload).sort({ createdAt: -1 }).limit(1)) as unknown) as [InitOrder]) ||
-      null;
+      (((await Order.find(payload)
+        .or([{ status: 'waiting' }, { status: 'approval' }, { status: 'startedDrive' }])
+        .sort({ createdAt: -1 })
+        .limit(1)) as unknown) as [InitOrder]) || null;
 
     return { result: 'success', user, order };
   } catch (err) {
