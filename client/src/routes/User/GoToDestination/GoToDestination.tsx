@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useHistory } from 'react-router-dom';
@@ -7,9 +7,11 @@ import { useSubscription } from '@apollo/react-hooks';
 
 import MapFrame from '@components/MapFrame';
 import Modal from '@components/Modal';
-import getUserLocation from '@utils/getUserLocation';
 import { SUB_ORDER_CALL_STATUS, GET_ORDER_BY_ID } from '@/queries/order';
+import { SUB_DRIVER_LOCATION, GET_DRIVER_LOCATION } from '@queries/user';
 import {
+  SubDriverLocation,
+  getDriverLocation,
   SubOrderCallStatus,
   getOrderById,
   getOrderById_getOrderById_order as OrderType,
@@ -62,7 +64,7 @@ const GoToDestination: FC = () => {
   const { id: orderId } = useSelector(({ order }: InitialState) => order || {});
   const { destination } = useSelector(({ order }: InitialState) => order.location || {});
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
-  const [currentLocation, setCurrentLocation] = useState<Location>();
+  const [driverLocation, setDriverLocation] = useState<Location>();
   const [orderInfo, setorderInfo] = useState<OrderType | null>();
   const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
 
@@ -76,19 +78,25 @@ const GoToDestination: FC = () => {
     history.push(`/user`);
   }, []);
 
-  const updateCurrentLocation = useCallback(async () => {
-    const userLocation = await getUserLocation();
-    if (userLocation) {
-      setCurrentLocation(userLocation);
-    }
-  }, []);
+  useCustomQuery<getDriverLocation>(GET_DRIVER_LOCATION, {
+    variables: { orderId },
+    onCompleted: (data) => {
+      if (data.getDriverLocation.driverLocation) {
+        setDriverLocation(data.getDriverLocation.driverLocation);
+      }
+    },
+  });
 
-  const watchUpdateCurrentLocation = useCallback((location: Position) => {
-    setCurrentLocation({
-      lat: location.coords.latitude,
-      lng: location.coords.longitude,
-    });
-  }, []);
+  useSubscription<SubDriverLocation>(SUB_DRIVER_LOCATION, {
+    variables: { orderId },
+    onSubscriptionData: ({ subscriptionData }) => {
+      const driverNewLocation = {
+        lat: subscriptionData.data?.subDriverLocation.coordinates[0] as number,
+        lng: subscriptionData.data?.subDriverLocation.coordinates[1] as number,
+      };
+      setDriverLocation(driverNewLocation);
+    },
+  });
 
   useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId },
@@ -101,19 +109,11 @@ const GoToDestination: FC = () => {
     },
   });
 
-  useEffect(() => {
-    updateCurrentLocation();
-    const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
-    return () => {
-      navigator.geolocation.clearWatch(watchLocation);
-    };
-  }, []);
-
   return (
     <>
-      {currentLocation && (
+      {driverLocation && (
         <MapFrame
-          origin={currentLocation}
+          origin={driverLocation}
           destination={destination}
           directions={directions}
           setDirections={setDirections}
