@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useSubscription } from '@apollo/react-hooks';
@@ -15,7 +15,6 @@ import {
   CarInfo as CarInfoType,
   SubOrderCallStatus,
   getDriverLocation,
-  getDriverLocation_getDriverLocation_driverLocation as driverLocation,
 } from '@/types/api';
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';

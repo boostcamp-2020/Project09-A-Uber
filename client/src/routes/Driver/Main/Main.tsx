@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { useSubscription } from '@apollo/client';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
@@ -47,16 +46,18 @@ const Main: FC = () => {
   const [orderItem, setOrderItem] = useState<Order>();
   const [currentLocation, setCurrentLocation] = useState<Location>({ lat: 0, lng: 0 });
   const [updateDriverLocation] = useCustomMutation<UpdateDriverLocation>(UPDATE_DRIVER_LOCATION);
-  const { data } = useSubscription(UPDATE_ORDER_LIST, {
+  const { data: addedOrder, loading } = useSubscription(SUB_NEW_ORDER, {
+    variables: { lat: currentLocation.lat, lng: currentLocation.lng },
+  });
+
+  useSubscription(UPDATE_ORDER_LIST, {
     onSubscriptionData: async () => {
       const newData = await callQuery();
       const { unassignedOrders: newOrderList } = newData?.data.getUnassignedOrders || {};
       setOrderData(newOrderList);
     },
   });
-  const { data: addedOrder, loading } = useSubscription(SUB_NEW_ORDER, {
-    variables: { lat: currentLocation.lat, lng: currentLocation.lng },
-  });
+
   const onClickOrder = (order: Order) => {
     openModal();
     setOrderItem(order);

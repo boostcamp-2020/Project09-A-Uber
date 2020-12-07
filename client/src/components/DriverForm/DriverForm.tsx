@@ -42,7 +42,7 @@ const StyledDriverForm = styled.div`
 
 export const carTypes: string[] = ['대형', '중형', '소형'];
 
-const DriverForm: FC<Props> = ({ name, email, password, phone, type }) => {
+const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
   const history = useHistory();
   const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
