@@ -53,8 +53,8 @@ const App: FC = () => (
             <Route exact path="/user/searchDriver" component={auth(SearchDriver, 'user')} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/orderHistory" component={auth(OrderHistory, 'anyUser')} />
-            <Route exact path="/chatroom/:chatId" component={auth(ChatRoom, 'anyUser')} />
+            <Route exact path="/orderHistory" component={auth(OrderHistory)} />
+            <Route exact path="/chatroom/:chatId" component={auth(ChatRoom)} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>
