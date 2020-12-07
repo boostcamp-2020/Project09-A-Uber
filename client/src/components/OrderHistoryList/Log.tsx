@@ -35,18 +35,19 @@ const Log: FC<LogProps> = ({ order }) => {
   return (
     <StyledLog>
       <div className="completed-order-info">
-        <div className="completed-order-info-title">출발지</div>{' '}
+        <div className="completed-order-info-title">출발지 </div>
         <div>{order.startingPoint.address}</div>
       </div>
       <div className="completed-order-info">
-        <div className="completed-order-info-title">도착지</div>{' '}
+        <div className="completed-order-info-title">도착지 </div>
         <div>{order.destination.address}</div>
       </div>
       <div className="completed-order-info">
-        <div className="completed-order-info-title">결제비</div> <div>{order.amount}원</div>
+        <div className="completed-order-info-title">결제비 </div>
+        <div>{`${order.amount} 원`}</div>
       </div>
       <div className="last-completed-order-info">
-        <div className="completed-order-info-title">운행시간</div>{' '}
+        <div className="completed-order-info-title">운행시간 </div>
         <div>{calcDriveTime(order.startedAt, order.completedAt)}</div>
       </div>
     </StyledLog>

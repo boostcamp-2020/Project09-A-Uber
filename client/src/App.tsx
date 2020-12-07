@@ -35,7 +35,7 @@ const App: FC = () => (
         <GlobalStyle />
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={auth(Home)} />
             <Route exact path="/user" component={auth(UserMain, 'user')} />
             <Route exact path="/user/waitingDriver" component={auth(UserWaitingDriver, 'user')} />
             <Route

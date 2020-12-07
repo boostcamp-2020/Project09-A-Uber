@@ -18,18 +18,24 @@ const StyledToggle = styled.nav`
   width: fit-content;
   border: 1px solid ${({ theme }) => theme.PRIMARY};
   border-radius: 4px;
-  overflow: hidden;
   cursor: pointer;
 
-  & > div {
+  & > button {
     font-size: 0.6rem;
     padding: 0.3rem 0.4rem;
     transition: background 0.5s;
     color: ${({ theme }) => theme.PRIMARY};
+    border: none;
+    background-color: transparent;
 
     &.focus-toggle {
       background-color: ${({ theme }) => theme.PRIMARY};
       color: ${({ theme }) => theme.LIGHT};
+    }
+
+    &:focus {
+      outline: none;
+      filter: brightness(1.1);
     }
   }
 `;
@@ -37,18 +43,20 @@ const StyledToggle = styled.nav`
 const UserToggle: FC<Props> = ({ focus, onClick }) => {
   return (
     <StyledToggle>
-      <div
+      <button
+        type="button"
         className={focus === FOCUS_USER ? 'focus-toggle' : ''}
         onClick={() => onClick(FOCUS_USER)}
       >
         일반 사용자
-      </div>
-      <div
+      </button>
+      <button
+        type="button"
         className={focus === FOCUS_DRIVER ? 'focus-toggle' : ''}
         onClick={() => onClick(FOCUS_DRIVER)}
       >
         드라이버
-      </div>
+      </button>
     </StyledToggle>
   );
 };
