@@ -73,7 +73,7 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
         setModalOpen(true);
         return;
       }
-      if (type && type !== 'anyUser' && getUserWithOrder.user.type !== type) {
+      if (type && getUserWithOrder.user.type !== type) {
         setModalOpen(true);
       }
       const user = serverUserMapper(getUserWithOrder.user);
@@ -87,7 +87,7 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
 
       const orderState = getUserWithOrder.order?.status;
 
-      if (type !== 'anyUser') {
+      if (type) {
         history.push(`/${clientRoutingMapper(orderState, type)}`);
       }
     },
