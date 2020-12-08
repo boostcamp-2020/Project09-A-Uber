@@ -4,7 +4,7 @@ import { withFilter } from 'apollo-server-express';
 export const ORDER_CALL_STATUS = 'ORDER_CALL_STATUS';
 
 // eslint-disable-next-line no-shadow
-export const enum OrderCallStatus {
+export enum OrderCallStatus {
   APPROVAL = 'approval',
   STARTED_DRIVE = 'startedDrive',
   COMPLETED_DRIVE = 'completedDrive',

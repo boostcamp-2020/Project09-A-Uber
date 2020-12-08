@@ -72,7 +72,7 @@ const SignIn: FC = () => {
         <div className="login-state">
           <Checkbox onChange={onChangeLoginState}>로그인 상태 유지</Checkbox>
         </div>
-        <Button type="primary" onClick={onClickSignIn} loading={loading}>
+        <Button type="primary" onClick={onClickSignIn} loading={loading} data-testID="login-button">
           로그인
         </Button>
         <Button className="signup-button" onClick={onClickSignup}>

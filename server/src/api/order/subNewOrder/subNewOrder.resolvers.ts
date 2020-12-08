@@ -2,7 +2,7 @@ import { Resolvers } from '@type/api';
 import { withFilter } from 'apollo-server-express';
 import { CREATE_NEW_ORDER } from '@api/order/createOrder/createOrder.resolvers';
 import { calcLocationDistance } from '@util/calcLocationDistance';
-import { ORDER } from '@util/emuns';
+import { ORDER } from '@util/enums';
 
 const resolvers: Resolvers = {
   Subscription: {
