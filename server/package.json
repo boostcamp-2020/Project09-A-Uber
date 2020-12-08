@@ -36,6 +36,7 @@
     "@types/compression": "^1.7.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/hpp": "^0.2.1",
+    "@types/jest": "^26.0.17",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.10.1",
     "@types/morgan": "^1.9.2",
