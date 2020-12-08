@@ -1,6 +1,7 @@
 module.export = {
   preset: 'ts-jest',
   testRegex: '\\.spec\\.ts$',
+  testEnvironment: 'node',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@passport/(.*)': '<rootDir>/src/passport/$1',
