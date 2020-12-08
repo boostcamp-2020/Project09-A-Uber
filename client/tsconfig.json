@@ -21,8 +21,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "types": [
-      "cypress",
-      "cypress-react-selector"
+      "cypress"
     ]
   },
   "include": [
