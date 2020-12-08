@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { DB_NAME, DB_HOST } = process.env;
+const { TEST_DB, DB_HOST } = process.env;
 
 // eslint-disable-next-line no-shadow
 enum message {
@@ -12,20 +12,21 @@ enum message {
   CONNECT_SUCCEED = 'mongodb connected',
 }
 
-export default () => {
-  const connect = () => {
+export const connect = () => {
+  const connectDB = () => {
     mongoose
       .connect(DB_HOST!, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
         useFindAndModify: false,
-        dbName: DB_NAME,
+        dbName: TEST_DB,
       })
       .then(() => console.log(message.CONNECT_SUCCEED))
       .catch((err) => console.error(message.CONNECT_ERROR, err));
   };
 
-  connect();
-  mongoose.connection.on('disconnected', connect);
+  connectDB();
 };
+
+export const disconnect = () => mongoose.disconnect();

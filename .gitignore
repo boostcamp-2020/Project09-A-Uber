@@ -3,4 +3,5 @@
 
 client/src/types/api.d.ts
 client/schema.json
+client/cypress.env.json
 server/src/types/api.d.ts

@@ -19,10 +19,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": [
+      "cypress"
+    ]
   },
   "include": [
-    "src"
+    "src",
+    "**/*.ts"
   ],
   "extends": "./tsconfig.paths.json"
 }

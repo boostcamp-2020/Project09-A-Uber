@@ -30,7 +30,7 @@ const StyledHeaderWithBack = styled.header`
 
 const HeaderWithBack: FC<Props> = ({ onClick, className = 'white-header' }) => (
   <StyledHeaderWithBack className={className}>
-    <button type="button" onClick={onClick}>
+    <button type="button" onClick={onClick} data-testID="back-button">
       <LeftSVG />
     </button>
   </StyledHeaderWithBack>
