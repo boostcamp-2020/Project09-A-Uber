@@ -2,7 +2,9 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-const { TEST_ORDER, TEST_USER } = process.env;
+import { activeOrderId } from './mock.json';
+
+const { TEST_USER } = process.env;
 
 const GET_CHATS = gql`
   query GetChat($chatId: String!) {
@@ -30,7 +32,7 @@ describe('채팅 API 테스트', () => {
       },
     } = (await query({
       query: GET_CHATS,
-      variables: { chatId: TEST_ORDER },
+      variables: { chatId: activeOrderId },
     })) as any;
 
     expect(result).toBe('success');
