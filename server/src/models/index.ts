@@ -7,7 +7,7 @@ dotenv.config();
 const { DB_NAME, DB_HOST } = process.env;
 
 // eslint-disable-next-line no-shadow
-const enum message {
+enum message {
   CONNECT_ERROR = 'mongodb connection error',
   CONNECT_SUCCEED = 'mongodb connected',
 }
