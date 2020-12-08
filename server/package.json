@@ -9,7 +9,8 @@
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register ./src/index.ts",
     "start": "NODE_ENV=production PORT=3000 pm2 start ts-node -- --type-check -r tsconfig-paths/register ./src/index.ts",
     "types": "graphql-codegen",
-    "test": "jest --testEnvironment=node"
+    "test": "jest --testEnvironment=node",
+    "seeder": "ts-node -r tsconfig-paths/register ./seeders/index.ts"
   },
   "jest": {
     "moduleNameMapper": {
