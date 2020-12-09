@@ -46,6 +46,22 @@ const APPROVAL_ORDER = gql`
   }
 `;
 
+const GET_ORDER_BY_ID = gql`
+  query getOrderById($orderId: String!) {
+    getOrderById(orderId: $orderId) {
+      result
+      order {
+        status
+        amount
+        startedAt
+        completedAt
+        driver
+      }
+      error
+    }
+  }
+`;
+
 const { query, mutate } = client(UserType.user);
 
 describe('오더 관련 API 테스트 입니다.', () => {
@@ -109,7 +125,18 @@ describe('오더 관련 API 테스트 입니다.', () => {
       variables: { orderId: waitingOrderId },
     })) as any;
 
+    const {
+      data: { getOrderById },
+    } = (await query({
+      query: GET_ORDER_BY_ID,
+      variables: { orderId: waitingOrderId },
+    })) as any;
+
     expect(approvalOrder.result).toBe('success');
+
+    expect(getOrderById.result).toBe('success');
+
+    expect(getOrderById.order.status).toBe('approval');
   });
 
   afterAll(() => {
