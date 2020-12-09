@@ -134,8 +134,7 @@
       "__v": 0,
       "driver": "5fcf36023305a041dc2dd7fc",
       "startedAt": "2020-12-07T13:06:48.235Z",
-      "amount": 3000,
-      "completedAt": "2020-12-07T13:06:48.961Z"
+      "amount": 3000
     },
     {
       "_id": "5fce28b0d573726ab8a94c04",
@@ -160,8 +159,7 @@
       "__v": 0,
       "driver": "5fcf36023305a041dc2dd7fc",
       "startedAt": "2020-12-07T13:06:48.235Z",
-      "amount": 3000,
-      "completedAt": "2020-12-07T13:06:48.961Z"
+      "amount": 3000
     },
     {
       "_id": "5fce28bed573726ab8a94c05",
