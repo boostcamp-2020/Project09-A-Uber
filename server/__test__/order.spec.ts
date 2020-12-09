@@ -2,11 +2,20 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-import { completedOrder } from './mock.json';
+import { completedOrder, cancelOrderId, startDrivingOrderId } from './mock.json';
 
 const CANCEL_ORDER = gql`
   mutation CancelOrder($orderId: String!) {
     cancelOrder(orderId: $orderId) {
+      result
+      error
+    }
+  }
+`;
+
+const START_DRIVING = gql`
+  mutation StartDriving($orderId: String!) {
+    startDriving(orderId: $orderId) {
       result
       error
     }
@@ -50,7 +59,22 @@ describe('사용자의 완료된 오더 조회', () => {
       },
     } = (await mutate({
       mutation: CANCEL_ORDER,
-      variables: { orderId: '5fce28b0d573726ab8a94c04' },
+      variables: { orderId: cancelOrderId },
+    })) as any;
+
+    expect(result).toBe('success');
+
+    expect(error).toBe(null);
+  });
+
+  test('드라이버 운행 시작', async () => {
+    const {
+      data: {
+        startDriving: { result, error },
+      },
+    } = (await mutate({
+      mutation: START_DRIVING,
+      variables: { orderId: startDrivingOrderId },
     })) as any;
 
     expect(result).toBe('success');
