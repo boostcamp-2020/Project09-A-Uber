@@ -44,10 +44,10 @@ const Main: FC = () => {
   const [orderData, setOrderData] = useState<Order[] | null | undefined>();
   const [isModal, openModal, closeModal] = useModal();
   const [orderItem, setOrderItem] = useState<Order>();
-  const [currentLocation, setCurrentLocation] = useState<Location>({ lat: 0, lng: 0 });
+  const [currentLocation, setCurrentLocation] = useState<Location>();
   const [updateDriverLocation] = useCustomMutation<UpdateDriverLocation>(UPDATE_DRIVER_LOCATION);
   const { data: addedOrder, loading } = useSubscription(SUB_NEW_ORDER, {
-    variables: { lat: currentLocation.lat, lng: currentLocation.lng },
+    variables: { lat: currentLocation?.lat, lng: currentLocation?.lng },
   });
 
   useSubscription(UPDATE_ORDER_LIST, {
@@ -111,21 +111,23 @@ const Main: FC = () => {
 
   return (
     <>
-      <MapFrame origin={currentLocation}>
-        <StyledOrderLogList>
-          {orderData && orderData?.length !== 0 ? (
-            orderData?.map((order) => (
-              <OrderLog
-                order={order}
-                key={`order_list_${order._id}`}
-                onClick={() => onClickOrder(order)}
-              />
-            ))
-          ) : (
-            <h1>현재 요청이 없습니다</h1>
-          )}
-        </StyledOrderLogList>
-      </MapFrame>
+      {currentLocation && (
+        <MapFrame origin={currentLocation}>
+          <StyledOrderLogList>
+            {orderData && orderData?.length !== 0 ? (
+              orderData?.map((order) => (
+                <OrderLog
+                  order={order}
+                  key={`order_list_${order._id}`}
+                  onClick={() => onClickOrder(order)}
+                />
+              ))
+            ) : (
+              <h1>현재 요청이 없습니다</h1>
+            )}
+          </StyledOrderLogList>
+        </MapFrame>
+      )}
       <Modal visible={isModal} onClose={closeModal}>
         {orderItem && <OrderModalItem order={orderItem} closeModal={closeModal} />}
       </Modal>
