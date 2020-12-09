@@ -2,7 +2,6 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-
 import {
   completedOrder,
   newOrderData,
@@ -36,6 +35,30 @@ const GET_COMPLETED_ORDERS = gql`
     getCompletedOrders {
       result
       completedOrders {
+        _id
+        startingPoint {
+          coordinates
+          address
+        }
+        destination {
+          coordinates
+          address
+        }
+        amount
+        startedAt
+        completedAt
+        driver
+      }
+      error
+    }
+  }
+`;
+
+const GET_ORDER_BY_ID = gql`
+  query getOrderById($orderId: String!) {
+    getOrderById(orderId: $orderId) {
+      result
+      order {
         _id
         startingPoint {
           coordinates
@@ -238,6 +261,23 @@ describe('사용자의 완료된 오더 조회', () => {
     expect(result).toBe('success');
     expect(error).toEqual(null);
     expect(unassignedOrders[0]._id).toEqual(unassignedOrderId);
+  });
+
+  test('아이디를 통한 오더 조회', async () => {
+    const {
+      data: {
+        getOrderById: { result, error, order },
+      },
+    } = await query({
+      query: GET_ORDER_BY_ID,
+      variables: { orderId: completedOrder._id },
+    });
+
+    expect(result).toBe('success');
+
+    expect(error).toEqual(null);
+
+    expect(order).toEqual(completedOrder);
   });
 
   afterAll(() => {
