@@ -110,6 +110,84 @@
       "startedAt": "2020-12-07T13:06:48.235Z",
       "amount": 3000,
       "completedAt": "2020-12-07T13:06:48.961Z"
+    },
+    {
+      "_id": "5fce289fd573726ab8a94c02",
+      "user": "5fbc9eacadc14b373c78f376",
+      "startingPoint": {
+        "coordinates": [51.5091391, -0.1238953],
+        "address": "Superdrug, 스트랜드 런던 영국"
+      },
+      "destination": {
+        "coordinates": [51.5073509, -0.1277583],
+        "address": "London, 영국"
+      },
+      "payment": {
+        "bank": "국민은행",
+        "creditNumber": "1233-2213-2132-1321",
+        "expiryDate": "12/19",
+        "cvc": 123
+      },
+      "status": "waiting",
+      "chat": [],
+      "createdAt": "2020-12-07T13:06:44.038Z",
+      "__v": 0,
+      "driver": "5fcf36023305a041dc2dd7fc",
+      "startedAt": "2020-12-07T13:06:48.235Z",
+      "amount": 3000,
+      "completedAt": "2020-12-07T13:06:48.961Z"
+    },
+    {
+      "_id": "5fce28b0d573726ab8a94c04",
+      "user": "5fbc9eacadc14b373c78f376",
+      "startingPoint": {
+        "coordinates": [51.5091391, -0.1238953],
+        "address": "Superdrug, 스트랜드 런던 영국"
+      },
+      "destination": {
+        "coordinates": [51.5073509, -0.1277583],
+        "address": "London, 영국"
+      },
+      "payment": {
+        "bank": "국민은행",
+        "creditNumber": "1233-2213-2132-1321",
+        "expiryDate": "12/19",
+        "cvc": 123
+      },
+      "status": "approval",
+      "chat": [],
+      "createdAt": "2020-12-07T13:06:44.038Z",
+      "__v": 0,
+      "driver": "5fcf36023305a041dc2dd7fc",
+      "startedAt": "2020-12-07T13:06:48.235Z",
+      "amount": 3000,
+      "completedAt": "2020-12-07T13:06:48.961Z"
+    },
+    {
+      "_id": "5fce28bed573726ab8a94c05",
+      "user": "5fbc9eacadc14b373c78f376",
+      "startingPoint": {
+        "coordinates": [51.5091391, -0.1238953],
+        "address": "Superdrug, 스트랜드 런던 영국"
+      },
+      "destination": {
+        "coordinates": [51.5073509, -0.1277583],
+        "address": "London, 영국"
+      },
+      "payment": {
+        "bank": "국민은행",
+        "creditNumber": "1233-2213-2132-1321",
+        "expiryDate": "12/19",
+        "cvc": 123
+      },
+      "status": "startedDrive",
+      "chat": [],
+      "createdAt": "2020-12-07T13:06:44.038Z",
+      "__v": 0,
+      "driver": "5fcf36023305a041dc2dd7fc",
+      "startedAt": "2020-12-07T13:06:48.235Z",
+      "amount": 3000,
+      "completedAt": "2020-12-07T13:06:48.961Z"
     }
   ]
 }
