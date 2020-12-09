@@ -13,13 +13,17 @@ import {
   getOrderById_getOrderById_order as OrderType,
 } from '@/types/api';
 import { useCustomMutation, useCustomQuery } from '@hooks/useApollo';
-import { Button } from 'antd-mobile';
+import { Button, Toast } from 'antd-mobile';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
 import useModal from '@hooks/useModal';
-import { DRIVER } from '@utils/enums';
+import { DRIVER, TOAST_DURATION } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
 import calcDriveTime from '@utils/calcDriveTime';
+import { SUB_CHAT } from '@queries/chat';
+import { useSubscription } from '@apollo/react-hooks';
+
+import { Message } from '@utils/client-message';
 
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
@@ -79,6 +83,17 @@ const GoToDestination: FC = () => {
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
+
+  useSubscription(SUB_CHAT, {
+    variables: {
+      chatId: id,
+    },
+    onSubscriptionData: () => {
+      Toast.config({ mask: false, duration: TOAST_DURATION.RECEIVE_CHAT });
+      Toast.info(Message.ChatMessage);
+    },
+  });
+
   const [completeOrderMutation] = useCustomMutation<CompleteOrder>(COMPLETE_ORDER, {
     onCompleted: async ({ completeOrder }) => {
       if (completeOrder.result === 'success') {
