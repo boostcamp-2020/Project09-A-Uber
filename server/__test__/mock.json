@@ -7,7 +7,6 @@
   "amount": 8000,
   "existOrderId": "5fce28b0d573726ab8a94c04",
   "nonExistOrderId": "5fce28b0d741226cc7a94c04",
-  "unassignedOrderId": "5fce289fd573726ab8a94c02",
   "completedOrder": {
     "_id": "5fce28e4d573726ab8a94c06",
     "startingPoint": {
@@ -21,7 +20,8 @@
     "driver": "5fcf36023305a041dc2dd7fc",
     "startedAt": "1607346408235",
     "amount": 3000,
-    "completedAt": "1607346408961"
+    "completedAt": "1607346408961",
+    "status": "close"
   },
   "newOrderData": {
     "startingPoint": {

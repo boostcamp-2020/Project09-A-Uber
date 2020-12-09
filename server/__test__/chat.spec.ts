@@ -61,7 +61,7 @@ describe('채팅 API 테스트', () => {
 
     expect(result).toBe('success');
 
-    expect(chats.length).toBe(12);
+    expect(chats.length).toBe(13);
 
     expect(error).toEqual(undefined);
 

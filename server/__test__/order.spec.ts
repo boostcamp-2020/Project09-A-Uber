@@ -6,7 +6,6 @@ import {
   newOrderData,
   existOrderId,
   nonExistOrderId,
-  unassignedOrderId,
   cancelOrderId,
   startedDriveOrderId,
   waitingOrderId,
@@ -53,6 +52,7 @@ const GET_COMPLETED_ORDERS = gql`
         startedAt
         completedAt
         driver
+        status
       }
       error
     }
@@ -184,6 +184,25 @@ describe('오더 관련 API 테스트 입니다.', () => {
     connect();
   });
 
+  test('오더 조회 테스트', async () => {
+    const {
+      data: {
+        getOrderInfo: { result, order, error },
+      },
+    } = (await query({
+      query: GET_ORDER,
+      variables: {
+        orderId: existOrderId,
+      },
+    })) as any;
+
+    expect(result).toBe('success');
+
+    expect(order._id).toEqual(existOrderId);
+
+    expect(error).toEqual(null);
+  });
+
   test('getUserWithOrder API 테스트', async () => {
     const {
       data: { getUserWithOrder },
@@ -281,7 +300,7 @@ describe('오더 관련 API 테스트 입니다.', () => {
     expect(result).toBe('success');
     expect(error).toEqual(null);
   });
-  
+
   test('오더 취소', async () => {
     const {
       data: {
@@ -304,7 +323,7 @@ describe('오더 관련 API 테스트 입니다.', () => {
       },
     } = (await driverClient.mutate({
       mutation: START_DRIVING,
-      variables: { orderId: startDrivingOrderId },
+      variables: { orderId: waitingOrderId },
     })) as any;
 
     expect(result).toBe('success');
@@ -326,25 +345,6 @@ describe('오더 관련 API 테스트 입니다.', () => {
     expect(error).toEqual(null);
   });
 
-  test('오더 조회 테스트', async () => {
-    const {
-      data: {
-        getOrderInfo: { result, order, error },
-      },
-    } = (await query({
-      query: GET_ORDER,
-      variables: {
-        orderId: existOrderId,
-      },
-    })) as any;
-    
-    expect(result).toBe('success');
-    
-    expect(order._id).toEqual(existOrderId);
-    
-    expect(error).toEqual(null);
-  });
-
   test('존재 하지 않는 오더 테스트', async () => {
     const {
       data: {
@@ -356,11 +356,11 @@ describe('오더 관련 API 테스트 입니다.', () => {
         orderId: nonExistOrderId,
       },
     })) as any;
-    
+
     expect(result).toBe('fail');
-    
+
     expect(order).toEqual(null);
-    
+
     expect(error).toBe('해당 오더가 존재하지 않습니다.');
   });
 
@@ -374,10 +374,10 @@ describe('오더 관련 API 테스트 입니다.', () => {
     })) as any;
 
     expect(result).toBe('success');
-    
+
     expect(error).toEqual(null);
-    
-    expect(unassignedOrders[0]._id).toEqual(unassignedOrderId);
+
+    expect(unassignedOrders.length).toBe(2);
   });
 
   test('아이디를 통한 오더 조회', async () => {
