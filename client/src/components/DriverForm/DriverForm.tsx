@@ -92,6 +92,7 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
         items={carTypes}
         placeholder="차량을 선택해주세요"
         onChange={onChangeCarType}
+        testId="signup-car"
       />
       <Input
         title="차량번호"
@@ -100,6 +101,7 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
         onChange={onChangeCarNumber}
         allow={isCarNumValid}
         inValidMessage={Message.CarNumberGuidance}
+        testId="signup-car-number"
       />
       <Input
         title="운전면허 번호"
@@ -108,12 +110,14 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
         onChange={onChangeLicense}
         allow={isLicenseValid}
         inValidMessage={Message.LicenseGuidance}
+        testId="signup-lisence"
       />
       <Button
         type="primary"
         onClick={onSubmit}
         loading={loading}
         disabled={!carType || !isCarNumValid || !isLicenseValid}
+        data-testID="signup-driver-submit"
       >
         회원가입
       </Button>
