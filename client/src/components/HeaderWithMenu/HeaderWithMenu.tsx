@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Modal } from 'antd-mobile';
 import useToggle from '@hooks/useToggle';
 import { useHistory } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ import { LOGOUT } from '@queries/user';
 import { Logout } from '@/types/api';
 import styled from '@theme/styled';
 import MenuSVG from '@images/menuSVG.tsx';
+import { Message } from '@utils/client-message';
 
 interface Props {
   className?: string;
@@ -72,7 +74,10 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
   };
 
   const onClickLogout = () => {
-    logoutMutation();
+    Modal.alert('로그아웃', Message.LogOutMessage, [
+      { text: '취소' },
+      { text: '확인', onPress: () => logoutMutation() },
+    ]);
   };
 
   return (
