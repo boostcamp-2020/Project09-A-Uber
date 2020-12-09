@@ -47,6 +47,8 @@ const GET_COMPLETED_ORDERS = gql`
 `;
 
 const { query, mutate } = client(UserType.user);
+const driverClient = client(UserType.driver);
+
 describe('사용자의 완료된 오더 조회', () => {
   beforeAll(() => {
     connect();
@@ -72,7 +74,7 @@ describe('사용자의 완료된 오더 조회', () => {
       data: {
         startDriving: { result, error },
       },
-    } = (await mutate({
+    } = (await driverClient.mutate({
       mutation: START_DRIVING,
       variables: { orderId: startDrivingOrderId },
     })) as any;
