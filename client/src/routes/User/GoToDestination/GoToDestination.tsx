@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback } from 'react';
-import { Button } from 'antd-mobile';
+import { Button, Toast } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,9 @@ import useModal from '@hooks/useModal';
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
 import calcDriveTime from '@utils/calcDriveTime';
+import { SUB_CHAT } from '@queries/chat';
+import { TOAST_DURATION } from '@utils/enums';
+import { Message } from '@utils/client-message';
 
 // TODO: user/waitingDriver의 스타일과 유사, 추후 리팩터링 필요
 const StyledUserGoToDestinationMenu = styled.section`
@@ -67,6 +70,16 @@ const GoToDestination: FC = () => {
   const [driverLocation, setDriverLocation] = useState<Location>();
   const [orderInfo, setorderInfo] = useState<OrderType | null>();
   const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
+
+  useSubscription(SUB_CHAT, {
+    variables: {
+      chatId: orderId,
+    },
+    onSubscriptionData: () => {
+      Toast.config({ mask: false, duration: TOAST_DURATION.RECEIVE_CHAT });
+      Toast.info(Message.ChatMessage);
+    },
+  });
 
   const onClickChatRoom = useCallback(() => {
     history.push(`/chatroom/${orderId}`);
