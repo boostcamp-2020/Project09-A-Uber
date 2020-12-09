@@ -14,16 +14,13 @@ enum message {
 
 export const connect = () => {
   const connectDB = () => {
-    mongoose
-      .connect(DB_HOST!, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-        dbName: TEST_DB,
-      })
-      .then(() => console.log(message.CONNECT_SUCCEED))
-      .catch((err) => console.error(message.CONNECT_ERROR, err));
+    mongoose.connect(DB_HOST!, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      dbName: TEST_DB,
+    });
   };
 
   connectDB();
