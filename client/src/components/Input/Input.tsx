@@ -15,6 +15,7 @@ interface Props {
   type?: 'text' | 'password';
   className?: string;
   ref?: React.RefObject<HTMLInputElement>;
+  testId?: string;
 }
 
 const StyledInput = styled.div`
@@ -62,8 +63,11 @@ const StyledInput = styled.div`
 `;
 
 const Input = forwardRef<HTMLInputElement, Props>(
-  ({ title, placeholder, allow, value, onChange, type, className, inValidMessage }, ref) => (
-    <StyledInput className={className}>
+  (
+    { title, placeholder, allow, value, onChange, type, className, inValidMessage, testId },
+    ref,
+  ) => (
+    <StyledInput className={className} data-testID={testId}>
       {title && <h1>{title}</h1>}
       <div>
         <input type={type} value={value} onChange={onChange} placeholder={placeholder} ref={ref} />
@@ -82,6 +86,7 @@ Input.defaultProps = {
   placeholder: '',
   type: 'text',
   className: '',
+  testId: '',
 };
 
 export default Input;
