@@ -23,7 +23,8 @@ const SignIn: FC = () => {
     onCompleted: ({ signin }) => {
       if (signin.result === 'success') {
         Toast.success(Message.SucceedSignin, TOAST_DURATION.SIGNIN_SUCCESS, () => {
-          history.push('/');
+          // eslint-disable-next-line no-restricted-globals
+          location.replace('/');
         });
       }
       if (signin.result === 'fail') {
