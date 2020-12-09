@@ -1,7 +1,6 @@
 import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
-
 import {
   completedOrder,
   newOrderData,
@@ -9,8 +8,14 @@ import {
   nonExistOrderId,
   unassignedOrderId,
   cancelOrderId,
-  startDrivingOrderId
+  startedDriveOrderId,
+  waitingOrderId,
+  amount as price,
+  testUser,
 } from './mock.json';
+
+const { query, mutate } = client(UserType.user);
+const driverClient = client(UserType.driver);
 
 const CANCEL_ORDER = gql`
   mutation CancelOrder($orderId: String!) {
@@ -54,6 +59,15 @@ const GET_COMPLETED_ORDERS = gql`
   }
 `;
 
+const COMPLETE_ORDER = gql`
+  mutation CompleteOrder($orderId: String!, $amount: Int!) {
+    completeOrder(orderId: $orderId, amount: $amount) {
+      result
+      error
+    }
+  }
+`;
+
 const GET_ORDER_BY_ID = gql`
   query getOrderById($orderId: String!) {
     getOrderById(orderId: $orderId) {
@@ -68,11 +82,21 @@ const GET_ORDER_BY_ID = gql`
           coordinates
           address
         }
+        status
         amount
         startedAt
         completedAt
         driver
       }
+      error
+    }
+  }
+`;
+
+const APPROVAL_ORDER = gql`
+  mutation ApprovalOrder($orderId: String!) {
+    approvalOrder(orderId: $orderId) {
+      result
       error
     }
   }
@@ -92,6 +116,32 @@ const GET_ORDER = gql`
   query GetOrderInfo($orderId: String!) {
     getOrderInfo(orderId: $orderId) {
       result
+      order {
+        _id
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
+        status
+      }
+      error
+    }
+  }
+`;
+
+const GET_USER_WITH_ORDER = gql`
+  query GetUserWithOrder {
+    getUserWithOrder {
+      result
+      user {
+        _id
+        email
+        type
+      }
       order {
         _id
         startingPoint {
@@ -129,12 +179,23 @@ const GET_UNASSIGNED_ORDERS = gql`
   }
 `;
 
-const { query, mutate } = client(UserType.user);
-const driverClient = client(UserType.driver);
-
-describe('사용자의 완료된 오더 조회', () => {
+describe('오더 관련 API 테스트 입니다.', () => {
   beforeAll(() => {
     connect();
+  });
+
+  test('getUserWithOrder API 테스트', async () => {
+    const {
+      data: { getUserWithOrder },
+    } = (await query({ query: GET_USER_WITH_ORDER })) as any;
+
+    expect(getUserWithOrder.result).toBe('success');
+
+    expect(getUserWithOrder.user._id).toBe(testUser);
+
+    expect(getUserWithOrder.user.type).toBe('user');
+
+    expect(getUserWithOrder.order._id).toBe(waitingOrderId);
   });
 
   test('완료된 오더 조회', async () => {
@@ -157,6 +218,54 @@ describe('사용자의 완료된 오더 조회', () => {
     expect(completedOrders[1].destination.coordinates.length).toBe(2);
 
     expect(completedOrders[0]).toEqual(completedOrder);
+  });
+
+  test('completeOrder API 테스트', async () => {
+    const {
+      data: { completeOrder },
+    } = (await mutate({
+      mutation: COMPLETE_ORDER,
+      variables: {
+        orderId: startedDriveOrderId,
+        amount: price,
+      },
+    })) as any;
+
+    const {
+      data: {
+        getCompletedOrders: { completedOrders },
+      },
+    } = (await query({
+      query: GET_COMPLETED_ORDERS,
+    })) as any;
+
+    expect(completeOrder.result).toBe('success');
+
+    expect(completedOrders[0]._id).toBe(startedDriveOrderId);
+
+    expect(completedOrders[0].amount).toBe(price);
+  });
+
+  test('approvalOrder API 테스트', async () => {
+    const {
+      data: { approvalOrder },
+    } = (await mutate({
+      mutation: APPROVAL_ORDER,
+      variables: { orderId: waitingOrderId },
+    })) as any;
+
+    const {
+      data: { getOrderById },
+    } = (await query({
+      query: GET_ORDER_BY_ID,
+      variables: { orderId: waitingOrderId },
+    })) as any;
+
+    expect(approvalOrder.result).toBe('success');
+
+    expect(getOrderById.result).toBe('success');
+
+    expect(getOrderById.order.status).toBe('approval');
   });
 
   test('오더 생성 테스트', async () => {
@@ -203,7 +312,7 @@ describe('사용자의 완료된 오더 조회', () => {
     expect(error).toEqual(null);
   });
 
-  test('완료된 오더 조회', async () => {
+  test('오더 생성 테스트', async () => {
     const {
       data: {
         createOrder: { result, error },
@@ -228,8 +337,11 @@ describe('사용자의 완료된 오더 조회', () => {
         orderId: existOrderId,
       },
     })) as any;
+    
     expect(result).toBe('success');
+    
     expect(order._id).toEqual(existOrderId);
+    
     expect(error).toEqual(null);
   });
 
@@ -244,8 +356,11 @@ describe('사용자의 완료된 오더 조회', () => {
         orderId: nonExistOrderId,
       },
     })) as any;
+    
     expect(result).toBe('fail');
+    
     expect(order).toEqual(null);
+    
     expect(error).toBe('해당 오더가 존재하지 않습니다.');
   });
 
@@ -259,7 +374,9 @@ describe('사용자의 완료된 오더 조회', () => {
     })) as any;
 
     expect(result).toBe('success');
+    
     expect(error).toEqual(null);
+    
     expect(unassignedOrders[0]._id).toEqual(unassignedOrderId);
   });
 

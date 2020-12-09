@@ -22,7 +22,9 @@ const getCompletedOrders = async ({ userId, userType }: GetCompletedOrdersProps)
     if (userType === loginType.user) query.user = userId;
     else if (userType === loginType.driver) query.driver = userId;
 
-    const completedOrders = ((await Order.find(query)) as unknown) as OrderType[];
+    const completedOrders = ((await Order.find(query).sort({
+      completedAt: -1,
+    })) as unknown) as OrderType[];
 
     return { result: 'success', completedOrders };
   } catch (err) {
