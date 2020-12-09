@@ -2,7 +2,16 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-import { completedOrder, cancelOrderId, startDrivingOrderId } from './mock.json';
+
+import {
+  completedOrder,
+  newOrderData,
+  existOrderId,
+  nonExistOrderId,
+  unassignedOrderId,
+  cancelOrderId,
+  startDrivingOrderId
+} from './mock.json';
 
 const CANCEL_ORDER = gql`
   mutation CancelOrder($orderId: String!) {
@@ -46,6 +55,57 @@ const GET_COMPLETED_ORDERS = gql`
   }
 `;
 
+const CREATE_ORDER = gql`
+  mutation CreateOrder($startingPoint: LocationInfo!, $destination: LocationInfo!) {
+    createOrder(startingPoint: $startingPoint, destination: $destination) {
+      result
+      orderId
+      error
+    }
+  }
+`;
+
+const GET_ORDER = gql`
+  query GetOrderInfo($orderId: String!) {
+    getOrderInfo(orderId: $orderId) {
+      result
+      order {
+        _id
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
+        status
+      }
+      error
+    }
+  }
+`;
+
+const GET_UNASSIGNED_ORDERS = gql`
+  query GetUnassignedOrders {
+    getUnassignedOrders {
+      result
+      unassignedOrders {
+        _id
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
+      }
+      error
+    }
+  }
+`;
+
 const { query, mutate } = client(UserType.user);
 const driverClient = client(UserType.driver);
 
@@ -54,6 +114,42 @@ describe('사용자의 완료된 오더 조회', () => {
     connect();
   });
 
+  test('완료된 오더 조회', async () => {
+    const {
+      data: {
+        getCompletedOrders: { result, completedOrders, error },
+      },
+    } = (await query({
+      query: GET_COMPLETED_ORDERS,
+    })) as any;
+
+    expect(result).toBe('success');
+
+    expect(error).toEqual(null);
+
+    expect(completedOrders[0].amount).toBe(3000);
+
+    expect(completedOrders[1].startingPoint.coordinates.length).toBe(2);
+
+    expect(completedOrders[1].destination.coordinates.length).toBe(2);
+
+    expect(completedOrders[0]).toEqual(completedOrder);
+  });
+
+  test('오더 생성 테스트', async () => {
+    const {
+      data: {
+        createOrder: { result, error },
+      },
+    } = (await mutate({
+      mutation: CREATE_ORDER,
+      variables: newOrderData,
+    })) as any;
+
+    expect(result).toBe('success');
+    expect(error).toEqual(null);
+  });
+  
   test('오더 취소', async () => {
     const {
       data: {
@@ -87,23 +183,61 @@ describe('사용자의 완료된 오더 조회', () => {
   test('완료된 오더 조회', async () => {
     const {
       data: {
-        getCompletedOrders: { result, completedOrders, error },
+        createOrder: { result, error },
       },
-    } = (await query({
-      query: GET_COMPLETED_ORDERS,
+    } = (await mutate({
+      mutation: CREATE_ORDER,
+      variables: newOrderData,
     })) as any;
 
     expect(result).toBe('success');
-
     expect(error).toEqual(null);
+  });
 
-    expect(completedOrders[1].amount).toBe(3000);
+  test('오더 조회 테스트', async () => {
+    const {
+      data: {
+        getOrderInfo: { result, order, error },
+      },
+    } = (await query({
+      query: GET_ORDER,
+      variables: {
+        orderId: existOrderId,
+      },
+    })) as any;
+    expect(result).toBe('success');
+    expect(order._id).toEqual(existOrderId);
+    expect(error).toEqual(null);
+  });
 
-    expect(completedOrders[0].startingPoint.coordinates.length).toBe(2);
+  test('존재 하지 않는 오더 테스트', async () => {
+    const {
+      data: {
+        getOrderInfo: { result, order, error },
+      },
+    } = (await query({
+      query: GET_ORDER,
+      variables: {
+        orderId: nonExistOrderId,
+      },
+    })) as any;
+    expect(result).toBe('fail');
+    expect(order).toEqual(null);
+    expect(error).toBe('해당 오더가 존재하지 않습니다.');
+  });
 
-    expect(completedOrders[0].destination.coordinates.length).toBe(2);
+  test('매칭되지 않은 오더 조회 테스트', async () => {
+    const {
+      data: {
+        getUnassignedOrders: { result, unassignedOrders, error },
+      },
+    } = (await driverClient.query({
+      query: GET_UNASSIGNED_ORDERS,
+    })) as any;
 
-    expect(completedOrders[1]).toEqual(completedOrder);
+    expect(result).toBe('success');
+    expect(error).toEqual(null);
+    expect(unassignedOrders[0]._id).toEqual(unassignedOrderId);
   });
 
   afterAll(() => {
