@@ -25,7 +25,7 @@ describe('유저 API 테스트', () => {
       errors,
     } = await mutate({
       mutation: UPDATE_DRIVER_LOCATION,
-      variables: { lat: 5, lng: 10 },
+      variables: { lat: 51.50785, lng: -0.127757 },
     });
 
     expect(result).toBe('success');
