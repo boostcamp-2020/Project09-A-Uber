@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Button, Modal } from 'antd-mobile';
+import { Button, Toast } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useSubscription } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
@@ -25,6 +25,7 @@ import CustomModal from '@components/Modal';
 import useModal from '@hooks/useModal';
 import { Message } from '@utils/client-message';
 import { InitialState } from '@reducers/.';
+import { TOAST_DURATION } from '@utils/enums';
 
 const StyledWaitingDriverMenu = styled.section`
   height: 100%;
@@ -111,17 +112,9 @@ const WaitingDriver = () => {
     variables: {
       chatId: id,
     },
-    onSubscriptionData: ({ subscriptionData }) => {
-      const { chat } = subscriptionData.data.subChat;
-      Modal.alert('새로운 메시지가 왔습니다.', chat.content, [
-        { text: '닫기' },
-        {
-          text: '확인하기',
-          onPress: () => {
-            history.push(`/chatroom/${id}`);
-          },
-        },
-      ]);
+    onSubscriptionData: () => {
+      Toast.config({ mask: false, duration: TOAST_DURATION.RECEIVE_CHAT });
+      Toast.info(Message.ChatMessage);
     },
   });
 

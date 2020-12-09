@@ -15,4 +15,5 @@ export const Message = {
   FailureClosedOrder: '호출 취소된 오더입니다.',
   AuthTypeMessage: '로그인이 필요합니다',
   AuthMessage: '로그인이 필요합니다',
+  ChatMessage: '새로운 메시지가 왔습니다.',
 };

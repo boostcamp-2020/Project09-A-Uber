@@ -5,6 +5,8 @@ export enum TOAST_DURATION {
   SIGNIN_SUCCESS = 0.5,
   SIGNIN_FAILURE = 2,
   MATCHING_FAILURE = 2,
+
+  RECEIVE_CHAT = 3,
 }
 
 export enum DRIVER {
