@@ -45,7 +45,7 @@ const client = (type: UserType): ApolloServerTestClient => {
     context: (ctx) => ({
       ...ctx,
       req: RequestUser[type],
-      pubsub: jest.fn(),
+      pubsub: { publish: jest.fn() },
     }),
   });
 
