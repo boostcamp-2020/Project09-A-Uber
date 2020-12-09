@@ -29,6 +29,29 @@ describe('SignIn 컴포넌트 테스트', () => {
 
     cy.contains('duplicate key');
   });
+
+  it('드라이버 회원가입 페이지에서 중복된 이메일로 가입을 시도하면 에러가 발생한다.', () => {
+    cy.visit('/signup');
+    cy.contains('드라이버').click();
+    cy.get("[data-testID='signup-name'] input").clear().type(Cypress.env('DUP_DRIVER_NAME'));
+    cy.get("[data-testID='signup-email'] input").clear().type(Cypress.env('DUP_DRIVER_EMAIL'));
+    cy.get("[data-testID='signup-password'] input")
+      .clear()
+      .type(Cypress.env('DUP_DRIVER_PASSWORD'));
+    cy.get("[data-testID='signup-password-re'] input")
+      .clear()
+      .type(Cypress.env('DUP_DRIVER_PASSWORD'));
+    cy.get("[data-testID='signup-phone'] input").clear().type(Cypress.env('DUP_DRIVER_PHONE'));
+    cy.get("[data-testID='signup-next']").click();
+
+    cy.get("[data-testID='signup-car'] select").select(Cypress.env('CAR_TYPE'));
+    cy.get("[data-testID='signup-car-number'] input").clear().type(Cypress.env('CAR_NUMBER'));
+    cy.get("[data-testID='signup-lisence'] input").clear().type(Cypress.env('CAR_LISENCE'));
+
+    cy.get("[data-testID='signup-driver-submit']").click();
+
+    cy.contains('duplicate key');
+  });
 });
 
 export default {};
