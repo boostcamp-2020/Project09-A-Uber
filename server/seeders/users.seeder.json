@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "_id": "5fbc9eacadc14b373c78f376",
+      "name": "gildong",
+      "email": "gildong@test.com",
+      "password": "$2b$10$sKp2QGFl2CW7FnixUD1kG.ILlfgI5lHPzBk.VuyiAd2DGFymTjEIi",
+      "phone": "010-api-api",
+      "payment": {
+        "bank": "api bank",
+        "creditNumber": "api0-api1",
+        "expiryDate": "0121",
+        "cvc": 5
+      },
+      "type": "user",
+      "__v": 0,
+      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYmM5ZWFjYWRjMTRiMzczYzc4ZjM3NiIsImlhdCI6MTYwNzAzMzQ0NCwiZXhwIjoxNjA4MjQzMDQ0fQ.hVW4VCf8Qur-PLtukY5drratEOlq_yo6xxSYmqn1s4s",
+      "location": {
+        "coordinates": [127.7, 146.1],
+        "address": "성당"
+      }
+    },
+    {
+      "_id": "5fcf36023305a041dc2dd7fc",
+      "name": "driver",
+      "email": "driver",
+      "password": "$2b$10$sKp2QGFl2CW7FnixUD1kG.ILlfgI5lHPzBk.VuyiAd2DGFymTjEIi",
+      "phone": "010-api-api",
+      "type": "driver",
+      "__v": 0,
+      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYmM5ZWFjYWRjMTRiMzczYzc4ZjM3NiIsImlhdCI6MTYwNzAzMzQ0NCwiZXhwIjoxNjA4MjQzMDQ0fQ.hVW4VCf8Qur-PLtukY5drratEOlq_yo6xxSYmqn1s4s",
+      "location": {
+        "coordinates": [51.507351, -0.127758]
+      },
+      "driver": {
+        "status": "waiting",
+        "licenseNumber": "string",
+        "car": {
+          "carNumber": "rk1234",
+          "carType": "large"
+        }
+      }
+    }
+  ]
+}
