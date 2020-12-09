@@ -1,5 +1,8 @@
 {
   "activeOrderId": "5fce27f7d573726ab8a94bfd",
+  "existOrderId": "5fce28b0d573726ab8a94c04",
+  "nonExistOrderId": "5fce28b0d741226cc7a94c04",
+  "unassignedOrderId": "5fce289fd573726ab8a94c02",
   "completedOrder": {
     "_id": "5fce28e4d573726ab8a94c06",
     "startingPoint": {
@@ -14,6 +17,16 @@
     "startedAt": "1607346408235",
     "amount": 3000,
     "completedAt": "1607346408961"
+  },
+  "newOrderData": {
+    "startingPoint": {
+      "address": "영국 런던",
+      "coordinates": [51.50735, -0.127757]
+    },
+    "destination": {
+      "address": "영국",
+      "coordinates": [102, 154]
+    }
   },
   "createChatId": "5fce27f7d573726ab8a94bfd",
   "cancelOrderId": "5fce28b0d573726ab8a94c04",
