@@ -14,5 +14,15 @@
     "startedAt": "1607346408235",
     "amount": 3000,
     "completedAt": "1607346408961"
+  },
+  "newOrderData": {
+    "startingPoint": {
+      "address": "영국 런던",
+      "coordinates": [51.50735, -0.127757]
+    },
+    "destination": {
+      "address": "영국",
+      "coordinates": [102, 154]
+    }
   }
 }
