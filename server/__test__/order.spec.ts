@@ -2,7 +2,13 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-import { completedOrder, newOrderData, existOrderId, nonExistOrderId } from './mock.json';
+import {
+  completedOrder,
+  newOrderData,
+  existOrderId,
+  nonExistOrderId,
+  unassignedOrderId,
+} from './mock.json';
 
 const GET_COMPLETED_ORDERS = gql`
   query GetCompletedOrders {
@@ -59,33 +65,54 @@ const GET_ORDER = gql`
   }
 `;
 
+const GET_UNASSIGNED_ORDERS = gql`
+  query GetUnassignedOrders {
+    getUnassignedOrders {
+      result
+      unassignedOrders {
+        _id
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
+      }
+      error
+    }
+  }
+`;
+
 const { query, mutate } = client(UserType.user);
+const driverClient = client(UserType.driver);
 describe('사용자 오더 테스트', () => {
   beforeAll(() => {
     connect();
   });
 
-  test('완료된 오더 조회', async () => {
-    const {
-      data: {
-        getCompletedOrders: { result, completedOrders, error },
-      },
-    } = (await query({
-      query: GET_COMPLETED_ORDERS,
-    })) as any;
+  //   test('완료된 오더 조회', async () => {
+  //     const {
+  //       data: {
+  //         getCompletedOrders: { result, completedOrders, error },
+  //       },
+  //     } = (await query({
+  //       query: GET_COMPLETED_ORDERS,
+  //     })) as any;
 
-    expect(result).toBe('success');
+  //     expect(result).toBe('success');
 
-    expect(error).toEqual(null);
+  //     expect(error).toEqual(null);
 
-    expect(completedOrders[0].amount).toBe(3000);
+  //     expect(completedOrders[0].amount).toBe(3000);
 
-    expect(completedOrders[1].startingPoint.coordinates.length).toBe(2);
+  //     expect(completedOrders[1].startingPoint.coordinates.length).toBe(2);
 
-    expect(completedOrders[1].destination.coordinates.length).toBe(2);
+  //     expect(completedOrders[1].destination.coordinates.length).toBe(2);
 
-    expect(completedOrders[0]).toEqual(completedOrder);
-  });
+  //     expect(completedOrders[0]).toEqual(completedOrder);
+  //   });
 
   test('오더 생성 테스트', async () => {
     const {
@@ -106,12 +133,12 @@ describe('사용자 오더 테스트', () => {
       data: {
         getOrderInfo: { result, order, error },
       },
-    } = await query({
+    } = (await query({
       query: GET_ORDER,
       variables: {
         orderId: existOrderId,
       },
-    });
+    })) as any;
     expect(result).toBe('success');
     expect(order._id).toEqual(existOrderId);
     expect(error).toEqual(null);
@@ -122,15 +149,29 @@ describe('사용자 오더 테스트', () => {
       data: {
         getOrderInfo: { result, order, error },
       },
-    } = await query({
+    } = (await query({
       query: GET_ORDER,
       variables: {
         orderId: nonExistOrderId,
       },
-    });
+    })) as any;
     expect(result).toBe('fail');
     expect(order).toEqual(null);
     expect(error).toBe('해당 오더가 존재하지 않습니다.');
+  });
+
+  test('매칭되지 않은 오더 조회 테스트', async () => {
+    const {
+      data: {
+        getUnassignedOrders: { result, unassignedOrders, error },
+      },
+    } = (await driverClient.query({
+      query: GET_UNASSIGNED_ORDERS,
+    })) as any;
+
+    expect(result).toBe('success');
+    expect(error).toEqual(null);
+    expect(unassignedOrders[0]._id).toEqual(unassignedOrderId);
   });
 
   afterAll(() => {
