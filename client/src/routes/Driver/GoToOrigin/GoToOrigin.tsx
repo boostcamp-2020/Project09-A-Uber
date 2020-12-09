@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from 'antd-mobile';
+import { Button, Modal } from 'antd-mobile';
 import { useSelector } from 'react-redux';
 import styled from '@theme/styled';
 
@@ -10,6 +10,8 @@ import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { UpdateDriverLocation, StartDriving } from '@/types/api';
 import { useCustomMutation } from '@hooks/useApollo';
 import { InitialState } from '@reducers/.';
+import { SUB_CHAT } from '@queries/chat';
+import { useSubscription } from '@apollo/react-hooks';
 
 const StyledDriverGoToOriginMenu = styled.section`
   height: 100%;
@@ -57,6 +59,24 @@ const GoToOrigin: FC = () => {
   const onClickChatRoom = () => {
     history.push(`/chatroom/${id}`);
   };
+
+  useSubscription(SUB_CHAT, {
+    variables: {
+      chatId: id,
+    },
+    onSubscriptionData: ({ subscriptionData }) => {
+      const { chat } = subscriptionData.data.subChat;
+      Modal.alert('새로운 메시지가 왔습니다.', chat.content, [
+        { text: '닫기' },
+        {
+          text: '확인하기',
+          onPress: () => {
+            history.push(`/chatroom/${id}`);
+          },
+        },
+      ]);
+    },
+  });
 
   const watchUpdateCurrentLocation = useCallback((location: Position) => {
     setCurrentLocation({
