@@ -1,8 +1,15 @@
 import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
+import {
+  completedOrder,
+  startedDriveOrderId,
+  waitingOrderId,
+  amount as price,
+  testUser,
+} from './mock.json';
 
-import { completedOrder, startedDriveOrderId, waitingOrderId, amount as price } from './mock.json';
+const { query, mutate } = client(UserType.user);
 
 const GET_COMPLETED_ORDERS = gql`
   query GetCompletedOrders {
@@ -62,11 +69,49 @@ const GET_ORDER_BY_ID = gql`
   }
 `;
 
-const { query, mutate } = client(UserType.user);
+const GET_USER_WITH_ORDER = gql`
+  query GetUserWithOrder {
+    getUserWithOrder {
+      result
+      user {
+        _id
+        email
+        type
+      }
+      order {
+        _id
+        startingPoint {
+          address
+          coordinates
+        }
+        destination {
+          address
+          coordinates
+        }
+        status
+      }
+      error
+    }
+  }
+`;
 
 describe('오더 관련 API 테스트 입니다.', () => {
   beforeAll(() => {
     connect();
+  });
+
+  test('getUserWithOrder API 테스트', async () => {
+    const {
+      data: { getUserWithOrder },
+    } = (await query({ query: GET_USER_WITH_ORDER })) as any;
+
+    expect(getUserWithOrder.result).toBe('success');
+
+    expect(getUserWithOrder.user._id).toBe(testUser);
+
+    expect(getUserWithOrder.user.type).toBe('user');
+
+    expect(getUserWithOrder.order._id).toBe(waitingOrderId);
   });
 
   test('완료된 오더 조회', async () => {
