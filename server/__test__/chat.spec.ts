@@ -39,10 +39,10 @@ describe('채팅 API 테스트', () => {
       data: {
         createChat: { result, error },
       },
-    } = await mutate({
+    } = (await mutate({
       mutation: CREATE_CHAT,
       variables: { chatId: createChatId, content: 'some content' },
-    });
+    })) as any;
 
     expect(result).toBe('success');
 

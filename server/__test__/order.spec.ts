@@ -48,10 +48,10 @@ describe('사용자의 완료된 오더 조회', () => {
       data: {
         cancelOrder: { result, error },
       },
-    } = await mutate({
+    } = (await mutate({
       mutation: CANCEL_ORDER,
       variables: { orderId: '5fce28b0d573726ab8a94c04' },
-    });
+    })) as any;
 
     expect(result).toBe('success');
 
