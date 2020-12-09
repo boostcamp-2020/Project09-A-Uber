@@ -71,6 +71,7 @@ const CommonSignup: FC<Props> = ({
       placeholder="이름을 입력해 주세요."
       allow={isName}
       inValidMessage={Message.NameGuidance}
+      testId="signup-name"
     />
     <Input
       value={email}
@@ -78,6 +79,7 @@ const CommonSignup: FC<Props> = ({
       title="이메일"
       placeholder="이메일을 입력해 주세요."
       allow={isEmail}
+      testId="signup-email"
     />
     <Input
       value={password}
@@ -87,6 +89,7 @@ const CommonSignup: FC<Props> = ({
       type="password"
       allow={isPassword}
       inValidMessage={Message.PasswordGuidance}
+      testId="signup-password"
     />
     <Input
       value={passwordRe}
@@ -96,6 +99,7 @@ const CommonSignup: FC<Props> = ({
       type="password"
       allow={isPasswordRe}
       inValidMessage={Message.PasswordCheckGuidance}
+      testId="signup-password-re"
     />
     <Input
       value={phone}
@@ -104,12 +108,14 @@ const CommonSignup: FC<Props> = ({
       placeholder="핸드폰 번호를 입력해 주세요."
       allow={isPhone}
       inValidMessage={Message.PhoneGuidance}
+      testId="signup-phone"
     />
 
     <Button
       type="primary"
       onClick={onClickNextHandler}
       disabled={!isName || !isEmail || !isPassword || !isPasswordRe || !isPhone}
+      data-testID="signup-next"
     >
       다음
     </Button>

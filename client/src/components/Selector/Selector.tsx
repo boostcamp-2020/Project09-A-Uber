@@ -7,6 +7,7 @@ interface Props {
   items: string[];
   placeholder: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  testId?: string;
 }
 
 const StyledSelector = styled.div`
@@ -29,9 +30,9 @@ const StyledSelector = styled.div`
   }
 `;
 
-const Selector: FC<Props> = ({ title, name, items, placeholder, onChange }) => {
+const Selector: FC<Props> = ({ title, name, items, placeholder, onChange, testId }) => {
   return (
-    <StyledSelector>
+    <StyledSelector data-testID={testId}>
       {title && <h1>{title}</h1>}
       <select name={name} onChange={onChange}>
         <option value="" disabled selected className="defaultOption">
@@ -45,6 +46,10 @@ const Selector: FC<Props> = ({ title, name, items, placeholder, onChange }) => {
       </select>
     </StyledSelector>
   );
+};
+
+Selector.defaultProps = {
+  testId: '',
 };
 
 export default Selector;
