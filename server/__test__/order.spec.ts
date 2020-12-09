@@ -66,7 +66,7 @@ describe('사용자의 완료된 오더 조회', () => {
 
     expect(result).toBe('success');
 
-    expect(error).toBe(null);
+    expect(error).toEqual(null);
   });
 
   test('드라이버 운행 시작', async () => {
@@ -81,7 +81,7 @@ describe('사용자의 완료된 오더 조회', () => {
 
     expect(result).toBe('success');
 
-    expect(error).toBe(null);
+    expect(error).toEqual(null);
   });
 
   test('완료된 오더 조회', async () => {
