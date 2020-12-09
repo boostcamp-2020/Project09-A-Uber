@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Button } from 'antd-mobile';
+import { Button, Modal } from 'antd-mobile';
 import styled from '@theme/styled';
 import { useSubscription } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import MapFrame from '@components/MapFrame';
 import EstimatedTime from '@components/EstimatedTime';
 import { GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order';
 import { SUB_DRIVER_LOCATION, GET_DRIVER_LOCATION } from '@queries/user';
+import { SUB_CHAT } from '@queries/chat';
 import {
   SubDriverLocation,
   GetOrderCarInfo,
@@ -20,7 +21,7 @@ import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
 import CarInfo from '@components/CarInfo';
-import Modal from '@components/Modal';
+import CustomModal from '@components/Modal';
 import useModal from '@hooks/useModal';
 import { Message } from '@utils/client-message';
 import { InitialState } from '@reducers/.';
@@ -96,12 +97,31 @@ const WaitingDriver = () => {
       }
     },
   });
+
   useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId: id },
     onSubscriptionData: ({ subscriptionData }) => {
       if (subscriptionData.data?.subOrderCallStatus.status === OrderCallStatus.startedDrive) {
         history.push('/user/goToDestination');
       }
+    },
+  });
+
+  useSubscription(SUB_CHAT, {
+    variables: {
+      chatId: id,
+    },
+    onSubscriptionData: ({ subscriptionData }) => {
+      const { chat } = subscriptionData.data.subChat;
+      Modal.alert('새로운 메시지가 왔습니다.', chat.content, [
+        { text: '닫기' },
+        {
+          text: '확인하기',
+          onPress: () => {
+            history.push(`/chatroom/${id}`);
+          },
+        },
+      ]);
     },
   });
 
@@ -126,9 +146,9 @@ const WaitingDriver = () => {
           </div>
         </StyledWaitingDriverMenu>
       </MapFrame>
-      <Modal visible={isModal} onClose={closeModal}>
+      <CustomModal visible={isModal} onClose={closeModal}>
         {carInfo && <CarInfo carInfo={carInfo} title={Message.DriverAjacent} />}
-      </Modal>
+      </CustomModal>
     </>
   );
 };
