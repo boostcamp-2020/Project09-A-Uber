@@ -1,5 +1,8 @@
 {
   "activeOrderId": "5fce27f7d573726ab8a94bfd",
+  "startedDriveOrderId": "5fce28bed573726ab8a94c05",
+  "waitingOrderId": "5fce289fd573726ab8a94c02",
+  "amount": 8000,
   "completedOrder": {
     "_id": "5fce28e4d573726ab8a94c06",
     "startingPoint": {
