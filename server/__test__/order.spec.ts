@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-import { completedOrder, startedDriveOrderId, amount as price } from './mock.json';
+import { completedOrder, startedDriveOrderId, waitingOrderId, amount as price } from './mock.json';
 
 const GET_COMPLETED_ORDERS = gql`
   query GetCompletedOrders {
@@ -37,6 +37,15 @@ const COMPLETE_ORDER = gql`
   }
 `;
 
+const APPROVAL_ORDER = gql`
+  mutation ApprovalOrder($orderId: String!) {
+    approvalOrder(orderId: $orderId) {
+      result
+      error
+    }
+  }
+`;
+
 const { query, mutate } = client(UserType.user);
 
 describe('오더 관련 API 테스트 입니다.', () => {
@@ -57,13 +66,13 @@ describe('오더 관련 API 테스트 입니다.', () => {
 
     expect(error).toEqual(null);
 
-    expect(completedOrders[1].amount).toBe(3000);
+    expect(completedOrders[0].amount).toBe(3000);
 
-    expect(completedOrders[0].startingPoint.coordinates.length).toBe(2);
+    expect(completedOrders[1].startingPoint.coordinates.length).toBe(2);
 
-    expect(completedOrders[0].destination.coordinates.length).toBe(2);
+    expect(completedOrders[1].destination.coordinates.length).toBe(2);
 
-    expect(completedOrders[1]).toEqual(completedOrder);
+    expect(completedOrders[0]).toEqual(completedOrder);
   });
 
   test('completeOrder API 테스트', async () => {
@@ -77,7 +86,30 @@ describe('오더 관련 API 테스트 입니다.', () => {
       },
     })) as any;
 
+    const {
+      data: {
+        getCompletedOrders: { completedOrders },
+      },
+    } = (await query({
+      query: GET_COMPLETED_ORDERS,
+    })) as any;
+
     expect(completeOrder.result).toBe('success');
+
+    expect(completedOrders[0]._id).toBe(startedDriveOrderId);
+
+    expect(completedOrders[0].amount).toBe(price);
+  });
+
+  test('approvalOrder API 테스트', async () => {
+    const {
+      data: { approvalOrder },
+    } = (await mutate({
+      mutation: APPROVAL_ORDER,
+      variables: { orderId: waitingOrderId },
+    })) as any;
+
+    expect(approvalOrder.result).toBe('success');
   });
 
   afterAll(() => {
