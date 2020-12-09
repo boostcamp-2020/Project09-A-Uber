@@ -151,6 +151,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             placeholder="카드 회사를 선택해 주세요"
             onChange={onChangeBank}
             items={Banks}
+            testId="signup-bank"
           />
         </div>
         <div className="card-number">
@@ -160,6 +161,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             onChange={onChangeCardNumber1}
             className="small-input"
             allow={isCardNumber1Valid}
+            testId="signup-card1"
           />
           <Input
             value={cardNumber2}
@@ -167,6 +169,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             className="small-input"
             allow={isCardNumber2Valid}
             ref={creditRef2}
+            testId="signup-card2"
           />
           <Input
             value={cardNumber3}
@@ -174,6 +177,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             className="small-input"
             allow={isCardNumber3Valid}
             ref={creditRef3}
+            testId="signup-card3"
           />
           <Input
             value={cardNumber4}
@@ -182,6 +186,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             className="small-input"
             allow={isCardNumber4Valid}
             ref={creditRef4}
+            testId="signup-card4"
           />
         </div>
         <div>
@@ -192,6 +197,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             className="small-input"
             allow={isExpiryDateValid}
             inValidMessage={Message.ExpiryDateGuidance}
+            testId="signup-expiry-date"
           />
         </div>
         <div>
@@ -202,6 +208,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             type="password"
             className="small-input"
             allow={isCvcValid}
+            testId="signup-cvc"
           />
         </div>
       </section>
@@ -218,6 +225,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
           !expiryDate ||
           !cvc
         }
+        data-testID="signup-user-submit"
       >
         회원가입
       </Button>
