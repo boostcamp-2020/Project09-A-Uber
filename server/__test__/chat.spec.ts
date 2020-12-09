@@ -2,9 +2,18 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-import { activeOrderId } from './mock.json';
+import { activeOrderId, createChatId } from './mock.json';
 
 const { TEST_USER } = process.env;
+
+const CREATE_CHAT = gql`
+  mutation CreateChat($content: String!, $chatId: String!) {
+    createChat(content: $content, chatId: $chatId) {
+      result
+      error
+    }
+  }
+`;
 
 const GET_CHATS = gql`
   query GetChat($chatId: String!) {
@@ -19,10 +28,25 @@ const GET_CHATS = gql`
   }
 `;
 
-const { query } = client(UserType.user);
+const { query, mutate } = client(UserType.user);
 describe('채팅 API 테스트', () => {
   beforeAll(() => {
     connect();
+  });
+
+  test('채팅 메시지 생성', async () => {
+    const {
+      data: {
+        createChat: { result, error },
+      },
+    } = await mutate({
+      mutation: CREATE_CHAT,
+      variables: { chatId: createChatId, content: 'some content' },
+    });
+
+    expect(result).toBe('success');
+
+    expect(error).toEqual(null);
   });
 
   test('채팅 목록 조회', async () => {
