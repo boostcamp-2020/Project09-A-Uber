@@ -8,7 +8,9 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string;
 
 const isVaildToken = async (accessToken: string): Promise<boolean> => {
   try {
-    const verifiedToken = jwt.verify(accessToken, JWT_SECRET_KEY) as { id: string };
+    const verifiedToken = jwt.verify(accessToken, JWT_SECRET_KEY, { ignoreExpiration: true }) as {
+      id: string;
+    };
     const { user, error } = await getUser(verifiedToken?.id);
 
     if (!user || error) {
