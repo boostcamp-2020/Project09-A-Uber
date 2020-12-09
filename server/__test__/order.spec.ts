@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 import { connect, disconnect } from './testMongoose';
 import client, { UserType } from './testApollo';
 
-import { completedOrder } from './mock.json';
+import { completedOrder, startedDriveOrderId, amount as price } from './mock.json';
 
 const GET_COMPLETED_ORDERS = gql`
   query GetCompletedOrders {
@@ -28,8 +28,18 @@ const GET_COMPLETED_ORDERS = gql`
   }
 `;
 
-const { query } = client(UserType.user);
-describe('사용자의 완료된 오더 조회', () => {
+const COMPLETE_ORDER = gql`
+  mutation CompleteOrder($orderId: String!, $amount: Int!) {
+    completeOrder(orderId: $orderId, amount: $amount) {
+      result
+      error
+    }
+  }
+`;
+
+const { query, mutate } = client(UserType.user);
+
+describe('오더 관련 API 테스트 입니다.', () => {
   beforeAll(() => {
     connect();
   });
@@ -54,6 +64,20 @@ describe('사용자의 완료된 오더 조회', () => {
     expect(completedOrders[0].destination.coordinates.length).toBe(2);
 
     expect(completedOrders[1]).toEqual(completedOrder);
+  });
+
+  test('completeOrder API 테스트', async () => {
+    const {
+      data: { completeOrder },
+    } = (await mutate({
+      mutation: COMPLETE_ORDER,
+      variables: {
+        orderId: startedDriveOrderId,
+        amount: price,
+      },
+    })) as any;
+
+    expect(completeOrder.result).toBe('success');
   });
 
   afterAll(() => {
