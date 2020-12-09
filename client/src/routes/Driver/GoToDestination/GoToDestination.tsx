@@ -128,6 +128,10 @@ const GoToDestination: FC = () => {
     };
   }, []);
 
+  const onClickChatRoom = () => {
+    history.push(`/chatroom/${id}`);
+  };
+
   return (
     <>
       <MapFrame
@@ -144,6 +148,9 @@ const GoToDestination: FC = () => {
             onClick={onClickOrderCompleteHandler}
           >
             도착완료
+          </Button>
+          <Button className="driver-chat-btn" onClick={onClickChatRoom}>
+            손님과의 채팅
           </Button>
         </StyledGoToDestinationMenu>
       </MapFrame>
