@@ -28,6 +28,30 @@ const GET_COMPLETED_ORDERS = gql`
   }
 `;
 
+const GET_ORDER_BY_ID = gql`
+  query getOrderById($orderId: String!) {
+    getOrderById(orderId: $orderId) {
+      result
+      order {
+        _id
+        startingPoint {
+          coordinates
+          address
+        }
+        destination {
+          coordinates
+          address
+        }
+        amount
+        startedAt
+        completedAt
+        driver
+      }
+      error
+    }
+  }
+`;
+
 const { query } = client(UserType.user);
 describe('사용자의 완료된 오더 조회', () => {
   beforeAll(() => {
@@ -54,6 +78,23 @@ describe('사용자의 완료된 오더 조회', () => {
     expect(completedOrders[0].destination.coordinates.length).toBe(2);
 
     expect(completedOrders[1]).toEqual(completedOrder);
+  });
+
+  test('아이디를 통한 오더 조회', async () => {
+    const {
+      data: {
+        getOrderById: { result, error, order },
+      },
+    } = await query({
+      query: GET_ORDER_BY_ID,
+      variables: { orderId: completedOrder._id },
+    });
+
+    expect(result).toBe('success');
+
+    expect(error).toEqual(null);
+
+    expect(order).toEqual(completedOrder);
   });
 
   afterAll(() => {
