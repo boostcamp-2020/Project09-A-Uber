@@ -4,6 +4,15 @@ import client, { UserType } from './testApollo';
 
 import { completedOrder } from './mock.json';
 
+const CANCEL_ORDER = gql`
+  mutation CancelOrder($orderId: String!) {
+    cancelOrder(orderId: $orderId) {
+      result
+      error
+    }
+  }
+`;
+
 const GET_COMPLETED_ORDERS = gql`
   query GetCompletedOrders {
     getCompletedOrders {
@@ -28,10 +37,25 @@ const GET_COMPLETED_ORDERS = gql`
   }
 `;
 
-const { query } = client(UserType.user);
+const { query, mutate } = client(UserType.user);
 describe('사용자의 완료된 오더 조회', () => {
   beforeAll(() => {
     connect();
+  });
+
+  test('오더 취소', async () => {
+    const {
+      data: {
+        cancelOrder: { result, error },
+      },
+    } = await mutate({
+      mutation: CANCEL_ORDER,
+      variables: { orderId: '5fce28b0d573726ab8a94c04' },
+    });
+
+    expect(result).toBe('success');
+
+    expect(error).toBe(null);
   });
 
   test('완료된 오더 조회', async () => {
