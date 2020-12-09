@@ -77,13 +77,13 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
 
   return (
     <StyledHeaderWithMenu className={className} isMenuOpen={menu}>
-      <button type="button" onClick={toggleMenu}>
+      <button type="button" data-testID="header-menu-toggle" onClick={toggleMenu}>
         <MenuSVG />
       </button>
-      <menu>
+      <menu data-testID="header-menu">
         <ul>
           <li>
-            <button type="button" onClick={onClickCompletedOrders}>
+            <button type="button" data-testID="history-button" onClick={onClickCompletedOrders}>
               이용 기록
             </button>
           </li>
