@@ -18,4 +18,6 @@ export const Message = {
   LogOutMessage: '확인버튼 클릭시 로그아웃 됩니다.',
   CarType: '차량타입',
   CarNumber: '차량번호',
+  NotEmptySearchForm: '출발지와 목적지를 모두 입력해주세요',
+  NotSearchDriver: '라이더 탐색에 실패했습니다.',
 };
