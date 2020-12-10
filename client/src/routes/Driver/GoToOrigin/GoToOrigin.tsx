@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from 'antd-mobile';
 import { useSelector } from 'react-redux';
 import styled from '@theme/styled';
 
@@ -10,30 +9,18 @@ import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { UpdateDriverLocation, StartDriving } from '@/types/api';
 import { useCustomMutation } from '@hooks/useApollo';
 import { InitialState } from '@reducers/.';
+import { Button, Row, Col } from 'antd';
 
 const StyledDriverGoToOriginMenu = styled.section`
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: flex-end;
+  justify-content: flex-end;
 
-  & > .driver-start-order-btn {
+  & .row {
     width: 100%;
-    & > .driver-start-order-info {
-      display: flex;
-      justify-content: center;
-      color: grey;
-    }
-
-    & > .am-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      height: 2rem;
-      margin: 0.8rem 0;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -89,15 +76,23 @@ const GoToOrigin: FC = () => {
           directions={directions}
         >
           <StyledDriverGoToOriginMenu>
-            <div className="driver-start-order-btn">
-              <div className="driver-start-order-info">손님이 탑승하시고 나서 눌러주세요.</div>
-              <Button onClick={onClickStartDrive} type="primary">
-                운행시작
-              </Button>
-              <Button className="driver-chat-btn" onClick={onClickChatRoom}>
-                손님과의 채팅
-              </Button>
-            </div>
+            <Row justify="center" align="middle" className="row">
+              <Col>손님이 탑승하시고 나서 눌러주세요.</Col>
+            </Row>
+            <Row justify="center" className="row">
+              <Col span={24}>
+                <Button onClick={onClickStartDrive} type="primary" block>
+                  운행시작
+                </Button>
+              </Col>
+            </Row>
+            <Row justify="center" className="row">
+              <Col span={24}>
+                <Button className="driver-chat-btn" onClick={onClickChatRoom} block>
+                  손님과의 채팅
+                </Button>
+              </Col>
+            </Row>
           </StyledDriverGoToOriginMenu>
         </MapFrame>
       )}
