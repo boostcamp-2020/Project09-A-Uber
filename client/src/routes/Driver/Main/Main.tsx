@@ -1,10 +1,11 @@
-import React, { FC, useState, useCallback, useEffect } from 'react';
+import React, { FC, useState, useCallback, useEffect, useRef } from 'react';
 import { useSubscription } from '@apollo/client';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import {
   UpdateDriverLocation,
   GetUnassignedOrders,
   GetUnassignedOrders_getUnassignedOrders_unassignedOrders as Order,
+  SubNewOrder,
 } from '@/types/api';
 import styled from '@theme/styled';
 import MapFrame from '@components/MapFrame';
@@ -45,10 +46,32 @@ const Main: FC = () => {
   const [isModal, openModal, closeModal] = useModal();
   const [orderItem, setOrderItem] = useState<Order>();
   const [currentLocation, setCurrentLocation] = useState<Location>();
+  const orderTimerRef = useRef<NodeJS.Timeout>();
   const [updateDriverLocation] = useCustomMutation<UpdateDriverLocation>(UPDATE_DRIVER_LOCATION);
-  const { data: addedOrder, loading } = useSubscription(SUB_NEW_ORDER, {
+
+  useSubscription<SubNewOrder>(SUB_NEW_ORDER, {
     variables: { lat: currentLocation?.lat, lng: currentLocation?.lng },
+    onSubscriptionData: ({ subscriptionData }) => {
+      const { newOrder } = subscriptionData.data?.subNewOrder || {};
+
+      if (newOrder) {
+        openModal();
+        setOrderItem(newOrder);
+
+        orderTimerRef.current = setTimeout(() => {
+          closeModal();
+        }, DRIVER.NEW_ORDER_DURATION);
+      }
+    },
   });
+
+  const onClickCloseModal = useCallback(() => {
+    if (orderTimerRef.current) {
+      clearTimeout(orderTimerRef.current);
+      orderTimerRef.current = undefined;
+    }
+    closeModal();
+  }, [orderTimerRef.current]);
 
   useSubscription(UPDATE_ORDER_LIST, {
     onSubscriptionData: async () => {
@@ -93,19 +116,6 @@ const Main: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!loading && addedOrder) {
-      const { newOrder } = addedOrder.subNewOrder;
-      openModal();
-      setOrderItem(newOrder);
-
-      const timer = setTimeout(() => {
-        closeModal();
-      }, DRIVER.NEW_ORDER_DURATION);
-      return () => clearTimeout(timer);
-    }
-  }, [addedOrder]);
-
-  useEffect(() => {
     setOrderData(unassignedOrders);
   }, [unassignedOrders]);
 
@@ -128,8 +138,8 @@ const Main: FC = () => {
           </StyledOrderLogList>
         </MapFrame>
       )}
-      <Modal visible={isModal} onClose={closeModal}>
-        {orderItem && <OrderModalItem order={orderItem} closeModal={closeModal} />}
+      <Modal visible={isModal} onClose={onClickCloseModal}>
+        {orderItem && <OrderModalItem order={orderItem} closeModal={onClickCloseModal} />}
       </Modal>
     </>
   );
