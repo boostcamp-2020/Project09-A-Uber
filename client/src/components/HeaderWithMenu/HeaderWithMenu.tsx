@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { Modal } from 'antd-mobile';
 import useToggle from '@hooks/useToggle';
 import { useHistory } from 'react-router-dom';
+import { Layout } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 
 import { useCustomMutation } from '@hooks/useApollo';
 import { LOGOUT } from '@queries/user';
 import { Logout } from '@/types/api';
 import styled from '@theme/styled';
-import MenuSVG from '@images/menuSVG.tsx';
 import { Message } from '@utils/client-message';
 
 interface Props {
@@ -19,23 +20,14 @@ interface StyledProps {
   isMenuOpen: boolean;
 }
 
-const StyledHeaderWithMenu = styled.header<StyledProps>`
-  display: flex;
-  height: 3rem;
-  width: 100%;
+const { Header } = Layout;
+
+const StyledHeaderWithMenu = styled(Header)<StyledProps>`
   background-color: ${({ className, theme }) =>
     className === 'green-header' ? theme.PRIMARY : '#ffffff'};
 
-  & button {
-    background: none;
-    border: none;
-    padding: 0;
-  }
-
   & svg {
-    width: 1.5rem;
     fill: #ffffff;
-    margin-left: 1.5rem;
   }
 
   & menu {
@@ -82,9 +74,7 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
 
   return (
     <StyledHeaderWithMenu className={className} isMenuOpen={menu}>
-      <button type="button" data-testID="header-menu-toggle" onClick={toggleMenu}>
-        <MenuSVG />
-      </button>
+      <MenuOutlined data-testID="header-menu-toggle" onClick={toggleMenu} />
       <menu data-testID="header-menu">
         <ul>
           <li>
