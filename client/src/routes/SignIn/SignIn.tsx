@@ -1,9 +1,7 @@
 import React, { FC, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Radio, Input, Button, Checkbox, Row, Col } from 'antd';
-
-import { Toast } from 'antd-mobile';
+import { Radio, Input, Button, Checkbox, Row, Col, message } from 'antd';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGNIN } from '@queries/user';
 import { Signin } from '@/types/api';
@@ -38,13 +36,18 @@ const SignIn: FC = () => {
   const [signinMutation, { loading }] = useMutation<Signin>(SIGNIN, {
     onCompleted: ({ signin }) => {
       if (signin.result === 'success') {
-        Toast.success(Message.SucceedSignin, TOAST_DURATION.SIGNIN_SUCCESS, () => {
+        message.success({
+          content: Message.SucceedSignin,
+          style: {
+            marginTop: '50vh',
+          },
+          duration: TOAST_DURATION.SIGNIN_SUCCESS,
           // eslint-disable-next-line no-restricted-globals
-          location.replace('/');
+          onClose: () => location.replace('/'),
         });
       }
       if (signin.result === 'fail') {
-        Toast.fail(signin.error, TOAST_DURATION.SIGNIN_FAILURE);
+        message.error(signin.error, TOAST_DURATION.SIGNIN_FAILURE);
       }
     },
   });
