@@ -4,7 +4,10 @@ import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocom
 import useOnclickOutside from 'react-cool-onclickoutside';
 import { useDispatch } from 'react-redux';
 
+import { Input } from 'antd';
 import { updateLocationOrigin, updateLocationDestination } from '@reducers/location';
+import { SearchOutlined } from '@ant-design/icons/lib/icons';
+import { Message } from '@utils/client-message';
 import { AutoLocationWrapper, StyledIcon } from './style';
 
 interface Props {
@@ -70,8 +73,12 @@ const AutoLocation: FC<Props> = ({ locationType }) => {
     });
   return (
     <AutoLocationWrapper ref={registerRef} className="location-input">
-      <span className="before-placeholder">▪</span>
-      <input value={value} onChange={handleInput} placeholder="어디로 가시나요?" />
+      <Input
+        placeholder={Message.SearchFormPlaceholder}
+        prefix={<SearchOutlined />}
+        value={value}
+        onChange={handleInput}
+      />
       <StyledIcon type="cross" size="xxs" onClick={onClickCancleIcon} />
       {status === 'OK' && <ul>{renderSuggestions()}</ul>}
     </AutoLocationWrapper>
