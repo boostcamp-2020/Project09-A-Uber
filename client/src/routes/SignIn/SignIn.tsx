@@ -26,6 +26,8 @@ const options = [
   { label: '드라이버', value: FOCUS_DRIVER },
 ];
 
+const antdRowGutterOption: [number, number] = [0, 8];
+
 const SignIn: FC = () => {
   const history = useHistory();
   const [loginType, setLoginType] = useState<ToggleFocus>(FOCUS_USER);
@@ -75,12 +77,12 @@ const SignIn: FC = () => {
   return (
     <StyledPageFrame>
       <StyledSignIn>
-        <Row justify="center" gutter={[0, 8]}>
+        <Row justify="center" gutter={antdRowGutterOption}>
           <Col>
             <img src={logo} alt="logo" />
           </Col>
         </Row>
-        <Row justify="end" gutter={[0, 8]}>
+        <Row justify="end" gutter={antdRowGutterOption}>
           <Col>
             <Radio.Group
               options={options}
@@ -91,7 +93,7 @@ const SignIn: FC = () => {
             />
           </Col>
         </Row>
-        <Row gutter={[0, 8]}>
+        <Row gutter={antdRowGutterOption}>
           <Col span={24}>
             <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail} />
           </Col>
