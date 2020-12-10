@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import MapFrame from '@/components/MapFrame';
-import Modal from '@components/Modal';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { COMPLETE_ORDER, GET_ORDER_BY_ID } from '@/queries/order';
 import {
@@ -22,7 +21,7 @@ import calcDriveTime from '@utils/calcDriveTime';
 
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Modal } from 'antd';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -33,18 +32,6 @@ const StyledGoToDestinationMenu = styled.div`
   & .row {
     width: 100%;
     margin-bottom: 0.5rem;
-  }
-`;
-
-const OrderInfo = styled.div`
-  font-size: 1rem;
-
-  & .order-info-title {
-    margin-bottom: 2rem;
-  }
-
-  & div {
-    margin: 0.8rem 0;
   }
 `;
 
@@ -148,15 +135,22 @@ const GoToDestination: FC = () => {
           </Row>
         </StyledGoToDestinationMenu>
       </MapFrame>
-      <Modal visible={isVisibleModal} onClose={onCompleteOrderHandler}>
+      <Modal
+        visible={isVisibleModal}
+        onOk={onCompleteOrderHandler}
+        onCancel={onCompleteOrderHandler}
+        cancelButtonProps={{ style: { display: 'none' } }}
+        okText="확인"
+        title="운행이 완료되었습니다."
+        centered
+      >
         {orderInfo && (
-          <OrderInfo>
-            <div className="order-info-title">운행이 완료되었습니다</div>
+          <>
             <div>{`출발지: ${orderInfo?.startingPoint.address}`}</div>
             <div>{`목적지: ${orderInfo?.destination.address}`}</div>
             <div>{`결제비: ${orderInfo?.amount}`}</div>
             <div>{`이동시간: ${calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}`}</div>
-          </OrderInfo>
+          </>
         )}
       </Modal>
     </>
