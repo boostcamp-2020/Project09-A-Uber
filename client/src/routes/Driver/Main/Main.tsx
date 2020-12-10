@@ -12,7 +12,6 @@ import {
   GetUnassignedOrders_getUnassignedOrders_unassignedOrders_startingPoint as ServerLocation,
   SubNewOrder,
 } from '@/types/api';
-import { Toast } from 'antd-mobile';
 import styled from '@theme/styled';
 import MapFrame from '@components/MapFrame';
 import OrderLog from '@components/OrderLog';
@@ -27,7 +26,7 @@ import {
 } from '@queries/order';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import useModal from '@hooks/useModal';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import { Message } from '@utils/client-message';
 import { TOAST_DURATION, DRIVER } from '@utils/enums';
 import { addOrderId } from '@reducers/order';
@@ -156,7 +155,7 @@ const Main: FC = () => {
         const { data } = await getOrderQuery({ orderId: orderItem._id });
         const status = data?.getOrderById?.order?.status;
         if (status === 'approval') {
-          Toast.fail(Message.FailureMatchingOrder, TOAST_DURATION.MATCHING_FAILURE);
+          message.error(Message.FailureMatchingOrder, TOAST_DURATION.MATCHING_FAILURE);
           return closeModal();
         }
         if (status === 'waiting') {
@@ -170,7 +169,7 @@ const Main: FC = () => {
           approvalOrder({ variables: { orderId: orderItem._id } });
           return history.push('/driver/goToOrigin');
         }
-        Toast.fail(Message.FailureClosedOrder, TOAST_DURATION.MATCHING_FAILURE);
+        message.error(Message.FailureClosedOrder, TOAST_DURATION.MATCHING_FAILURE);
         return closeModal();
       }
       closeModal();
