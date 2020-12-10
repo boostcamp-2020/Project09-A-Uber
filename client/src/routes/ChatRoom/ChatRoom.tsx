@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { FC, useEffect, useRef, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -87,7 +88,7 @@ const ChatRoom: FC = () => {
           chats?.length !== 0 &&
           chats.map((item, index) => (
             <ChatLog
-              key={`chat_${item}`}
+              key={index}
               content={item?.content}
               writer={item?.writer}
               type={userId}
