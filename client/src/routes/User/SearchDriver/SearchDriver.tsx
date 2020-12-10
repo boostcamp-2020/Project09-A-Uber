@@ -4,9 +4,8 @@ import { useSubscription } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
-import Header from '@components/HeaderWithMenu';
 import Modal from '@components/Modal';
-import { Spin, Space, Button, message } from 'antd';
+import { Spin, Button, message, Layout, Row, Col } from 'antd';
 import CarInfo from '@components/CarInfo';
 import { InitialState } from '@reducers/.';
 import { SUB_ORDER_CALL_STATUS, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@/queries/order';
@@ -17,34 +16,31 @@ import useModal from '@hooks/useModal';
 import { addCarInfo } from '@reducers/order';
 import { Message } from '@utils/client-message';
 
+const { Header, Content } = Layout;
+
 const StyledSearchDriver = styled.div`
-  margin-bottom: 0.8rem;
   height: 100%;
 
-  & > section {
+  & .ant-layout-content {
     position: relative;
-    height: calc(100% - 50px);
-    position: relative;
-    padding: 0 1.5rem 1.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    height: calc(100% - 64px);
+  }
 
-    & > .loading-center {
-      position: absolute;
-      left: 50%;
-      top: 40%;
-      transform: translateX(-50%);
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-weight: 700;
+  .ant-btn {
+    width: 100%;
+  }
 
-      & > div {
-        margin-top: 1rem;
-      }
-    }
+  & .search-spinner {
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%);
+  }
+
+  & .cancel-button {
+    height: 100%;
+    padding-bottom: 1.5rem;
   }
 `;
 
@@ -97,20 +93,23 @@ const SearchDriver: FC = () => {
   return (
     <>
       <StyledSearchDriver>
-        <Header className="green-header" />
-        <section>
-          <div className="loading-center">
-            주변에 운행이 가능한 드라이버를 탐색중입니다
-            {!isModal && (
-              <Space>
-                <Spin size="large" />
-              </Space>
-            )}
-          </div>
-          <Button danger onClick={onClickCancelOrderHandler}>
-            탐색 취소
-          </Button>
-        </section>
+        <Header />
+        <Content>
+          {!isModal && (
+            <>
+              <Row className="search-spinner" align="middle" justify="center">
+                <Spin size="large" tip="주변에 운행이 가능한 드라이버를 탐색중입니다." />
+              </Row>
+              <Row className="cancel-button" justify="center" align="bottom">
+                <Col span={22}>
+                  <Button danger onClick={onClickCancelOrderHandler}>
+                    탐색 취소
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
+        </Content>
       </StyledSearchDriver>
       <Modal visible={isModal} onClose={onClickModalCloseHandler}>
         {carInfo && <CarInfo carInfo={carInfo} title={Message.DriverMatchingCompolete} />}
