@@ -19,9 +19,22 @@ const GlobalStyle = () => (
         height: 100%;
       }
 
-      html,
-      #root {
+      html {
         height: 100%;
+      }
+
+      #root-wrapper {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #root {
+        width: 100%;
+        height: 100%;
+        max-width: 375px;
+        max-height: 812px;
       }
     `}
   />
