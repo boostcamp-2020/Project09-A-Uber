@@ -13,7 +13,6 @@ import {
   getOrderById_getOrderById_order as OrderType,
 } from '@/types/api';
 import { useCustomMutation, useCustomQuery } from '@hooks/useApollo';
-import { Button } from 'antd-mobile';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
 import useModal from '@hooks/useModal';
@@ -23,6 +22,7 @@ import calcDriveTime from '@utils/calcDriveTime';
 
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
+import { Row, Col, Button } from 'antd';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -30,26 +30,9 @@ const StyledGoToDestinationMenu = styled.div`
   flex-direction: column;
   justify-content: flex-end;
 
-  & span {
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  & .am-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
-    height: 2rem;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  & .driver-chat-btn {
-    color: ${({ theme }) => theme.PRIMARY};
-    border: 1px solid ${({ theme }) => theme.PRIMARY};
+  & .row {
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -118,6 +101,10 @@ const GoToDestination: FC = () => {
     setTaxiFee((pre) => pre + DRIVER.INCRESE_TAXI_FEE);
   }, [taxiFee]);
 
+  const onClickChatRoom = () => {
+    history.push(`/chatroom/${id}`);
+  };
+
   useEffect(() => {
     getUserLocation().then(updateInitLocation);
     const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
@@ -137,14 +124,28 @@ const GoToDestination: FC = () => {
         directions={directions}
       >
         <StyledGoToDestinationMenu>
-          <span>{`현재요금: ${numberWithCommas(taxiFee)}`}</span>
-          <Button
-            className="driver-arrive-btn"
-            type="primary"
-            onClick={onClickOrderCompleteHandler}
-          >
-            도착완료
-          </Button>
+          <Row justify="center" align="middle" className="row">
+            <Col>{`현재요금: ${numberWithCommas(taxiFee)}`}</Col>
+          </Row>
+          <Row justify="center" align="middle" className="row">
+            <Col span={24}>
+              <Button
+                className="driver-arrive-btn"
+                type="primary"
+                onClick={onClickOrderCompleteHandler}
+                block
+              >
+                도착완료
+              </Button>
+            </Col>
+          </Row>
+          <Row justify="center" className="row">
+            <Col span={24}>
+              <Button className="driver-chat-btn" onClick={onClickChatRoom} block>
+                손님과의 채팅
+              </Button>
+            </Col>
+          </Row>
         </StyledGoToDestinationMenu>
       </MapFrame>
       <Modal visible={isVisibleModal} onClose={onCompleteOrderHandler}>
