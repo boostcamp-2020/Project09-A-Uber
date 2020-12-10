@@ -18,4 +18,9 @@ export const Message = {
   LogOutMessage: '확인버튼 클릭시 로그아웃 됩니다.',
   CarType: '차량타입',
   CarNumber: '차량번호',
+  Origin: '출발지',
+  Destination: '목적지',
+  Amount: '결제비',
+  DrivingTime: '운행시간',
+  CompletedOrder: '운행이 완료되었습니다.',
 };
