@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
-import { Button } from 'antd-mobile';
-
+import { Button, Input } from 'antd';
+import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 import { Message } from '@utils/client-message';
 import styled from '@theme/styled';
-import Input from '@components/Input';
+// import Input from '@components/Input';
 import ProfileUplodaer from '@components/ProfileUploader';
+import theme from '@/theme';
 
 interface Props {
   name: string;
@@ -43,6 +44,14 @@ const StyledCommonSignup = styled.section`
   }
 `;
 
+const suffix = (isVaildValue: boolean) => {
+  return isVaildValue ? (
+    <CheckCircleTwoTone twoToneColor={theme.PRIMARY} />
+  ) : (
+    <ExclamationCircleTwoTone twoToneColor={theme.RED} />
+  );
+};
+
 const CommonSignup: FC<Props> = ({
   name,
   email,
@@ -61,66 +70,60 @@ const CommonSignup: FC<Props> = ({
   onChangePhone,
   onClickNextHandler,
   className,
-}) => (
-  <StyledCommonSignup className={className}>
-    <ProfileUplodaer />
-    <Input
-      value={name}
-      onChange={onChangeName}
-      title="이름"
-      placeholder="이름을 입력해 주세요."
-      allow={isName}
-      inValidMessage={Message.NameGuidance}
-      testId="signup-name"
-    />
-    <Input
-      value={email}
-      onChange={onChangeEmail}
-      title="이메일"
-      placeholder="이메일을 입력해 주세요."
-      allow={isEmail}
-      testId="signup-email"
-    />
-    <Input
-      value={password}
-      onChange={onChangePassword}
-      title="비밀번호"
-      placeholder="비밀번호를 입력해 주세요."
-      type="password"
-      allow={isPassword}
-      inValidMessage={Message.PasswordGuidance}
-      testId="signup-password"
-    />
-    <Input
-      value={passwordRe}
-      onChange={onChangePasswordRe}
-      title="비밀번호 재확인"
-      placeholder="비밀번호를 한번 더 입력해 주세요."
-      type="password"
-      allow={isPasswordRe}
-      inValidMessage={Message.PasswordCheckGuidance}
-      testId="signup-password-re"
-    />
-    <Input
-      value={phone}
-      onChange={onChangePhone}
-      title="핸드폰 번호"
-      placeholder="핸드폰 번호를 입력해 주세요."
-      allow={isPhone}
-      inValidMessage={Message.PhoneGuidance}
-      testId="signup-phone"
-    />
+}) => {
+  return (
+    <StyledCommonSignup className={className}>
+      <ProfileUplodaer />
+      <Input
+        value={name}
+        onChange={onChangeName}
+        title="이름"
+        placeholder="이름을 입력해 주세요."
+        suffix={suffix(isName)}
+      />
+      <Input
+        value={email}
+        onChange={onChangeEmail}
+        title="이메일"
+        placeholder="이메일을 입력해 주세요."
+        suffix={suffix(isEmail)}
+      />
+      <Input
+        value={password}
+        onChange={onChangePassword}
+        title="비밀번호"
+        placeholder="비밀번호를 입력해 주세요."
+        type="password"
+        suffix={suffix(isPassword)}
+      />
+      <Input
+        value={passwordRe}
+        onChange={onChangePasswordRe}
+        title="비밀번호 재확인"
+        placeholder="비밀번호를 한번 더 입력해 주세요."
+        type="password"
+        suffix={suffix(isPasswordRe)}
+      />
+      <Input
+        value={phone}
+        onChange={onChangePhone}
+        title="핸드폰 번호"
+        placeholder="핸드폰 번호를 입력해 주세요."
+        suffix={suffix(isEmail)}
+        data-testID="signup-phone"
+      />
 
-    <Button
-      type="primary"
-      onClick={onClickNextHandler}
-      disabled={!isName || !isEmail || !isPassword || !isPasswordRe || !isPhone}
-      data-testID="signup-next"
-    >
-      다음
-    </Button>
-  </StyledCommonSignup>
-);
+      <Button
+        type="primary"
+        onClick={onClickNextHandler}
+        disabled={!isName || !isEmail || !isPassword || !isPasswordRe || !isPhone}
+        data-testID="signup-next"
+      >
+        다음
+      </Button>
+    </StyledCommonSignup>
+  );
+};
 
 CommonSignup.defaultProps = {
   className: '',
