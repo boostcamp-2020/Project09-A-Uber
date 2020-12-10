@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
-import { Modal } from 'antd-mobile';
 import { useHistory } from 'react-router-dom';
-import { Layout, Drawer, Button } from 'antd';
+import { Layout, Drawer, Button, Modal } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 
 import { useCustomMutation } from '@hooks/useApollo';
@@ -20,6 +19,7 @@ interface StyledProps {
 }
 
 const { Header } = Layout;
+const { confirm } = Modal;
 
 const StyledHeaderWithMenu = styled(Header)<StyledProps>`
   background-color: ${({ className, theme }) =>
@@ -46,10 +46,15 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
   };
 
   const onClickLogout = () => {
-    Modal.alert('로그아웃', Message.LogOutMessage, [
-      { text: '취소' },
-      { text: '확인', onPress: () => logoutMutation() },
-    ]);
+    confirm({
+      title: '로그아웃',
+      content: Message.LogOutMessage,
+      onOk() {
+        logoutMutation();
+      },
+      okText: '확인',
+      cancelText: '취소',
+    });
   };
 
   return (
