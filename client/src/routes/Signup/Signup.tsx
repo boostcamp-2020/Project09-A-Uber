@@ -7,8 +7,10 @@ import { isKoreanName, isEmail, isPassword, isPhone } from '@utils/validators';
 
 import PageFrame from '@components/PageFrame';
 import HeaderWithBack from '@/components/HeaderWithBack';
-import UserToggle, { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
+import UserToggle, { ToggleFocus, FOCUS_USER, FOCUS_DRIVER } from '@components/UserToggle';
+import { Radio, Input, Button, Checkbox, Row, Col, message } from 'antd';
 
+import { RadioChangeEvent } from 'antd/lib/radio';
 import CommonSignup from './CommonSignup';
 import NextSignup from './NextSingup';
 
@@ -48,16 +50,18 @@ const Signup: FC = () => {
     [password],
   );
 
-  const onClickToggleHandler = useCallback(
-    (target: ToggleFocus) => {
-      if (target === signupTarget) {
-        return;
-      }
-      setSignupTarget(target);
-    },
-    [signupTarget],
-  );
-
+  // const onClickToggleHandler = useCallback(
+  //   (target: ToggleFocus) => {
+  //     if (target === signupTarget) {
+  //       return;
+  //     }
+  //     setSignupTarget(target);
+  //   },
+  //   [signupTarget],
+  // );
+  const onClickToggleHandler = (e: RadioChangeEvent) => {
+    setSignupTarget(e.target.value as ToggleFocus);
+  };
   const onClickNextHandler = useCallback(() => {
     setIsNext(true);
   }, []);
@@ -69,14 +73,23 @@ const Signup: FC = () => {
     }
     history.push('/signin');
   }, [isNext]);
-
+  const options = [
+    { label: '일반 사용자', value: FOCUS_USER },
+    { label: '드라이버', value: FOCUS_DRIVER },
+  ];
   return (
     <>
       <HeaderWithBack onClick={onClickBackHandler} />
       <StyledSignup>
         <div className="signup-header">
           <h1>회원가입</h1>
-          <UserToggle focus={signupTarget} onClick={isNext ? () => null : onClickToggleHandler} />
+          <Radio.Group
+            options={options}
+            optionType="button"
+            size="small"
+            value={signupTarget}
+            onChange={isNext ? () => null : onClickToggleHandler}
+          />
         </div>
         {isNext ? (
           <NextSignup
