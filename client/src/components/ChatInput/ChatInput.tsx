@@ -1,5 +1,5 @@
 import React, { FC, ChangeEvent } from 'react';
-import { Space, Input, Button } from 'antd';
+import { Input, Button } from 'antd';
 
 import styled from '@theme/styled';
 
@@ -11,7 +11,12 @@ interface Props {
 }
 
 const StyledChatInput = styled.form`
+  display: flex;
   padding: 0.8rem;
+
+  & input {
+    margin-right: 1rem;
+  }
 `;
 
 const ChatInput: FC<Props> = ({
@@ -22,17 +27,15 @@ const ChatInput: FC<Props> = ({
 }) => {
   return (
     <StyledChatInput onSubmit={onSubmit}>
-      <Space>
-        <Input
-          type="text"
-          placeholder="채팅을 입력해 주세요."
-          value={chatContent}
-          onChange={onChangeChatContent}
-        />
-        <Button type="primary" disabled={!chatContent} onClick={onClickSubmitButton}>
-          전송
-        </Button>
-      </Space>
+      <Input
+        type="text"
+        placeholder="채팅을 입력해 주세요."
+        value={chatContent}
+        onChange={onChangeChatContent}
+      />
+      <Button type="primary" disabled={!chatContent} onClick={onClickSubmitButton}>
+        전송
+      </Button>
     </StyledChatInput>
   );
 };
