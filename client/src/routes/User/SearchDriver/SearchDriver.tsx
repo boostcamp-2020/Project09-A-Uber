@@ -94,11 +94,11 @@ const SearchDriver: FC = () => {
     dispatch(addCarInfo(carInfoData));
 
     const options = {
-      message: '배차가 완료되었습니다.',
+      message: Message.DriverMatchingCompolete,
       description: (
         <>
-          <div>{`차량번호 : ${carInfoData.carNumber}`}</div>
-          <div>{`차량타입 : ${carInfoData.carType}`}</div>
+          <div>{`${Message.CarType} : ${carInfoData.carNumber}`}</div>
+          <div>{`${Message.CarNumber} : ${carInfoData.carType}`}</div>
         </>
       ),
     };
