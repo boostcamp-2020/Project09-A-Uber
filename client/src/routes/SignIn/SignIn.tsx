@@ -1,21 +1,37 @@
 import React, { FC, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Checkbox, Toast } from 'antd-mobile';
+
+import { Radio, Input, Button, Checkbox, Row, Col } from 'antd';
+
+import { Toast } from 'antd-mobile';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGNIN } from '@queries/user';
 import { Signin } from '@/types/api';
-import { StyledSignIn } from '@routes/SignIn/style';
 import StyledPageFrame from '@components/PageFrame';
-import UserToggle, { FOCUS_USER, ToggleFocus } from '@components/UserToggle';
+import { FOCUS_USER, FOCUS_DRIVER, ToggleFocus } from '@components/UserToggle';
 import { TOAST_DURATION } from '@utils/enums';
 import { Message } from '@utils/client-message';
 import logo from '@images/logo.svg';
-import Input from '@components/Input';
 import useChange from '@hooks/useChange';
+import { RadioChangeEvent } from 'antd/lib/radio';
+import styled from '@theme/styled';
+
+export const StyledSignIn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+`;
+
+const options = [
+  { label: '일반 사용자', value: FOCUS_USER },
+  { label: '드라이버', value: FOCUS_DRIVER },
+];
 
 const SignIn: FC = () => {
   const history = useHistory();
   const [loginType, setLoginType] = useState<ToggleFocus>(FOCUS_USER);
+
   const [isLoginState, setIsLoginState] = useState(false);
   const [email, , onChangeEmail] = useChange('');
   const [password, , onChangePassword] = useChange('');
@@ -45,38 +61,49 @@ const SignIn: FC = () => {
     });
   }, [email, password, loginType]);
 
-  const onClickToggleHandler = useCallback(
-    (target: ToggleFocus) => {
-      if (target === loginType) {
-        return;
-      }
-      setLoginType(target);
-    },
-    [loginType],
-  );
   const onChangeLoginState = useCallback(() => {
     setIsLoginState(!isLoginState);
   }, []);
+
+  const onClickToggle = (e: RadioChangeEvent) => {
+    setLoginType(e.target.value as ToggleFocus);
+  };
 
   return (
     <StyledPageFrame>
       <StyledSignIn>
         <img src={logo} alt="logo" />
-        <UserToggle focus={loginType} onClick={onClickToggleHandler} />
+
+        <Radio.Group
+          options={options}
+          optionType="button"
+          size="small"
+          value={loginType}
+          onChange={onClickToggle}
+        />
+
         <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail} />
+
         <Input
           type="password"
           placeholder="패스워드"
           value={password}
           onChange={onChangePassword}
         />
-        <div className="login-state">
-          <Checkbox onChange={onChangeLoginState}>로그인 상태 유지</Checkbox>
-        </div>
-        <Button type="primary" onClick={onClickSignIn} loading={loading} data-testID="login-button">
+
+        <Checkbox onChange={onChangeLoginState}>로그인 상태 유지</Checkbox>
+
+        <Button
+          type="primary"
+          onClick={onClickSignIn}
+          loading={loading}
+          data-testID="login-button"
+          block
+        >
           로그인
         </Button>
-        <Button className="signup-button" onClick={onClickSignup}>
+
+        <Button onClick={onClickSignup} block>
           회원가입
         </Button>
       </StyledSignIn>
