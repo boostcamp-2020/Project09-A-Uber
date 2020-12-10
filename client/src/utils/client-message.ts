@@ -16,4 +16,6 @@ export const Message = {
   AuthTypeMessage: '로그인이 필요합니다',
   AuthMessage: '로그인이 필요합니다',
   LogOutMessage: '확인버튼 클릭시 로그아웃 됩니다.',
+  CarType: '차량타입',
+  CarNumber: '차량번호',
 };
