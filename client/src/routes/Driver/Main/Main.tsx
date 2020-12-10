@@ -14,7 +14,6 @@ import {
 } from '@/types/api';
 import styled from '@theme/styled';
 import MapFrame from '@components/MapFrame';
-import OrderLog from '@components/OrderLog';
 import { Location } from '@reducers/.';
 import getUserLocation from '@utils/getUserLocation';
 import {
@@ -26,28 +25,30 @@ import {
 } from '@queries/order';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import useModal from '@hooks/useModal';
-import { Modal, message } from 'antd';
+import { Modal, message, List, Row, Col, Typography } from 'antd';
 import { Message } from '@utils/client-message';
 import { TOAST_DURATION, DRIVER } from '@utils/enums';
 import { addOrderId } from '@reducers/order';
 import { updateLocationALL } from '@reducers/location';
 
+const { Title, Text } = Typography;
+
 const StyledOrderLogList = styled.section`
   height: 100%;
   overflow: scroll;
 
-  & > div {
-    margin-bottom: 0.5rem;
+  & .no-order {
+    height: 100%;
   }
 
-  & > h1 {
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: ${({ theme }) => theme.BORDER};
+  & .order {
+    background-color: ${({ theme }) => theme.LIGHT_GRAY};
+    padding: 0 0;
+    border-radius: 0.4rem;
+  }
+
+  & .order-row {
+    padding: 0 0;
   }
 `;
 
@@ -181,16 +182,32 @@ const Main: FC = () => {
       {currentLocation && (
         <MapFrame origin={currentLocation}>
           <StyledOrderLogList>
-            {orderData && orderData?.length !== 0 ? (
-              orderData?.map((order) => (
-                <OrderLog
-                  order={order}
-                  key={`order_list_${order._id}`}
-                  onClick={() => onClickOrder(order)}
-                />
-              ))
+            {orderData && orderData.length !== 0 ? (
+              <List
+                className="order"
+                size="small"
+                dataSource={orderData}
+                renderItem={(order) => (
+                  <List.Item onClick={() => onClickOrder(order)}>
+                    <Row className="order-row">
+                      <Col flex="string">
+                        <Text strong>{`출발지: ${order.startingPoint.address}`}</Text>
+                      </Col>
+                      <Col flex="string">
+                        <Text strong>{`도착지: ${order.destination.address}`}</Text>
+                      </Col>
+                    </Row>
+                  </List.Item>
+                )}
+              />
             ) : (
-              <h1>현재 요청이 없습니다</h1>
+              <Row className="no-order" align="middle" justify="center">
+                <Title>
+                  <Text type="secondary" strong>
+                    현재 요청이 없습니다
+                  </Text>
+                </Title>
+              </Row>
             )}
           </StyledOrderLogList>
         </MapFrame>
