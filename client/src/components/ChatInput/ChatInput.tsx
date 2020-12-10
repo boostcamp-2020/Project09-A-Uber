@@ -1,7 +1,6 @@
 import React, { FC, ChangeEvent } from 'react';
+import { Space, Input, Button } from 'antd';
 
-import Input from '@components/Input';
-import { Button } from 'antd-mobile';
 import styled from '@theme/styled';
 
 interface Props {
@@ -11,32 +10,8 @@ interface Props {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const StyledChatInput = styled.div`
-  position: sticky;
-  bottom: 0;
-  padding: 1.5rem;
-
-  & > .chat-form {
-    display: flex;
-    align-items: center;
-
-    & > div {
-      width: 80%;
-      margin-right: 0.5rem;
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
-    }
-
-    & > a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 20%;
-      height: 2.1rem;
-      font-weight: 700;
-      font-size: 0.9rem;
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
-    }
-  }
+const StyledChatInput = styled.form`
+  padding: 0.8rem;
 `;
 
 const ChatInput: FC<Props> = ({
@@ -46,8 +21,8 @@ const ChatInput: FC<Props> = ({
   onSubmit,
 }) => {
   return (
-    <StyledChatInput>
-      <form className="chat-form" onSubmit={onSubmit}>
+    <StyledChatInput onSubmit={onSubmit}>
+      <Space>
         <Input
           type="text"
           placeholder="채팅을 입력해 주세요."
@@ -57,7 +32,7 @@ const ChatInput: FC<Props> = ({
         <Button type="primary" disabled={!chatContent} onClick={onClickSubmitButton}>
           전송
         </Button>
-      </form>
+      </Space>
     </StyledChatInput>
   );
 };
