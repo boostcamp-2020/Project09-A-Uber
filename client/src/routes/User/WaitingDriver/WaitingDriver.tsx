@@ -51,6 +51,7 @@ const WaitingDriver = () => {
           <div>{`${Message.CarNumber} : ${carInfo.carType}`}</div>
         </>
       ),
+      centered: true,
     });
   }, [carInfo]);
 
