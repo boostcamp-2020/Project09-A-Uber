@@ -84,9 +84,9 @@ const ChatRoom: FC = () => {
       <StyledChatMain ref={chatRef}>
         {chats &&
           chats?.length !== 0 &&
-          chats.map((item) => (
+          chats.map((item, index) => (
             <ChatLog
-              key={`chat_${item}`}
+              key={`chat_${index}`}
               content={item?.content}
               writer={item?.writer}
               type={userId}
