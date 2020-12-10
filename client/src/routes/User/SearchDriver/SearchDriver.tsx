@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
@@ -45,6 +45,7 @@ const { Header, Content } = Layout;
 const SearchDriver: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [isDisabled, SetIsDisabled] = useState(false);
   const { callQuery } = useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
     skip: true,
   });
@@ -68,6 +69,7 @@ const SearchDriver: FC = () => {
   });
 
   const openNotificationWithIcon = (options: ArgsProps) => {
+    SetIsDisabled(true);
     notification.success({
       ...options,
       key: 'updatable',
@@ -113,7 +115,7 @@ const SearchDriver: FC = () => {
           </Row>
           <Row className="cancel-button" justify="center" align="bottom">
             <Col span={22}>
-              <Button danger onClick={onClickCancelOrderHandler}>
+              <Button danger disabled={isDisabled} onClick={onClickCancelOrderHandler}>
                 탐색 취소
               </Button>
             </Col>
