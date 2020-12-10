@@ -24,7 +24,7 @@ const AutoLocationWrapper = styled.div`
 
   & .ant-list {
     position: absolute;
-    z-index: 3;
+    z-index: 5;
     background-color: white;
     width: 100%;
   }
@@ -84,6 +84,7 @@ const AutoLocation: FC<Props> = ({ locationType }) => {
     return (
       <List
         bordered
+        size="small"
         dataSource={data.slice(0, 2)}
         renderItem={(item) => (
           <List.Item onClick={handleSelect(item)} onKeyDown={handleSelect(item)}>
