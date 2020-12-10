@@ -20,4 +20,5 @@ export const Message = {
   CarNumber: '차량번호',
   NotEmptySearchForm: '출발지와 목적지를 모두 입력해주세요',
   NotSearchDriver: '라이더 탐색에 실패했습니다.',
+  SearchFormPlaceholder: '어디로 가시나요?',
 };
