@@ -1,74 +1,55 @@
-import React, { FC, useCallback } from 'react';
-import { Button, ActivityIndicator, Toast } from 'antd-mobile';
+import React, { FC, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
-import Header from '@components/HeaderWithMenu';
-import Modal from '@components/Modal';
-import CarInfo from '@components/CarInfo';
+import { Spin, Button, message, Layout, Row, Col, notification } from 'antd';
 import { InitialState } from '@reducers/.';
 import { SUB_ORDER_CALL_STATUS, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@/queries/order';
 import { SubOrderCallStatus, GetOrderCarInfo, CancelOrder } from '@/types/api';
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
-import useModal from '@hooks/useModal';
 import { addCarInfo } from '@reducers/order';
 import { Message } from '@utils/client-message';
+import { ArgsProps } from 'antd/lib/notification';
 
 const StyledSearchDriver = styled.div`
-  margin-bottom: 0.8rem;
   height: 100%;
 
-  & > section {
+  & .ant-layout-content {
     position: relative;
-    height: calc(100% - 50px);
-    position: relative;
-    padding: 0 1.5rem 1.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    height: calc(100% - 64px);
+  }
 
-    & > .loading-center {
-      position: absolute;
-      left: 50%;
-      top: 40%;
-      transform: translateX(-50%);
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-weight: 700;
+  & .ant-btn {
+    width: 100%;
+  }
 
-      & > div {
-        margin-top: 1rem;
-      }
-    }
+  & .search-spinner {
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%);
+  }
 
-    & > .am-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      height: 2rem;
-      margin-bottom: 0.8rem;
-      margin-top: 2rem;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
+  & .cancel-button {
+    height: 100%;
+    padding-bottom: 1.5rem;
   }
 `;
+
+const { Header, Content } = Layout;
 
 const SearchDriver: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [isModal, onOpenModal, onCloseModal] = useModal();
+  const [isDisabled, SetIsDisabled] = useState(false);
   const { callQuery } = useCustomQuery<GetOrderCarInfo>(GET_ORDER_CAR_INFO, {
     skip: true,
   });
   const { id: orderId } = useSelector((state: InitialState) => state.order || {});
-  const { carInfo } = useSelector((state: InitialState) => state.order || {});
   useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId },
     onSubscriptionData: ({ subscriptionData }) => {
@@ -80,17 +61,23 @@ const SearchDriver: FC = () => {
   const [cancelOrderMutation] = useCustomMutation<CancelOrder>(CANCEL_ORDER, {
     onCompleted: ({ cancelOrder }) => {
       if (cancelOrder.result === 'fail') {
-        Toast.fail(Message.FailureCancelOrder);
+        message.error(Message.FailureCancelOrder);
         return;
       }
       history.push('/user');
     },
   });
 
-  const onClickModalCloseHandler = useCallback(() => {
-    onCloseModal();
-    history.push('/user/waitingDriver');
-  }, []);
+  const openNotificationWithIcon = (options: ArgsProps) => {
+    SetIsDisabled(true);
+    notification.success({
+      ...options,
+      key: 'updatable',
+      onClose: () => {
+        history.push('/user/waitingDriver');
+      },
+    });
+  };
 
   const onClickCancelOrderHandler = useCallback(() => {
     cancelOrderMutation({ variables: { orderId } });
@@ -99,30 +86,42 @@ const SearchDriver: FC = () => {
   const onOpenOrderModal = useCallback(async () => {
     const { data } = await callQuery({ orderId });
     const { carInfo: carInfoData } = data.getOrderCarInfo;
+
     if (!carInfoData) {
       return;
     }
     dispatch(addCarInfo(carInfoData));
-    onOpenModal();
+
+    const options = {
+      message: '배차가 완료되었습니다.',
+      description: (
+        <>
+          <div>{`차량번호 : ${carInfoData.carNumber}`}</div>
+          <div>{`차량타입 : ${carInfoData.carType}`}</div>
+        </>
+      ),
+    };
+
+    openNotificationWithIcon(options);
   }, [orderId]);
 
   return (
     <>
       <StyledSearchDriver>
-        <Header className="green-header" />
-        <section>
-          <div className="loading-center">
-            주변에 운행이 가능한 드라이버를 탐색중입니다
-            {!isModal && <ActivityIndicator size="large" />}
-          </div>
-          <Button type="warning" onClick={onClickCancelOrderHandler}>
-            탐색 취소
-          </Button>
-        </section>
+        <Header />
+        <Content>
+          <Row className="search-spinner" align="middle" justify="center">
+            <Spin size="large" tip="주변에 운행이 가능한 드라이버를 탐색중입니다." />
+          </Row>
+          <Row className="cancel-button" justify="center" align="bottom">
+            <Col span={22}>
+              <Button danger disabled={isDisabled} onClick={onClickCancelOrderHandler}>
+                탐색 취소
+              </Button>
+            </Col>
+          </Row>
+        </Content>
       </StyledSearchDriver>
-      <Modal visible={isModal} onClose={onClickModalCloseHandler}>
-        {carInfo && <CarInfo carInfo={carInfo} title={Message.DriverMatchingCompolete} />}
-      </Modal>
     </>
   );
 };
