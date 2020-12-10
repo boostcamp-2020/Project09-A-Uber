@@ -1,38 +1,31 @@
 import React, { FC } from 'react';
+import { Layout, Space } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
 
 import styled from '@theme/styled';
-import LeftSVG from '@images/LeftSVG';
+
+const { Header } = Layout;
 
 interface Props {
   onClick: () => void;
   className?: string;
 }
 
-const StyledHeaderWithBack = styled.header`
-  display: flex;
-  height: 3rem;
-  width: 100%;
+const StyledHeaderWithBack = styled(Header)`
   background-color: ${({ className, theme }) =>
-    className === 'green-header' ? theme.PRIMARY : '#ffffff'};
-
-  & button {
-    background: none;
-    border: none;
-    padding: 0;
-  }
+    className === 'green-header' ? theme.PRIMARY : theme.LIGHT};
 
   & svg {
-    width: 1.5rem;
-    fill: ${({ className, theme }) => (className === 'green-header' ? theme.LIGHT : theme.PRIMARY)};
-    margin-left: 1.5rem;
+    color: ${({ className, theme }) =>
+      className === 'green-header' ? theme.LIGHT : theme.PRIMARY};
   }
 `;
 
 const HeaderWithBack: FC<Props> = ({ onClick, className = 'white-header' }) => (
-  <StyledHeaderWithBack className={className}>
-    <button type="button" onClick={onClick} data-testID="back-button">
-      <LeftSVG />
-    </button>
+  <StyledHeaderWithBack className={className} hasSider>
+    <Space align="center">
+      <LeftOutlined onClick={onClick} />
+    </Space>
   </StyledHeaderWithBack>
 );
 
