@@ -4,6 +4,7 @@ import { useSubscription } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import styled from '@theme/styled';
+import Header from '@components/HeaderWithMenu';
 import { Spin, Button, message, Layout, Row, Col, notification } from 'antd';
 import { InitialState } from '@reducers/.';
 import { SUB_ORDER_CALL_STATUS, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@/queries/order';
@@ -40,7 +41,7 @@ const StyledSearchDriver = styled.div`
   }
 `;
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 const SearchDriver: FC = () => {
   const history = useHistory();
@@ -108,7 +109,7 @@ const SearchDriver: FC = () => {
   return (
     <>
       <StyledSearchDriver>
-        <Header />
+        <Header className="green-header" />
         <Content>
           <Row className="search-spinner" align="middle" justify="center">
             <Spin size="large" tip="주변에 운행이 가능한 드라이버를 탐색중입니다." />
