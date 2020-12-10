@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { FC, useEffect, useRef, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -32,10 +33,11 @@ const ChatRoom: FC = () => {
   const history = useHistory();
   const { chatId } = useParams<ChatID>();
   const chatRef = useRef<HTMLDivElement>(null);
-  const { _id: userId } = useSelector((state: InitialState) => state?.user || ({} as User));
+  const { _id: userId, type } = useSelector((state: InitialState) => state?.user || ({} as User));
   const [chatContent, setChatContent, onChangeChatContent] = useChange('');
   const [chats, setChats] = useState<(ChatType | null)[]>([]);
   const [CreateChat] = useCustomMutation(CREATE_CHAT);
+
   useSubscription(SUB_CHAT, {
     variables: {
       chatId,
@@ -84,12 +86,14 @@ const ChatRoom: FC = () => {
       <StyledChatMain ref={chatRef}>
         {chats &&
           chats?.length !== 0 &&
-          chats.map((item) => (
+          chats.map((item, index) => (
             <ChatLog
-              key={`chat_${item}`}
+              key={index}
               content={item?.content}
               writer={item?.writer}
               type={userId}
+              avartar={type}
+              preWriter={chats[index - 1]?.writer}
             />
           ))}
       </StyledChatMain>
