@@ -1,5 +1,4 @@
 import React, { FC, useCallback } from 'react';
-import { Button, ActivityIndicator, Toast } from 'antd-mobile';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSubscription } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
@@ -7,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import styled from '@theme/styled';
 import Header from '@components/HeaderWithMenu';
 import Modal from '@components/Modal';
+import { Spin, Space, Button, message } from 'antd';
 import CarInfo from '@components/CarInfo';
 import { InitialState } from '@reducers/.';
 import { SUB_ORDER_CALL_STATUS, GET_ORDER_CAR_INFO, CANCEL_ORDER } from '@/queries/order';
@@ -45,18 +45,6 @@ const StyledSearchDriver = styled.div`
         margin-top: 1rem;
       }
     }
-
-    & > .am-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      height: 2rem;
-      margin-bottom: 0.8rem;
-      margin-top: 2rem;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
   }
 `;
 
@@ -80,7 +68,7 @@ const SearchDriver: FC = () => {
   const [cancelOrderMutation] = useCustomMutation<CancelOrder>(CANCEL_ORDER, {
     onCompleted: ({ cancelOrder }) => {
       if (cancelOrder.result === 'fail') {
-        Toast.fail(Message.FailureCancelOrder);
+        message.error(Message.FailureCancelOrder);
         return;
       }
       history.push('/user');
@@ -113,9 +101,13 @@ const SearchDriver: FC = () => {
         <section>
           <div className="loading-center">
             주변에 운행이 가능한 드라이버를 탐색중입니다
-            {!isModal && <ActivityIndicator size="large" />}
+            {!isModal && (
+              <Space>
+                <Spin size="large" />
+              </Space>
+            )}
           </div>
-          <Button type="warning" onClick={onClickCancelOrderHandler}>
+          <Button danger onClick={onClickCancelOrderHandler}>
             탐색 취소
           </Button>
         </section>
