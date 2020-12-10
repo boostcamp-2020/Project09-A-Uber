@@ -72,40 +72,54 @@ const SignIn: FC = () => {
   return (
     <StyledPageFrame>
       <StyledSignIn>
-        <img src={logo} alt="logo" />
-
-        <Radio.Group
-          options={options}
-          optionType="button"
-          size="small"
-          value={loginType}
-          onChange={onClickToggle}
-        />
-
-        <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail} />
-
-        <Input
-          type="password"
-          placeholder="패스워드"
-          value={password}
-          onChange={onChangePassword}
-        />
-
-        <Checkbox onChange={onChangeLoginState}>로그인 상태 유지</Checkbox>
-
-        <Button
-          type="primary"
-          onClick={onClickSignIn}
-          loading={loading}
-          data-testID="login-button"
-          block
-        >
-          로그인
-        </Button>
-
-        <Button onClick={onClickSignup} block>
-          회원가입
-        </Button>
+        <Row justify="center" gutter={[0, 8]}>
+          <Col>
+            <img src={logo} alt="logo" />
+          </Col>
+        </Row>
+        <Row justify="end" gutter={[0, 8]}>
+          <Col>
+            <Radio.Group
+              options={options}
+              optionType="button"
+              size="small"
+              value={loginType}
+              onChange={onClickToggle}
+            />
+          </Col>
+        </Row>
+        <Row gutter={[0, 8]}>
+          <Col span={24}>
+            <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail} />
+          </Col>
+          <Col span={24}>
+            <Input
+              type="password"
+              placeholder="패스워드"
+              value={password}
+              onChange={onChangePassword}
+            />
+          </Col>
+          <Col>
+            <Checkbox onChange={onChangeLoginState}>로그인 상태 유지</Checkbox>
+          </Col>
+          <Col span={24}>
+            <Button
+              type="primary"
+              onClick={onClickSignIn}
+              loading={loading}
+              data-testID="login-button"
+              block
+            >
+              로그인
+            </Button>
+          </Col>
+          <Col span={24}>
+            <Button onClick={onClickSignup} block>
+              회원가입
+            </Button>
+          </Col>
+        </Row>
       </StyledSignIn>
     </StyledPageFrame>
   );
