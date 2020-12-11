@@ -27,6 +27,8 @@ const AutoLocationWrapper = styled.div`
     z-index: 5;
     background-color: white;
     width: 100%;
+    height: 80px;
+    overflow: scroll;
   }
 `;
 
@@ -85,7 +87,7 @@ const AutoLocation: FC<Props> = ({ locationType }) => {
       <List
         bordered
         size="small"
-        dataSource={data.slice(0, 2)}
+        dataSource={data}
         renderItem={(item) => (
           <List.Item onClick={handleSelect(item)} onKeyDown={handleSelect(item)}>
             {item.structured_formatting.main_text}
