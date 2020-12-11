@@ -71,7 +71,13 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
         });
       }
       if (signupDriver.result === 'fail') {
-        message.error(signupDriver.error, TOAST_DURATION.SIGNUP_FAILURE);
+        message.error({
+          content: signupDriver.error,
+          style: {
+            marginTop: '50vh',
+          },
+          duration: TOAST_DURATION.SIGNUP_FAILURE,
+        });
       }
     },
   });
