@@ -7,8 +7,8 @@ import { isKoreanName, isEmail, isPassword, isPhone } from '@utils/validators';
 
 import PageFrame from '@components/PageFrame';
 import HeaderWithBack from '@/components/HeaderWithBack';
-import UserToggle, { ToggleFocus, FOCUS_USER, FOCUS_DRIVER } from '@components/UserToggle';
-import { Radio, Input, Button, Checkbox, Row, Col, message } from 'antd';
+import { ToggleFocus, FOCUS_USER, FOCUS_DRIVER } from '@components/UserToggle';
+import { Radio } from 'antd';
 
 import { RadioChangeEvent } from 'antd/lib/radio';
 import CommonSignup from './CommonSignup';
