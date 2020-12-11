@@ -202,7 +202,7 @@ const Main: FC = () => {
               />
             ) : (
               <Row className="no-order" align="middle" justify="center">
-                <Title>
+                <Title level={2}>
                   <Text type="secondary" strong>
                     현재 요청이 없습니다
                   </Text>
