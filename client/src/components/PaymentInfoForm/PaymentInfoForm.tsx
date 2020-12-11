@@ -1,12 +1,13 @@
-import React, { FC, useCallback, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGNUP_USER } from '@queries/user';
 import { SignupUser } from '@/types/api';
 import styled from '@theme/styled';
 import Selector from '@components/Selector';
-import Input from '@components/Input';
-import { Button, Toast } from 'antd-mobile';
+
+import { Button, Input, Form, Select, message } from 'antd';
+import { Toast } from 'antd-mobile';
 import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
@@ -59,6 +60,8 @@ const Banks = [
   '카카오뱅크',
 ];
 
+const { Option } = Select;
+
 const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
   const history = useHistory();
   const [signinUserMutation, { loading }] = useMutation<SignupUser>(SIGNUP_USER, {
@@ -73,7 +76,8 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
       }
     },
   });
-  const [bank, , onChangeBank] = useChange<HTMLSelectElement>('');
+
+  const [bank, setBank] = useState('');
   const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
     '',
     isCardNumber,
@@ -141,52 +145,58 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
     }
   }, [isCardNumber3Valid, creditRef4.current]);
 
+  const onChangeBank = (bank: string) => {
+    setBank(bank);
+  };
+
   return (
     <StyledPaymentInfoForm>
+      <Form layout="vertical">
+        <Form.Item name="카드 회사" label="카드 회사">
+          <Select placeholder="카드 회사를 선택해 주세요" onChange={onChangeBank}>
+            {Banks.map((bank) => (
+              <Option key={bank} value={bank}>
+                {bank}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Form>
       <section className="payment-information-section">
-        <div>
-          <Selector
-            title="카드 회사"
-            name="bank"
-            placeholder="카드 회사를 선택해 주세요"
-            onChange={onChangeBank}
-            items={Banks}
-            testId="signup-bank"
-          />
-        </div>
+        <div />
         <div className="card-number">
           <Input
             title="카드 번호"
             value={cardNumber1}
             onChange={onChangeCardNumber1}
             className="small-input"
-            allow={isCardNumber1Valid}
-            testId="signup-card1"
+            // allow={isCardNumber1Valid}
+            // testId="signup-card1"
           />
           <Input
             value={cardNumber2}
             onChange={onChangeCardNumber2}
             className="small-input"
-            allow={isCardNumber2Valid}
-            ref={creditRef2}
-            testId="signup-card2"
+            // allow={isCardNumber2Valid}
+            // ref={creditRef2}
+            // testId="signup-card2"
           />
           <Input
             value={cardNumber3}
             onChange={onChangeCardNumber3}
             className="small-input"
-            allow={isCardNumber3Valid}
-            ref={creditRef3}
-            testId="signup-card3"
+            // allow={isCardNumber3Valid}
+            // ref={creditRef3}
+            // testId="signup-card3"
           />
           <Input
             value={cardNumber4}
             onChange={onChangeCardNumber4}
             type="password"
             className="small-input"
-            allow={isCardNumber4Valid}
-            ref={creditRef4}
-            testId="signup-card4"
+            // allow={isCardNumber4Valid}
+            // ref={creditRef4}
+            // testId="signup-card4"
           />
         </div>
         <div>
@@ -195,9 +205,9 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             value={expiryDate}
             onChange={onChangeExpiryDate}
             className="small-input"
-            allow={isExpiryDateValid}
-            inValidMessage={Message.ExpiryDateGuidance}
-            testId="signup-expiry-date"
+            // allow={isExpiryDateValid}
+            // inValidMessage={Message.ExpiryDateGuidance}
+            // testId="signup-expiry-date"
           />
         </div>
         <div>
@@ -207,8 +217,8 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             onChange={onChangeCvc}
             type="password"
             className="small-input"
-            allow={isCvcValid}
-            testId="signup-cvc"
+            // allow={isCvcValid}
+            // testId="signup-cvc"
           />
         </div>
       </section>
