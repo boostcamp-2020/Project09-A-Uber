@@ -23,4 +23,7 @@ export const Message = {
   Amount: '결제비',
   DrivingTime: '운행시간',
   CompletedOrder: '운행이 완료되었습니다.',
+  NotEmptySearchForm: '출발지와 목적지를 모두 입력해주세요',
+  NotSearchDriver: '라이더 탐색에 실패했습니다.',
+  SearchFormPlaceholder: '어디로 가시나요?',
 };
