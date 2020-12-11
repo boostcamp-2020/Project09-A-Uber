@@ -48,7 +48,7 @@ const GoToDestination: FC = () => {
         title: Message.CompletedOrder,
         content: (
           <>
-            <div>{`${Message.Origin}: '${orderInfo?.startingPoint.address}`}</div>
+            <div>{`${Message.Origin}: ${orderInfo?.startingPoint.address}`}</div>
             <div>{`${Message.Destination}: ${orderInfo?.destination.address}`}</div>
             <div>{`${Message.Amount}: ${orderInfo?.amount}`}</div>
             <div>
@@ -61,6 +61,7 @@ const GoToDestination: FC = () => {
         ),
         centered: true,
         onOk: onCompleteOrderHandler,
+        okText: '확인',
       });
     }
   }, [orderInfo]);

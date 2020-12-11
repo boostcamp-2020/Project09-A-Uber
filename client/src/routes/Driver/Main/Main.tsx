@@ -220,15 +220,15 @@ const Main: FC = () => {
         onOk={onClickApprovalOrder}
         okText="수락"
         cancelText="닫기"
-        title="요청"
+        title={Message.NewOrder}
         centered
       >
         {orderItem && (
           <>
-            <p>{`출발지: ${orderItem.startingPoint.address}`}</p>
-            <p>{`도착지: ${orderItem.destination.address}`}</p>
+            <p>{`${Message.Origin}: ${orderItem.startingPoint.address}`}</p>
+            <p>{`${Message.Destination}: ${orderItem.destination.address}`}</p>
             <br />
-            <p>해당 운행을 수락하시겠습니까?</p>
+            <p>{Message.AskAcceptOrder}</p>
           </>
         )}
       </Modal>
