@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, Input, Tooltip, Avatar, Row, Col, Form } from 'antd';
+import { Button, Input, Form } from 'antd';
 import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 import { Message } from '@utils/client-message';
 import styled from '@theme/styled';
