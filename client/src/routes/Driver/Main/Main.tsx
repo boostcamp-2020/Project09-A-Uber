@@ -42,9 +42,11 @@ const StyledOrderLogList = styled.section`
   }
 
   & .order {
-    background-color: ${({ theme }) => theme.LIGHT_GRAY};
+    background-color: ${({ theme }) => theme.LIGHT};
+    border: 1px solid ${({ theme }) => theme.PRIMARY};
     padding: 0 0;
     border-radius: 0.4rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   }
 
   & .order-row {
@@ -202,7 +204,7 @@ const Main: FC = () => {
               />
             ) : (
               <Row className="no-order" align="middle" justify="center">
-                <Title>
+                <Title level={2}>
                   <Text type="secondary" strong>
                     현재 요청이 없습니다
                   </Text>
