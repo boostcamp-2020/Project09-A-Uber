@@ -35,6 +35,7 @@ const GlobalStyle = () => (
         height: 100%;
         max-width: 375px;
         max-height: 812px;
+        border: 1px solid black;
       }
     `}
   />
