@@ -48,7 +48,7 @@ const GoToDestination: FC = () => {
         title: Message.CompletedOrder,
         content: (
           <>
-            <div>{`${Message.Origin}: '${orderInfo?.startingPoint.address}`}</div>
+            <div>{`${Message.Origin}: ${orderInfo?.startingPoint.address}`}</div>
             <div>{`${Message.Destination}: ${orderInfo?.destination.address}`}</div>
             <div>{`${Message.Amount}: ${orderInfo?.amount}`}</div>
             <div>
