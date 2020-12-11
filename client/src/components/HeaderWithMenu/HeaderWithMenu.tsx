@@ -93,7 +93,7 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
             </button>
           </li>
           <li>
-            <button type="button" onClick={onClickLogout}>
+            <button type="button" data-testID="logout-button" onClick={onClickLogout}>
               로그아웃
             </button>
           </li>
