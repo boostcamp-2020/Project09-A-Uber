@@ -1,13 +1,9 @@
 import React, { FC } from 'react';
-import { GetCompletedOrders_getCompletedOrders_completedOrders as CompletedOrders } from '@/types/api';
-import styled from '@theme/styled';
-import Log from './Log';
+import { List } from 'antd';
 
-const StyledOrderHistoryList = styled.div`
-  padding: 0 1rem;
-  overflow-y: scroll;
-  height: calc(100% - 3rem);
-`;
+import { GetCompletedOrders_getCompletedOrders_completedOrders as CompletedOrders } from '@/types/api';
+
+import Log from './Log';
 
 interface OrderHistoryListProps {
   orders: CompletedOrders[] | undefined | null;
@@ -15,13 +11,18 @@ interface OrderHistoryListProps {
 
 const OrderHistoryList: FC<OrderHistoryListProps> = ({ orders }) => {
   return (
-    <StyledOrderHistoryList>
-      {orders && orders.length !== 0 ? (
-        orders.map((order) => <Log order={order} key={`completed_order_${order._id}`} />)
-      ) : (
-        <>No Order</>
+    <>
+      {orders && (
+        <List
+          dataSource={orders}
+          renderItem={(order) => (
+            <List.Item>
+              <Log order={order} key={`completed_order_${order._id}`} />
+            </List.Item>
+          )}
+        />
       )}
-    </StyledOrderHistoryList>
+    </>
   );
 };
 
