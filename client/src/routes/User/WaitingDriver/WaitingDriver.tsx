@@ -52,6 +52,7 @@ const WaitingDriver = () => {
         </>
       ),
       centered: true,
+      okText: '확인',
     });
   }, [carInfo]);
 

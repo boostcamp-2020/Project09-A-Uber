@@ -68,6 +68,7 @@ const GoToDestination: FC = () => {
         ),
         centered: true,
         onOk: onCompleteOrderHandler,
+        okText: '확인',
       });
     }
   }, [orderInfo]);
