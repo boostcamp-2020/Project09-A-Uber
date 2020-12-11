@@ -1,13 +1,11 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form, Select } from 'antd';
 import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGNUP_DRIVER } from '@queries/user';
 import { SignupDriver } from '@/types/api';
 import styled from '@theme/styled';
-import Selector from '@components/Selector';
-import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
 import { TOAST_DURATION } from '@utils/enums';
@@ -57,9 +55,11 @@ const helpMessage = (isVaildValue: boolean, value: string, helpMessage: string):
   return !isVaildValue && value.length !== 0 && helpMessage;
 };
 
+const { Option } = Select;
+
 const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
   const history = useHistory();
-  const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
+  const [carType, setCarType] = useState('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [license, , onChangeLicense, isLicenseValid] = useValidator('', isLicense);
   const [signUpMutation, { loading }] = useMutation<SignupDriver>(SIGNUP_DRIVER, {
@@ -75,9 +75,15 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
     },
   });
 
+  const onChangeCarType = (value: string) => {
+    setCarType(value);
+  };
+
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
+      console.log(carType);
+      return;
       const driverInfo = {
         licenseNumber: license,
         car: {
@@ -101,15 +107,16 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
 
   return (
     <StyledDriverForm>
-      <Selector
-        title="차량종류"
-        name="car"
-        items={carTypes}
-        placeholder="차량을 선택해주세요"
-        onChange={onChangeCarType}
-        testId="signup-car"
-      />
       <Form layout="vertical">
+        <Form.Item name="차량 종류" label="차량 종류">
+          <Select placeholder="차량을 선택해주세요" onChange={onChangeCarType}>
+            {carTypes.map((carType) => (
+              <Option key={carType} value={carType}>
+                {carType}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
         <Form.Item
           name="차량번호"
           label="차량번호"
@@ -148,7 +155,7 @@ const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
         type="primary"
         onClick={onSubmit}
         loading={loading}
-        disabled={!carType || !isCarNumValid || !isLicenseValid}
+        // disabled={!carType || !isCarNumValid || !isLicenseValid}
         data-testID="signup-driver-submit"
       >
         회원가입
