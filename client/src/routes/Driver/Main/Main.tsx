@@ -42,9 +42,11 @@ const StyledOrderLogList = styled.section`
   }
 
   & .order {
-    background-color: ${({ theme }) => theme.LIGHT_GRAY};
+    background-color: ${({ theme }) => theme.LIGHT};
+    border: 1px solid ${({ theme }) => theme.PRIMARY};
     padding: 0 0;
     border-radius: 0.4rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   }
 
   & .order-row {
