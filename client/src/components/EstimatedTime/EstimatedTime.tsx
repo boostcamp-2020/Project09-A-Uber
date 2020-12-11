@@ -12,7 +12,7 @@ const StyledEstimatedTime = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   font-size: 1rem;
 
   & .estimated-time {
