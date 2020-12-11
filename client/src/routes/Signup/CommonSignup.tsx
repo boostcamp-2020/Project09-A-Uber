@@ -154,7 +154,7 @@ const CommonSignup: FC<Props> = ({
         block
         type="primary"
         onClick={onClickNextHandler}
-        disabled={!isName || !isEmail || !isPassword || !isPasswordRe || !isPhone}
+        // disabled={!isName || !isEmail || !isPassword || !isPasswordRe || !isPhone}
         data-testID="signup-next"
       >
         다음
