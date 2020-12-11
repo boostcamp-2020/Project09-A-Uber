@@ -14,10 +14,10 @@ import {
 import { useCustomMutation, useCustomQuery } from '@hooks/useApollo';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
-import useModal from '@hooks/useModal';
 import { DRIVER } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
 import calcDriveTime from '@utils/calcDriveTime';
+import { Message } from '@utils/client-message';
 
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
@@ -42,25 +42,46 @@ const GoToDestination: FC = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [taxiFee, setTaxiFee] = useState(DRIVER.BASE_TAXI_FEE);
-  const [isVisibleModal, openModal, closeModal] = useModal();
   const { id } = useSelector(({ order }: InitialState) => order || {});
   const { destination } = useSelector(({ order }: InitialState) => order.location || {});
   const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
+
+  useEffect(() => {
+    if (orderInfo) {
+      Modal.success({
+        title: Message.CompletedOrder,
+        content: (
+          <>
+            <div>{`${Message.Origin}: ${orderInfo?.startingPoint.address}`}</div>
+            <div>{`${Message.Destination}: ${orderInfo?.destination.address}`}</div>
+            <div>{`${Message.Amount}: ${orderInfo?.amount}`}</div>
+            <div>
+              {`${Message.DrivingTime}: ${calcDriveTime(
+                orderInfo?.completedAt,
+                orderInfo?.startedAt,
+              )}`}
+            </div>
+          </>
+        ),
+        centered: true,
+        onOk: onCompleteOrderHandler,
+      });
+    }
+  }, [orderInfo]);
+
   const [completeOrderMutation] = useCustomMutation<CompleteOrder>(COMPLETE_ORDER, {
     onCompleted: async ({ completeOrder }) => {
       if (completeOrder.result === 'success') {
         const { data } = await callQuery({ orderId: id });
         setorderInfo(data?.getOrderById?.order);
-        openModal();
       }
     },
   });
 
   const onCompleteOrderHandler = useCallback(() => {
-    closeModal();
     dispatch(resetOrder());
     history.push(`/driver`);
   }, []);
@@ -135,24 +156,6 @@ const GoToDestination: FC = () => {
           </Row>
         </StyledGoToDestinationMenu>
       </MapFrame>
-      <Modal
-        visible={isVisibleModal}
-        onOk={onCompleteOrderHandler}
-        onCancel={onCompleteOrderHandler}
-        cancelButtonProps={{ style: { display: 'none' } }}
-        okText="확인"
-        title="운행이 완료되었습니다."
-        centered
-      >
-        {orderInfo && (
-          <>
-            <div>{`출발지: ${orderInfo?.startingPoint.address}`}</div>
-            <div>{`목적지: ${orderInfo?.destination.address}`}</div>
-            <div>{`결제비: ${orderInfo?.amount}`}</div>
-            <div>{`이동시간: ${calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}`}</div>
-          </>
-        )}
-      </Modal>
     </>
   );
 };
