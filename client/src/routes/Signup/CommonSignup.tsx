@@ -1,5 +1,6 @@
+/* eslint-disable react/button-has-type */
 import React, { FC } from 'react';
-import { Button, Input, Tooltip, Avatar, Row, Col, Form } from 'antd';
+import { Button, Input, Form } from 'antd';
 import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 import { Message } from '@utils/client-message';
 import styled from '@theme/styled';
@@ -75,19 +76,19 @@ const CommonSignup: FC<Props> = ({
     <StyledCommonSignup className={className}>
       <Form layout="vertical">
         <Form.Item
-          preserve
           name="이름"
           label="이름"
           validateStatus={validateStatus(isName, name)}
           help={helpMessage(isName, name, Message.NameGuidance)}
         >
           <Input
-            value={name}
             title="이름"
+            value={name}
             placeholder="이름을 입력해 주세요."
             onChange={onChangeName}
             suffix={suffix(isName)}
             autoComplete="off"
+            defaultValue={name}
           />
         </Form.Item>
         <Form.Item name="이메일" label="이메일" validateStatus={validateStatus(isEmail, email)}>
@@ -98,6 +99,7 @@ const CommonSignup: FC<Props> = ({
             onChange={onChangeEmail}
             suffix={suffix(isEmail)}
             autoComplete="off"
+            defaultValue={email}
           />
         </Form.Item>
         <Form.Item
@@ -114,6 +116,7 @@ const CommonSignup: FC<Props> = ({
             onChange={onChangePassword}
             suffix={suffix(isPassword)}
             autoComplete="off"
+            defaultValue={password}
           />
         </Form.Item>
 
@@ -131,6 +134,7 @@ const CommonSignup: FC<Props> = ({
             onChange={onChangePasswordRe}
             suffix={suffix(isPasswordRe)}
             autoComplete="off"
+            defaultValue={passwordRe}
           />
         </Form.Item>
 
@@ -147,6 +151,7 @@ const CommonSignup: FC<Props> = ({
             onChange={onChangePhone}
             suffix={suffix(isPhone)}
             autoComplete="off"
+            defaultValue={phone}
           />
         </Form.Item>
       </Form>
