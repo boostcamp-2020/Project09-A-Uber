@@ -21,7 +21,7 @@ const StyledSignup = styled(PageFrame)`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 
     & h1 {
       font-size: 2.2rem;
@@ -50,16 +50,8 @@ const Signup: FC = () => {
     [password],
   );
 
-  // const onClickToggleHandler = useCallback(
-  //   (target: ToggleFocus) => {
-  //     if (target === signupTarget) {
-  //       return;
-  //     }
-  //     setSignupTarget(target);
-  //   },
-  //   [signupTarget],
-  // );
   const onClickToggleHandler = (e: RadioChangeEvent) => {
+    console.log(console.log('test'));
     setSignupTarget(e.target.value as ToggleFocus);
   };
   const onClickNextHandler = useCallback(() => {
@@ -77,6 +69,7 @@ const Signup: FC = () => {
     { label: '일반 사용자', value: FOCUS_USER },
     { label: '드라이버', value: FOCUS_DRIVER },
   ];
+
   return (
     <>
       <HeaderWithBack onClick={onClickBackHandler} />
@@ -88,7 +81,8 @@ const Signup: FC = () => {
             optionType="button"
             size="small"
             value={signupTarget}
-            onChange={isNext ? () => null : onClickToggleHandler}
+            onChange={onClickToggleHandler}
+            disabled={isNext}
           />
         </div>
         {isNext ? (
