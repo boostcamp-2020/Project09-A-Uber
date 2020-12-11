@@ -26,4 +26,6 @@ export const Message = {
   NotEmptySearchForm: '출발지와 목적지를 모두 입력해주세요',
   NotSearchDriver: '라이더 탐색에 실패했습니다.',
   SearchFormPlaceholder: '어디로 가시나요?',
+  NewOrder: '새로운 요청이 들어왔습니다.',
+  AskAcceptOrder: '해당 운행을 수락하시겠습니까?',
 };
