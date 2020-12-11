@@ -31,6 +31,11 @@ const StyledSignup = styled(PageFrame)`
   }
 `;
 
+const options = [
+  { label: '일반 사용자', value: FOCUS_USER },
+  { label: '드라이버', value: FOCUS_DRIVER },
+];
+
 const Signup: FC = () => {
   const history = useHistory();
   const [isNext, setIsNext] = useState(false);
@@ -51,7 +56,6 @@ const Signup: FC = () => {
   );
 
   const onClickToggleHandler = (e: RadioChangeEvent) => {
-    console.log(console.log('test'));
     setSignupTarget(e.target.value as ToggleFocus);
   };
   const onClickNextHandler = useCallback(() => {
@@ -65,10 +69,6 @@ const Signup: FC = () => {
     }
     history.push('/signin');
   }, [isNext]);
-  const options = [
-    { label: '일반 사용자', value: FOCUS_USER },
-    { label: '드라이버', value: FOCUS_DRIVER },
-  ];
 
   return (
     <>
@@ -79,6 +79,7 @@ const Signup: FC = () => {
           <Radio.Group
             options={options}
             optionType="button"
+            buttonStyle="solid"
             size="small"
             value={signupTarget}
             onChange={onClickToggleHandler}

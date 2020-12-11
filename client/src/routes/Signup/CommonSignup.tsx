@@ -4,6 +4,7 @@ import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons'
 import { Message } from '@utils/client-message';
 import styled from '@theme/styled';
 import theme from '@/theme';
+import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 interface Props {
   name: string;
@@ -43,6 +44,14 @@ const suffix = (isVaildValue: boolean) => {
   );
 };
 
+const validateStatus = (isVaildValue: boolean, value: string): ValidateStatus => {
+  return !isVaildValue && value.length !== 0 ? 'error' : '';
+};
+
+const helpMessage = (isVaildValue: boolean, value: string, helpMessage: string): string | false => {
+  return !isVaildValue && value.length !== 0 && helpMessage;
+};
+
 const CommonSignup: FC<Props> = ({
   name,
   email,
@@ -69,8 +78,8 @@ const CommonSignup: FC<Props> = ({
           preserve
           name="이름"
           label="이름"
-          validateStatus={!isName && name.length !== 0 ? 'error' : ''}
-          help={!isName && name.length !== 0 && Message.NameGuidance}
+          validateStatus={validateStatus(isName, name)}
+          help={helpMessage(isName, name, Message.NameGuidance)}
         >
           <Input
             value={name}
@@ -81,11 +90,7 @@ const CommonSignup: FC<Props> = ({
             autoComplete="off"
           />
         </Form.Item>
-        <Form.Item
-          name="이메일"
-          label="이메일"
-          validateStatus={!isEmail && email.length !== 0 ? 'error' : ''}
-        >
+        <Form.Item name="이메일" label="이메일" validateStatus={validateStatus(isEmail, email)}>
           <Input
             value={email}
             title="이메일"
@@ -98,8 +103,8 @@ const CommonSignup: FC<Props> = ({
         <Form.Item
           name="비밀번호"
           label="비밀번호"
-          validateStatus={!isPassword && password.length !== 0 ? 'error' : ''}
-          help={!isPassword && password.length !== 0 && Message.PasswordGuidance}
+          validateStatus={validateStatus(isPassword, password)}
+          help={helpMessage(isPassword, password, Message.PasswordGuidance)}
         >
           <Input
             value={password}
@@ -115,8 +120,8 @@ const CommonSignup: FC<Props> = ({
         <Form.Item
           name="비밀번호 재확인"
           label="비밀번호 재확인"
-          validateStatus={!isPasswordRe && passwordRe.length !== 0 ? 'error' : ''}
-          help={!isPasswordRe && passwordRe.length !== 0 && Message.PasswordCheckGuidance}
+          validateStatus={validateStatus(isPasswordRe, passwordRe)}
+          help={helpMessage(isPasswordRe, passwordRe, Message.PasswordCheckGuidance)}
         >
           <Input
             value={passwordRe}
@@ -132,8 +137,8 @@ const CommonSignup: FC<Props> = ({
         <Form.Item
           name="핸드폰 번호"
           label="핸드폰 번호"
-          validateStatus={!isPhone && phone.length !== 0 ? 'error' : ''}
-          help={!isPhone && phone.length !== 0 && Message.PhoneGuidance}
+          validateStatus={validateStatus(isPhone, phone)}
+          help={helpMessage(isPhone, phone, Message.PhoneGuidance)}
         >
           <Input
             value={phone}
