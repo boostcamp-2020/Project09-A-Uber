@@ -4,42 +4,23 @@ import { useMutation } from '@apollo/react-hooks';
 import { SIGNUP_USER } from '@queries/user';
 import { SignupUser } from '@/types/api';
 import styled from '@theme/styled';
-import Selector from '@components/Selector';
 
-import { Button, Input, Form, Select, message } from 'antd';
+import { Button, Input, Form, Select, message, Row, Col } from 'antd';
+import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 import { Toast } from 'antd-mobile';
-import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
 import { TOAST_DURATION } from '@utils/enums';
 import { Message } from '@utils/client-message';
 import { ToggleFocus } from '@components/UserToggle';
+import theme from '@/theme';
+import { ValidateStatus } from 'antd/lib/form/FormItem';
 
 const StyledPaymentInfoForm = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-
-  & .card-number {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-
-  & .payment-information-section > div {
-    margin-bottom: 1rem;
-  }
-
-  & .small-input {
-    width: 22%;
-  }
-
-  & > a {
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
 `;
 
 interface Props {
@@ -59,6 +40,22 @@ const Banks = [
   '농협은행',
   '카카오뱅크',
 ];
+
+const suffix = (isVaildValue: boolean) => {
+  return isVaildValue ? (
+    <CheckCircleTwoTone twoToneColor={theme.PRIMARY} />
+  ) : (
+    <ExclamationCircleTwoTone twoToneColor={theme.RED} />
+  );
+};
+
+const validateStatus = (isVaildValue: boolean, value: string): ValidateStatus => {
+  return !isVaildValue && value.length !== 0 ? 'error' : '';
+};
+
+const helpMessage = (isVaildValue: boolean, value: string, helpMessage: string): string | false => {
+  return !isVaildValue && value.length !== 0 && helpMessage;
+};
 
 const { Option } = Select;
 
@@ -161,67 +158,107 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
             ))}
           </Select>
         </Form.Item>
+        <Row align="bottom" gutter={5}>
+          <Col span={6}>
+            <Form.Item
+              name="카드 번호1"
+              label="카드 번호"
+              validateStatus={validateStatus(isCardNumber1Valid, cardNumber1)}
+            >
+              <Input
+                value={cardNumber1}
+                title="카드 번호"
+                onChange={onChangeCardNumber1}
+                suffix={suffix(isCardNumber1Valid)}
+                autoComplete="off"
+                data-testId="signup-card1"
+                defaultValue={cardNumber1}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="카드 번호2"
+              validateStatus={validateStatus(isCardNumber2Valid, cardNumber2)}
+            >
+              <Input
+                value={cardNumber2}
+                title="카드 번호"
+                onChange={onChangeCardNumber2}
+                suffix={suffix(isCardNumber2Valid)}
+                autoComplete="off"
+                data-testId="signup-card2"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="카드 번호3"
+              validateStatus={validateStatus(isCardNumber3Valid, cardNumber3)}
+            >
+              <Input
+                value={cardNumber3}
+                title="카드 번호"
+                onChange={onChangeCardNumber3}
+                suffix={suffix(isCardNumber3Valid)}
+                autoComplete="off"
+                data-testId="signup-card3"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="카드 번호4"
+              validateStatus={validateStatus(isCardNumber4Valid, cardNumber4)}
+            >
+              <Input
+                value={cardNumber4}
+                title="카드 번호"
+                type="password"
+                onChange={onChangeCardNumber4}
+                suffix={suffix(isCardNumber4Valid)}
+                autoComplete="off"
+                data-testId="signup-card1"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={5}>
+          <Col span={6}>
+            <Form.Item
+              name="만료일"
+              label="만료일"
+              validateStatus={validateStatus(isExpiryDateValid, expiryDate)}
+              help={helpMessage(isExpiryDateValid, expiryDate, Message.ExpiryDateGuidance)}
+            >
+              <Input
+                value={expiryDate}
+                title="만료일"
+                onChange={onChangeExpiryDate}
+                suffix={suffix(isExpiryDateValid)}
+                autoComplete="off"
+                data-testId="signup-expiry-date"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={5}>
+          <Col span={6}>
+            <Form.Item name="CVC" label="CVC" validateStatus={validateStatus(isCvcValid, cvc)}>
+              <Input
+                value={cvc}
+                title="CVC"
+                type="password"
+                onChange={onChangeCvc}
+                suffix={suffix(isCvcValid)}
+                autoComplete="off"
+                data-testId="signup-cvc"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
-      <section className="payment-information-section">
-        <div />
-        <div className="card-number">
-          <Input
-            title="카드 번호"
-            value={cardNumber1}
-            onChange={onChangeCardNumber1}
-            className="small-input"
-            // allow={isCardNumber1Valid}
-            // testId="signup-card1"
-          />
-          <Input
-            value={cardNumber2}
-            onChange={onChangeCardNumber2}
-            className="small-input"
-            // allow={isCardNumber2Valid}
-            // ref={creditRef2}
-            // testId="signup-card2"
-          />
-          <Input
-            value={cardNumber3}
-            onChange={onChangeCardNumber3}
-            className="small-input"
-            // allow={isCardNumber3Valid}
-            // ref={creditRef3}
-            // testId="signup-card3"
-          />
-          <Input
-            value={cardNumber4}
-            onChange={onChangeCardNumber4}
-            type="password"
-            className="small-input"
-            // allow={isCardNumber4Valid}
-            // ref={creditRef4}
-            // testId="signup-card4"
-          />
-        </div>
-        <div>
-          <Input
-            title="만료일"
-            value={expiryDate}
-            onChange={onChangeExpiryDate}
-            className="small-input"
-            // allow={isExpiryDateValid}
-            // inValidMessage={Message.ExpiryDateGuidance}
-            // testId="signup-expiry-date"
-          />
-        </div>
-        <div>
-          <Input
-            title="CVC"
-            value={cvc}
-            onChange={onChangeCvc}
-            type="password"
-            className="small-input"
-            // allow={isCvcValid}
-            // testId="signup-cvc"
-          />
-        </div>
-      </section>
+
       <Button
         type="primary"
         onClick={onSubmit}
@@ -232,8 +269,8 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
           !isCardNumber2Valid ||
           !isCardNumber3Valid ||
           !isCardNumber4Valid ||
-          !expiryDate ||
-          !cvc
+          !isExpiryDateValid ||
+          !isCvcValid
         }
         data-testID="signup-user-submit"
       >
