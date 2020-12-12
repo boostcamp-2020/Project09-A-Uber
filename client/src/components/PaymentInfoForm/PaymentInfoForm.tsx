@@ -91,9 +91,9 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
   const [cardNumber4, , onChangeCardNumber4, isCardNumber4Valid] = useValidator('', isCardNumber);
   const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate);
   const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber);
-  const creditRef2 = useRef<HTMLInputElement>(null);
-  const creditRef3 = useRef<HTMLInputElement>(null);
-  const creditRef4 = useRef<HTMLInputElement>(null);
+  const creditRef2 = useRef<Input>(null);
+  const creditRef3 = useRef<Input>(null);
+  const creditRef4 = useRef<Input>(null);
 
   const onSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -166,7 +166,6 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 suffix={suffix(isCardNumber1Valid)}
                 autoComplete="off"
                 data-testId="signup-card1"
-                defaultValue={cardNumber1}
                 maxLength={USER.CARD_MAX_LENGTH}
               />
             </Form.Item>
@@ -184,6 +183,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 autoComplete="off"
                 data-testId="signup-card2"
                 maxLength={USER.CARD_MAX_LENGTH}
+                ref={creditRef2}
               />
             </Form.Item>
           </Col>
@@ -200,6 +200,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 autoComplete="off"
                 data-testId="signup-card3"
                 maxLength={USER.CARD_MAX_LENGTH}
+                ref={creditRef3}
               />
             </Form.Item>
           </Col>
@@ -217,6 +218,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 autoComplete="off"
                 data-testId="signup-card1"
                 maxLength={USER.CARD_MAX_LENGTH}
+                ref={creditRef4}
               />
             </Form.Item>
           </Col>
