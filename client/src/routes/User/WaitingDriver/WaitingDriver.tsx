@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
-import { Button } from 'antd-mobile';
-import styled from '@theme/styled';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useSubscription } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import styled from '@theme/styled';
+import { Button, Row, Modal } from 'antd';
 import MapFrame from '@components/MapFrame';
 import EstimatedTime from '@components/EstimatedTime';
 import { GET_ORDER_CAR_INFO, SUB_ORDER_CALL_STATUS } from '@queries/order';
@@ -16,48 +16,45 @@ import {
   SubOrderCallStatus,
   getDriverLocation,
 } from '@/types/api';
+
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
-import CarInfo from '@components/CarInfo';
-import Modal from '@components/Modal';
-import useModal from '@hooks/useModal';
-import { Message } from '@utils/client-message';
 import { InitialState } from '@reducers/.';
+import { ModalFuncProps } from 'antd/lib/modal/Modal';
+import { Message } from '@/utils/client-message';
 
-const StyledWaitingDriverMenu = styled.section`
+const StyledRow = styled(Row)`
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
 
-  & > .chat-with-driver {
+  & > .ant-btn {
     width: 100%;
-    margin-top: 0.8rem;
-
-    & > .am-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      height: 2rem;
-      margin: 0.8rem 0;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
   }
 `;
 
-// TODO: 출발지, 목적지 재지정 필요
 const WaitingDriver = () => {
   const history = useHistory();
+  const [modalItem, setModalItem] = useState<ModalFuncProps>();
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [driverLocation, setDriverLocation] = useState({ lat: 0, lng: 0 });
-  const [isModal, openModal, closeModal] = useModal();
   const [didCloseModal, setDidCloseModal] = useState(false);
   const [carInfo, setCarInfo] = useState({ carNumber: '', carType: 'small' } as CarInfoType);
   const { id } = useSelector(({ order }: InitialState) => order || {});
   const { origin: userOrigin } = useSelector(({ order }: InitialState) => order.location);
+
+  useEffect(() => {
+    setModalItem({
+      title: Message.DriverAjacent,
+      content: (
+        <>
+          <div>{`${Message.CarType} : ${carInfo.carNumber}`}</div>
+          <div>{`${Message.CarNumber} : ${carInfo.carType}`}</div>
+        </>
+      ),
+      centered: true,
+      okText: '확인',
+    });
+  }, [carInfo]);
 
   useCustomQuery<getDriverLocation>(GET_DRIVER_LOCATION, {
     variables: { orderId: id },
@@ -86,16 +83,13 @@ const WaitingDriver = () => {
         lng: subscriptionData.data?.subDriverLocation.coordinates[1] as number,
       };
       setDriverLocation(driverNewLocation);
-      if (
-        didCloseModal === false &&
-        userOrigin &&
-        calcLocationDistance(driverNewLocation, userOrigin) < 100
-      ) {
-        openModal();
+      if (!didCloseModal && userOrigin && calcLocationDistance(driverLocation, userOrigin) < 100) {
+        Modal.info(modalItem as ModalFuncProps);
         setDidCloseModal(true);
       }
     },
   });
+
   useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId: id },
     onSubscriptionData: ({ subscriptionData }) => {
@@ -110,26 +104,19 @@ const WaitingDriver = () => {
   }, [id]);
 
   return (
-    <>
-      <MapFrame
-        origin={driverLocation}
-        destination={userOrigin}
-        setDirections={setDirections}
-        directions={directions}
-      >
-        <StyledWaitingDriverMenu>
-          <EstimatedTime directions={directions} />
-          <div className="chat-with-driver">
-            <Button type="primary" onClick={onClickChatRoom}>
-              드라이버와 채팅하기
-            </Button>
-          </div>
-        </StyledWaitingDriverMenu>
-      </MapFrame>
-      <Modal visible={isModal} onClose={closeModal}>
-        {carInfo && <CarInfo carInfo={carInfo} title={Message.DriverAjacent} />}
-      </Modal>
-    </>
+    <MapFrame
+      origin={driverLocation}
+      destination={userOrigin}
+      setDirections={setDirections}
+      directions={directions}
+    >
+      <StyledRow className="order-info" align="bottom">
+        <EstimatedTime directions={directions} />
+        <Button type="primary" onClick={onClickChatRoom}>
+          드라이버와 채팅하기
+        </Button>
+      </StyledRow>
+    </MapFrame>
   );
 };
 

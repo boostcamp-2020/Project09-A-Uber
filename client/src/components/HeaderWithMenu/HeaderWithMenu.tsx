@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
-import { Modal } from 'antd-mobile';
-import useToggle from '@hooks/useToggle';
 import { useHistory } from 'react-router-dom';
+import { Layout, Drawer, Button, Modal } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 
 import { useCustomMutation } from '@hooks/useApollo';
 import { LOGOUT } from '@queries/user';
 import { Logout } from '@/types/api';
 import styled from '@theme/styled';
-import MenuSVG from '@images/menuSVG.tsx';
 import { Message } from '@utils/client-message';
+import useModal from '@hooks/useModal';
 
 interface Props {
   className?: string;
@@ -16,50 +16,23 @@ interface Props {
 
 interface StyledProps {
   className: string;
-  isMenuOpen: boolean;
 }
 
-const StyledHeaderWithMenu = styled.header<StyledProps>`
-  display: flex;
-  height: 3rem;
-  width: 100%;
+const { Header } = Layout;
+const { confirm } = Modal;
+
+const StyledHeaderWithMenu = styled(Header)<StyledProps>`
   background-color: ${({ className, theme }) =>
     className === 'green-header' ? theme.PRIMARY : '#ffffff'};
 
-  & button {
-    background: none;
-    border: none;
-    padding: 0;
-  }
-
   & svg {
-    width: 1.5rem;
     fill: #ffffff;
-    margin-left: 1.5rem;
-  }
-
-  & menu {
-    position: absolute;
-    top: 3rem;
-    left: 0;
-    visibility: ${(props) => (props.isMenuOpen ? 'visible' : 'hidden')};
-    width: ${(props) => (props.isMenuOpen ? '50%' : '0')};
-    height: calc(100vh - 3rem);
-    z-index: 1;
-    padding: 1rem 1rem;
-    background-color: #ffffff;
-    border-right: 1px solid ${({ theme }) => theme.PRIMARY};
-    transition: 0.5s;
-
-    & .am-button {
-      position: inherit;
-      font-size: 1.2rem;
-    }
   }
 `;
 
 const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
   const history = useHistory();
+  const [visible, onOpen, onClose] = useModal();
   const [logoutMutation] = useCustomMutation<Logout>(LOGOUT, {
     onCompleted: ({ logout }) => {
       if (logout.result === 'success') {
@@ -67,38 +40,41 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
       }
     },
   });
-  const [menu, toggleMenu] = useToggle(false);
 
   const onClickCompletedOrders = () => {
     history.push('/orderHistory');
   };
 
   const onClickLogout = () => {
-    Modal.alert('로그아웃', Message.LogOutMessage, [
-      { text: '취소' },
-      { text: '확인', onPress: () => logoutMutation() },
-    ]);
+    confirm({
+      title: '로그아웃',
+      content: Message.LogOutMessage,
+      onOk() {
+        logoutMutation();
+      },
+      okText: '확인',
+      cancelText: '취소',
+    });
   };
 
   return (
-    <StyledHeaderWithMenu className={className} isMenuOpen={menu}>
-      <button type="button" data-testID="header-menu-toggle" onClick={toggleMenu}>
-        <MenuSVG />
-      </button>
-      <menu data-testID="header-menu">
-        <ul>
-          <li>
-            <button type="button" data-testID="history-button" onClick={onClickCompletedOrders}>
-              이용 기록
-            </button>
-          </li>
-          <li>
-            <button type="button" data-testID="logout-button" onClick={onClickLogout}>
-              로그아웃
-            </button>
-          </li>
-        </ul>
-      </menu>
+    <StyledHeaderWithMenu className={className}>
+      <MenuOutlined data-testID="header-menu-toggle" onClick={onOpen} />
+      <Drawer
+        data-testID="header-menu"
+        closable={false}
+        onClose={onClose}
+        visible={visible}
+        placement="left"
+      >
+        <Button type="link" data-testID="history-button" onClick={onClickCompletedOrders}>
+          이용 기록
+        </Button>
+        <br />
+        <Button type="link" data-testID="logout-button" onClick={onClickLogout}>
+          로그아웃
+        </Button>
+      </Drawer>
     </StyledHeaderWithMenu>
   );
 };
