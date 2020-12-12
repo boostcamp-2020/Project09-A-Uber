@@ -67,11 +67,11 @@ const HeaderWithMenu: FC<Props> = ({ className = 'white-header' }) => {
         visible={visible}
         placement="left"
       >
-        <Button type="link" onClick={onClickCompletedOrders}>
+        <Button type="link" data-testID="history-button" onClick={onClickCompletedOrders}>
           이용 기록
         </Button>
         <br />
-        <Button type="link" onClick={onClickLogout}>
+        <Button type="link" data-testID="logout-button" onClick={onClickLogout}>
           로그아웃
         </Button>
       </Drawer>
