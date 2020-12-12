@@ -17,4 +17,7 @@ export enum DRIVER {
 
 export enum USER {
   USER_LOCATOIN_UPDATE_TIME = 3000,
+  CARD_MAX_LENGTH = 4,
+  EXPIRY_DATA_MAX_LENGTH = 5,
+  CVC_MAX_NUM = 3,
 }

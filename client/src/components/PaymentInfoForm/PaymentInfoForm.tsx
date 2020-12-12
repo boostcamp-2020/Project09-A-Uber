@@ -7,10 +7,9 @@ import styled from '@theme/styled';
 
 import { Button, Input, Form, Select, message, Row, Col } from 'antd';
 import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
-import { Toast } from 'antd-mobile';
 import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
-import { TOAST_DURATION } from '@utils/enums';
+import { TOAST_DURATION, USER } from '@utils/enums';
 import { Message } from '@utils/client-message';
 import { ToggleFocus } from '@components/UserToggle';
 import theme from '@/theme';
@@ -86,28 +85,12 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
   });
 
   const [bank, setBank] = useState('');
-  const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator(
-    '',
-    isCardNumber,
-    4,
-  );
-  const [cardNumber2, , onChangeCardNumber2, isCardNumber2Valid] = useValidator(
-    '',
-    isCardNumber,
-    4,
-  );
-  const [cardNumber3, , onChangeCardNumber3, isCardNumber3Valid] = useValidator(
-    '',
-    isCardNumber,
-    4,
-  );
-  const [cardNumber4, , onChangeCardNumber4, isCardNumber4Valid] = useValidator(
-    '',
-    isCardNumber,
-    4,
-  );
-  const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate, 5);
-  const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber, 3);
+  const [cardNumber1, , onChangeCardNumber1, isCardNumber1Valid] = useValidator('', isCardNumber);
+  const [cardNumber2, , onChangeCardNumber2, isCardNumber2Valid] = useValidator('', isCardNumber);
+  const [cardNumber3, , onChangeCardNumber3, isCardNumber3Valid] = useValidator('', isCardNumber);
+  const [cardNumber4, , onChangeCardNumber4, isCardNumber4Valid] = useValidator('', isCardNumber);
+  const [expiryDate, , onChangeExpiryDate, isExpiryDateValid] = useValidator('', isExpiryDate);
+  const [cvc, , onChangeCvc, isCvcValid] = useValidator('', isCVCNumber);
   const creditRef2 = useRef<HTMLInputElement>(null);
   const creditRef3 = useRef<HTMLInputElement>(null);
   const creditRef4 = useRef<HTMLInputElement>(null);
@@ -184,6 +167,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 autoComplete="off"
                 data-testId="signup-card1"
                 defaultValue={cardNumber1}
+                maxLength={USER.CARD_MAX_LENGTH}
               />
             </Form.Item>
           </Col>
@@ -199,6 +183,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 suffix={suffix(isCardNumber2Valid)}
                 autoComplete="off"
                 data-testId="signup-card2"
+                maxLength={USER.CARD_MAX_LENGTH}
               />
             </Form.Item>
           </Col>
@@ -214,6 +199,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 suffix={suffix(isCardNumber3Valid)}
                 autoComplete="off"
                 data-testId="signup-card3"
+                maxLength={USER.CARD_MAX_LENGTH}
               />
             </Form.Item>
           </Col>
@@ -230,6 +216,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 suffix={suffix(isCardNumber4Valid)}
                 autoComplete="off"
                 data-testId="signup-card1"
+                maxLength={USER.CARD_MAX_LENGTH}
               />
             </Form.Item>
           </Col>
@@ -249,6 +236,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 suffix={suffix(isExpiryDateValid)}
                 autoComplete="off"
                 data-testId="signup-expiry-date"
+                maxLength={USER.EXPIRY_DATA_MAX_LENGTH}
               />
             </Form.Item>
           </Col>
@@ -264,6 +252,7 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
                 suffix={suffix(isCvcValid)}
                 autoComplete="off"
                 data-testId="signup-cvc"
+                maxLength={USER.CVC_MAX_NUM}
               />
             </Form.Item>
           </Col>
