@@ -64,12 +64,23 @@ const PaymentInfoForm: FC<Props> = ({ name, email, password, phone }) => {
   const [signinUserMutation, { loading }] = useMutation<SignupUser>(SIGNUP_USER, {
     onCompleted: ({ signupUser }) => {
       if (signupUser.result === 'success') {
-        Toast.success(Message.SucceedSignup, TOAST_DURATION.SIGNUP_SUCCESS, () => {
-          history.push('/signin');
+        message.success({
+          content: Message.SucceedSignup,
+          style: {
+            marginTop: '50vh',
+          },
+          duration: TOAST_DURATION.SIGNUP_SUCCESS,
+          onClose: () => history.push('/signin'),
         });
       }
       if (signupUser.result === 'fail') {
-        Toast.fail(signupUser.error, TOAST_DURATION.SIGNUP_FAILURE);
+        message.error({
+          content: signupUser.error,
+          style: {
+            marginTop: '50vh',
+          },
+          duration: TOAST_DURATION.SIGNUP_FAILURE,
+        });
       }
     },
   });
