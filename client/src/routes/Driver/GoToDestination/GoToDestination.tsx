@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import MapFrame from '@/components/MapFrame';
-import Modal from '@components/Modal';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { COMPLETE_ORDER, GET_ORDER_BY_ID } from '@/queries/order';
 import {
@@ -13,16 +12,16 @@ import {
   getOrderById_getOrderById_order as OrderType,
 } from '@/types/api';
 import { useCustomMutation, useCustomQuery } from '@hooks/useApollo';
-import { Button } from 'antd-mobile';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
-import useModal from '@hooks/useModal';
 import { DRIVER } from '@utils/enums';
 import { numberWithCommas } from '@utils/numberWithCommas';
 import calcDriveTime from '@utils/calcDriveTime';
+import { Message } from '@utils/client-message';
 
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
+import { Row, Col, Button, Modal } from 'antd';
 
 const StyledGoToDestinationMenu = styled.div`
   display: flex;
@@ -30,38 +29,9 @@ const StyledGoToDestinationMenu = styled.div`
   flex-direction: column;
   justify-content: flex-end;
 
-  & span {
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  & .am-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
-    height: 2rem;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  & .driver-chat-btn {
-    color: ${({ theme }) => theme.PRIMARY};
-    border: 1px solid ${({ theme }) => theme.PRIMARY};
-  }
-`;
-
-const OrderInfo = styled.div`
-  font-size: 1rem;
-
-  & .order-info-title {
-    margin-bottom: 2rem;
-  }
-
-  & div {
-    margin: 0.8rem 0;
+  & .row {
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -72,25 +42,47 @@ const GoToDestination: FC = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult | undefined>(undefined);
   const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
   const [taxiFee, setTaxiFee] = useState(DRIVER.BASE_TAXI_FEE);
-  const [isVisibleModal, openModal, closeModal] = useModal();
   const { id } = useSelector(({ order }: InitialState) => order || {});
   const { destination } = useSelector(({ order }: InitialState) => order.location || {});
   const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
+
+  useEffect(() => {
+    if (orderInfo) {
+      Modal.success({
+        title: Message.CompletedOrder,
+        content: (
+          <>
+            <div>{`${Message.Origin}: ${orderInfo?.startingPoint.address}`}</div>
+            <div>{`${Message.Destination}: ${orderInfo?.destination.address}`}</div>
+            <div>{`${Message.Amount}: ${orderInfo?.amount}`}</div>
+            <div>
+              {`${Message.DrivingTime}: ${calcDriveTime(
+                orderInfo?.completedAt,
+                orderInfo?.startedAt,
+              )}`}
+            </div>
+          </>
+        ),
+        centered: true,
+        onOk: onCompleteOrderHandler,
+        okText: '확인',
+      });
+    }
+  }, [orderInfo]);
+
   const [completeOrderMutation] = useCustomMutation<CompleteOrder>(COMPLETE_ORDER, {
     onCompleted: async ({ completeOrder }) => {
       if (completeOrder.result === 'success') {
         const { data } = await callQuery({ orderId: id });
         setorderInfo(data?.getOrderById?.order);
-        openModal();
       }
     },
   });
 
   const onCompleteOrderHandler = useCallback(() => {
-    closeModal();
     dispatch(resetOrder());
     history.push(`/driver`);
   }, []);
@@ -118,6 +110,10 @@ const GoToDestination: FC = () => {
     setTaxiFee((pre) => pre + DRIVER.INCRESE_TAXI_FEE);
   }, [taxiFee]);
 
+  const onClickChatRoom = () => {
+    history.push(`/chatroom/${id}`);
+  };
+
   useEffect(() => {
     getUserLocation().then(updateInitLocation);
     const watchLocation = navigator.geolocation.watchPosition(watchUpdateCurrentLocation);
@@ -137,27 +133,30 @@ const GoToDestination: FC = () => {
         directions={directions}
       >
         <StyledGoToDestinationMenu>
-          <span>{`현재요금: ${numberWithCommas(taxiFee)}`}</span>
-          <Button
-            className="driver-arrive-btn"
-            type="primary"
-            onClick={onClickOrderCompleteHandler}
-          >
-            도착완료
-          </Button>
+          <Row justify="center" align="middle" className="row">
+            <Col>{`현재요금: ${numberWithCommas(taxiFee)}`}</Col>
+          </Row>
+          <Row justify="center" align="middle" className="row">
+            <Col span={24}>
+              <Button
+                className="driver-arrive-btn"
+                type="primary"
+                onClick={onClickOrderCompleteHandler}
+                block
+              >
+                도착완료
+              </Button>
+            </Col>
+          </Row>
+          <Row justify="center" className="row">
+            <Col span={24}>
+              <Button className="driver-chat-btn" onClick={onClickChatRoom} block>
+                손님과의 채팅
+              </Button>
+            </Col>
+          </Row>
         </StyledGoToDestinationMenu>
       </MapFrame>
-      <Modal visible={isVisibleModal} onClose={onCompleteOrderHandler}>
-        {orderInfo && (
-          <OrderInfo>
-            <div className="order-info-title">운행이 완료되었습니다</div>
-            <div>{`출발지: ${orderInfo?.startingPoint.address}`}</div>
-            <div>{`목적지: ${orderInfo?.destination.address}`}</div>
-            <div>{`결제비: ${orderInfo?.amount}`}</div>
-            <div>{`이동시간: ${calcDriveTime(orderInfo?.completedAt, orderInfo?.startedAt)}`}</div>
-          </OrderInfo>
-        )}
-      </Modal>
     </>
   );
 };

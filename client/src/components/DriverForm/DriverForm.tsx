@@ -1,19 +1,30 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Toast } from 'antd-mobile';
+import { Button, Input, Form, Select, message, Row, Col } from 'antd';
+import { ExclamationCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGNUP_DRIVER } from '@queries/user';
 import { SignupDriver } from '@/types/api';
 import styled from '@theme/styled';
-import Selector from '@components/Selector';
-import Input from '@components/Input';
-import useChange from '@hooks/useChange';
 import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
 import { TOAST_DURATION } from '@utils/enums';
 import { Message } from '@utils/client-message';
 import { ToggleFocus } from '@components/UserToggle';
+import theme from '@/theme';
+import { ValidateStatus } from 'antd/lib/form/FormItem';
 import carTypeMapper from './carTypeMapper';
+
+const StyledFrom = styled(Form)`
+  height: 100%;
+  position: relative;
+
+  & .signup-button {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+`;
 
 interface Props {
   name: string;
@@ -23,105 +34,137 @@ interface Props {
   type: ToggleFocus;
 }
 
-const StyledDriverForm = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  & > div {
-    margin-bottom: 1.2rem;
-  }
-
-  & .am-button {
-    cursor: pointer;
-    margin-top: auto;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-`;
-
 export const carTypes: string[] = ['대형', '중형', '소형'];
+
+const suffix = (isVaildValue: boolean) => {
+  return isVaildValue ? (
+    <CheckCircleTwoTone twoToneColor={theme.PRIMARY} />
+  ) : (
+    <ExclamationCircleTwoTone twoToneColor={theme.RED} />
+  );
+};
+
+const validateStatus = (isVaildValue: boolean, value: string): ValidateStatus => {
+  return !isVaildValue && value.length !== 0 ? 'error' : '';
+};
+
+const helpMessage = (isVaildValue: boolean, value: string, helpMessage: string): string | false => {
+  return !isVaildValue && value.length !== 0 && helpMessage;
+};
+
+const { Option } = Select;
 
 const DriverForm: FC<Props> = ({ name, email, password, phone }) => {
   const history = useHistory();
-  const [carType, , onChangeCarType] = useChange<HTMLSelectElement>('');
+  const [carType, setCarType] = useState('');
   const [carNumber, , onChangeCarNumber, isCarNumValid] = useValidator('', isCarNumber);
   const [license, , onChangeLicense, isLicenseValid] = useValidator('', isLicense);
   const [signUpMutation, { loading }] = useMutation<SignupDriver>(SIGNUP_DRIVER, {
     onCompleted: ({ signupDriver }) => {
       if (signupDriver.result === 'success') {
-        Toast.success(Message.SucceedSignup, TOAST_DURATION.SIGNUP_SUCCESS, () => {
-          history.push('/signin');
+        message.success({
+          content: Message.SucceedSignup,
+          style: {
+            marginTop: '50vh',
+          },
+          duration: TOAST_DURATION.SIGNUP_SUCCESS,
+          onClose: () => history.push('/signin'),
         });
       }
       if (signupDriver.result === 'fail') {
-        Toast.fail(signupDriver.error, TOAST_DURATION.SIGNUP_FAILURE);
+        message.error({
+          content: signupDriver.error,
+          style: {
+            marginTop: '50vh',
+          },
+          duration: TOAST_DURATION.SIGNUP_FAILURE,
+        });
       }
     },
   });
 
-  const onSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      const driverInfo = {
-        licenseNumber: license,
-        car: {
-          carNumber,
-          carType: carTypeMapper(carType),
-        },
-      };
+  const onChangeCarType = (value: string) => {
+    setCarType(value);
+  };
 
-      signUpMutation({
-        variables: {
-          name,
-          email,
-          password,
-          phone,
-          driver: driverInfo,
-        },
-      });
-    },
-    [carType, carNumber, license],
-  );
+  const onSubmit = useCallback(() => {
+    const driverInfo = {
+      licenseNumber: license,
+      car: {
+        carNumber,
+        carType: carTypeMapper(carType),
+      },
+    };
+
+    signUpMutation({
+      variables: {
+        name,
+        email,
+        password,
+        phone,
+        driver: driverInfo,
+      },
+    });
+  }, [carType, carNumber, license]);
 
   return (
-    <StyledDriverForm>
-      <Selector
-        title="차량종류"
-        name="car"
-        items={carTypes}
-        placeholder="차량을 선택해주세요"
-        onChange={onChangeCarType}
-        testId="signup-car"
-      />
-      <Input
-        title="차량번호"
-        placeholder="차량번호를 입력해주세요."
-        value={carNumber}
-        onChange={onChangeCarNumber}
-        allow={isCarNumValid}
-        inValidMessage={Message.CarNumberGuidance}
-        testId="signup-car-number"
-      />
-      <Input
-        title="운전면허 번호"
-        placeholder="운전면허 번호 입력해주세요."
-        value={license}
-        onChange={onChangeLicense}
-        allow={isLicenseValid}
-        inValidMessage={Message.LicenseGuidance}
-        testId="signup-lisence"
-      />
-      <Button
-        type="primary"
-        onClick={onSubmit}
-        loading={loading}
-        disabled={!carType || !isCarNumValid || !isLicenseValid}
-        data-testID="signup-driver-submit"
+    <StyledFrom layout="vertical" onFinish={onSubmit}>
+      <Form.Item name="차량 종류" label="차량 종류">
+        <Select placeholder="차량을 선택해주세요" onChange={onChangeCarType}>
+          {carTypes.map((carType) => (
+            <Option key={carType} value={carType}>
+              {carType}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        name="차량번호"
+        label="차량번호"
+        validateStatus={validateStatus(isCarNumValid, carNumber)}
+        help={helpMessage(isCarNumValid, carNumber, Message.CarNumberGuidance)}
       >
-        회원가입
-      </Button>
-    </StyledDriverForm>
+        <Input
+          value={name}
+          title="차량번호"
+          placeholder="차량번호를 입력해주세요."
+          onChange={onChangeCarNumber}
+          suffix={suffix(isCarNumValid)}
+          autoComplete="off"
+          data-testId="signup-car-number"
+        />
+      </Form.Item>
+      <Form.Item
+        name="운전면허 번호"
+        label="운전면허 번호"
+        validateStatus={validateStatus(isLicenseValid, license)}
+        help={helpMessage(isLicenseValid, license, Message.LicenseGuidance)}
+      >
+        <Input
+          value={name}
+          title="운전면허 번호"
+          placeholder="운전면허 번호 입력해주세요."
+          onChange={onChangeLicense}
+          suffix={suffix(isLicenseValid)}
+          autoComplete="off"
+          data-testId="signup-car-number"
+        />
+      </Form.Item>
+      <Row className="signup-button">
+        <Col span={24}>
+          <Button
+            block
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            disabled={!carType || !isCarNumValid || !isLicenseValid}
+            data-testID="signup-driver-submit"
+          >
+            회원가입
+          </Button>
+        </Col>
+      </Row>
+    </StyledFrom>
   );
 };
 
