@@ -1,9 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Modal } from 'antd-mobile';
+import { Modal } from 'antd';
 
 import { GET_USER_WITH_ORDER } from '@queries/user';
-import { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
+import { ToggleFocus } from '@/types/userType';
 import {
   GetUserWithOrder,
   GetUserWithOrder_getUserWithOrder_order as ResponseOrder,
@@ -15,8 +15,6 @@ import { useDispatch } from 'react-redux';
 import { AddUserInfoWithOrder } from '@reducers/user';
 import { Order } from '@/reducers';
 import { Message } from '@utils/client-message';
-
-const userTypeMapper = (type: ToggleFocus) => (type === FOCUS_USER ? '일반 사용자' : '드라이버');
 
 const serverUserMapper = (user: ResponseUser) => ({
   _id: user._id,
@@ -63,18 +61,28 @@ const clientRoutingMapper = (
 };
 
 const auth = (Component: FC, type?: ToggleFocus): FC => () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const openModal = () => {
+    Modal.error({
+      title: Message.AuthTypeMessage,
+      centered: true,
+      onOk: () => {
+        history.replace('/signin');
+      },
+      okText: '확인',
+    });
+  };
 
   const { loading } = useCustomQuery<GetUserWithOrder>(GET_USER_WITH_ORDER, {
     onCompleted: ({ getUserWithOrder }) => {
       if (!getUserWithOrder.user) {
-        setModalOpen(true);
+        openModal();
         return;
       }
       if (type && getUserWithOrder.user.type !== type) {
-        setModalOpen(true);
+        openModal();
       }
       const user = serverUserMapper(getUserWithOrder.user);
 
@@ -92,34 +100,11 @@ const auth = (Component: FC, type?: ToggleFocus): FC => () => {
       }
     },
     onError: () => {
-      setModalOpen(true);
+      openModal();
     },
   });
 
-  const onClickModalCloseHandler = () => {
-    setModalOpen(false);
-    history.replace('/signin');
-  };
-
-  return (
-    <>
-      <Modal
-        visible={modalOpen}
-        transparent
-        title="알림"
-        footer={[
-          {
-            text: 'Ok',
-            onPress: onClickModalCloseHandler,
-          },
-        ]}
-      >
-        {type ? `${userTypeMapper(type)}${Message.AuthTypeMessage}` : Message.AuthMessage}
-      </Modal>
-
-      {!loading && !modalOpen && <Component />}
-    </>
-  );
+  return <>{!loading && <Component />}</>;
 };
 
 export default auth;

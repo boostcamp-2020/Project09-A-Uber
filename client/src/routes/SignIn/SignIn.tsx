@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { SIGNIN } from '@queries/user';
 import { Signin } from '@/types/api';
 import StyledPageFrame from '@components/PageFrame';
-import { FOCUS_USER, FOCUS_DRIVER, ToggleFocus } from '@components/UserToggle';
+import { FOCUS_USER, FOCUS_DRIVER, ToggleFocus } from '@/types/userType';
 import { TOAST_DURATION } from '@utils/enums';
 import { Message } from '@utils/client-message';
 import logo from '@images/logo.svg';

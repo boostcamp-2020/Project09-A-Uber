@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { ToggleFocus, FOCUS_USER } from '@components/UserToggle';
+import { ToggleFocus, FOCUS_USER } from '@/types/userType';
 import DriverForm from '@components/DriverForm';
 import PaymentInfoForm from '@components/PaymentInfoForm';
 
