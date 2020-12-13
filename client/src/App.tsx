@@ -22,7 +22,7 @@ import theme from '@theme/.';
 import GlobalStyle from '@theme/global';
 import reducer from '@reducers/.';
 import client from '@/apollo';
-import auth from '@/utils/auth';
+import auth from '@/hoc/auth';
 
 import '@theme/antd.less';
 
