@@ -86,6 +86,7 @@ const SignIn: FC = () => {
           <Col>
             <Radio.Group
               options={options}
+              buttonStyle="solid"
               optionType="button"
               size="small"
               value={loginType}
