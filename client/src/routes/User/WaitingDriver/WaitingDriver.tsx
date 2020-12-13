@@ -19,6 +19,7 @@ import {
 
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';
+import useChatNotifycation from '@hooks/useChatNotifycation';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
 import { InitialState } from '@reducers/.';
 import { ModalFuncProps } from 'antd/lib/modal/Modal';
@@ -41,6 +42,8 @@ const WaitingDriver = () => {
   const [carInfo, setCarInfo] = useState({ carNumber: '', carType: 'small' } as CarInfoType);
   const { id } = useSelector(({ order }: InitialState) => order || {});
   const { origin: userOrigin } = useSelector(({ order }: InitialState) => order.location);
+
+  useChatNotifycation(id || '');
 
   useEffect(() => {
     setModalItem({

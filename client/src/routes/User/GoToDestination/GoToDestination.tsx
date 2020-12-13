@@ -16,6 +16,7 @@ import {
   getOrderById_getOrderById_order as OrderType,
 } from '@/types/api';
 import { useCustomQuery } from '@hooks/useApollo';
+import useChatNotifycation from '@hooks/useChatNotifycation';
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { InitialState, Location } from '@reducers/.';
 import { resetOrder } from '@reducers/order';
@@ -41,6 +42,8 @@ const GoToDestination: FC = () => {
   const [driverLocation, setDriverLocation] = useState<Location>();
   const [orderInfo, setorderInfo] = useState<OrderType | null>();
   const { callQuery } = useCustomQuery<getOrderById>(GET_ORDER_BY_ID, { skip: true });
+
+  useChatNotifycation(orderId || '');
 
   useEffect(() => {
     if (orderInfo) {
