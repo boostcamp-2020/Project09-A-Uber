@@ -21,6 +21,11 @@ const StyledChatLogWrapper = styled.div<Type>`
   display: flex;
   flex-direction: ${({ type, writer }) => type === writer && 'row-reverse'};
   padding: 0.3rem 0.5rem;
+
+  & .ant-tag {
+    margin-left: ${({ writer, preWriter }) => writer === preWriter && '2.5rem'};
+    border: none;
+  }
 `;
 
 const avartarMapper = (avartar: string): string => {
