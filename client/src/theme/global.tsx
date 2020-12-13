@@ -33,9 +33,12 @@ const GlobalStyle = () => (
       #root {
         width: 100%;
         height: 100%;
-        max-width: 375px;
-        max-height: 812px;
-        border: 1px solid black;
+
+        @media (min-width: 1024px) {
+          max-width: 375px;
+          max-height: 812px;
+          border: 1px solid black;
+        }
       }
     `}
   />
