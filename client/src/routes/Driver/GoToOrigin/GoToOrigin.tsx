@@ -8,6 +8,7 @@ import { START_DRIVING } from '@queries/order';
 import { UPDATE_DRIVER_LOCATION } from '@queries/user';
 import { UpdateDriverLocation, StartDriving } from '@/types/api';
 import { useCustomMutation } from '@hooks/useApollo';
+import useChatNotifycation from '@hooks/useChatNotifycation';
 import { InitialState } from '@reducers/.';
 import { Button, Row, Col } from 'antd';
 
@@ -39,6 +40,9 @@ const GoToOrigin: FC = () => {
       }
     },
   });
+
+  useChatNotifycation(id || '');
+
   const history = useHistory();
 
   const onClickChatRoom = () => {

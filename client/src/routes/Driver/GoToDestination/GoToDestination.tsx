@@ -12,6 +12,7 @@ import {
   getOrderById_getOrderById_order as OrderType,
 } from '@/types/api';
 import { useCustomMutation, useCustomQuery } from '@hooks/useApollo';
+import useChatNotifycation from '@hooks/useChatNotifycation';
 import styled from '@/theme/styled';
 import getUserLocation from '@utils/getUserLocation';
 import { DRIVER } from '@utils/enums';
@@ -48,6 +49,8 @@ const GoToDestination: FC = () => {
   const [updateDriverLocationMutation] = useCustomMutation<UpdateDriverLocation>(
     UPDATE_DRIVER_LOCATION,
   );
+
+  useChatNotifycation(id || '');
 
   useEffect(() => {
     if (orderInfo) {
