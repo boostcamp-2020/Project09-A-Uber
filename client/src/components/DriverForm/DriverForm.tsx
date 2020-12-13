@@ -10,7 +10,7 @@ import useValidator from '@hooks/useValidator';
 import { isCarNumber, isLicense } from '@utils/validators';
 import { TOAST_DURATION } from '@utils/enums';
 import { Message } from '@utils/client-message';
-import { ToggleFocus } from '@components/UserToggle';
+import { ToggleFocus } from '@/types/userType';
 import theme from '@/theme';
 import { ValidateStatus } from 'antd/lib/form/FormItem';
 import carTypeMapper from './carTypeMapper';

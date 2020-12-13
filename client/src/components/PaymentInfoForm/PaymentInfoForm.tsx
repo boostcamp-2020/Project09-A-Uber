@@ -11,7 +11,7 @@ import useValidator from '@hooks/useValidator';
 import { isExpiryDate, isCVCNumber, isCardNumber } from '@utils/validators';
 import { TOAST_DURATION, USER } from '@utils/enums';
 import { Message } from '@utils/client-message';
-import { ToggleFocus } from '@components/UserToggle';
+import { ToggleFocus } from '@/types/userType';
 import theme from '@/theme';
 import { ValidateStatus } from 'antd/lib/form/FormItem';
 
