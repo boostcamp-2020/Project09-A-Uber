@@ -39,7 +39,7 @@ const Directions: FC<Props> = ({ origin, destination, setDirections, directions 
   return (
     <>
       <DirectionsService
-        options={{ origin, destination, travelMode: 'BICYCLING' as google.maps.TravelMode }}
+        options={{ origin, destination, travelMode: 'DRIVING' as google.maps.TravelMode }}
         callback={directionsCallback}
       />
       <DirectionsRenderer directions={directions} options={options} />
