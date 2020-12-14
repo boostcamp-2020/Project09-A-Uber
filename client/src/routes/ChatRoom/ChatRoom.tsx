@@ -70,10 +70,13 @@ const ChatRoom: FC = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    CreateChat({
-      variables: { chatId, content: chatContent },
-    });
-    setChatContent('');
+
+    if (chatContent.length > 0) {
+      CreateChat({
+        variables: { chatId, content: chatContent },
+      });
+      setChatContent('');
+    }
   };
 
   useEffect(() => {
