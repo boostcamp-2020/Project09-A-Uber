@@ -86,7 +86,8 @@ const WaitingDriver = () => {
         lng: subscriptionData.data?.subDriverLocation.coordinates[1] as number,
       };
       setDriverLocation(driverNewLocation);
-      if (!didCloseModal && userOrigin && calcLocationDistance(driverLocation, userOrigin) < 100) {
+      const diffDistance = directions?.routes[0].legs[0].distance.value;
+      if (!didCloseModal && userOrigin && diffDistance !== undefined && diffDistance <= 500) {
         Modal.info(modalItem as ModalFuncProps);
         setDidCloseModal(true);
       }

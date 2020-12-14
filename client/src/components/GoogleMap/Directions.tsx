@@ -23,14 +23,14 @@ const Directions: FC<Props> = ({ origin, destination, setDirections, directions 
   };
 
   useEffect(() => {
-    count.current = 0;
+    if (count.current >= 2) count.current = 0;
   }, [origin.lat, origin.lng, destination.lat, destination.lng]);
 
   const directionsCallback = (
     result: google.maps.DirectionsResult,
     status: google.maps.DirectionsStatus,
   ): void => {
-    if (status === 'OK' && count.current === 0) {
+    if (status === 'OK' && count.current < 2) {
       count.current += 1;
       setDirections!(result);
     }
