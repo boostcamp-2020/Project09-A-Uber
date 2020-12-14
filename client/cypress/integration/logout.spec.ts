@@ -12,7 +12,7 @@ describe('로그아웃 테스트', () => {
 
     cy.get("[data-testID='logout-button']").click();
     cy.contains('확인버튼 클릭시 로그아웃 됩니다.');
-    cy.get('.am-modal-button:contains("확인")').click();
+    cy.get('.ant-btn-primary').contains('확인').click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}/signin`);
   });
@@ -26,7 +26,7 @@ describe('로그아웃 테스트', () => {
 
     cy.get("[data-testID='logout-button']").click();
     cy.contains('확인버튼 클릭시 로그아웃 됩니다.');
-    cy.get('.am-modal-button:contains("확인")').click();
+    cy.get('.ant-btn-primary').contains('확인').click();
 
     cy.url().should('eq', `${Cypress.config().baseUrl}/signin`);
   });
