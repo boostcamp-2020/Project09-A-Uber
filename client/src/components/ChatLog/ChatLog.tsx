@@ -24,6 +24,9 @@ const StyledChatLogWrapper = styled.div<Type>`
 
   & .ant-tag {
     margin-left: ${({ writer, preWriter }) => writer === preWriter && '2.5rem'};
+    background-color: ${({ theme, type, writer }) =>
+      type === writer ? theme.PRIMARY : theme.BORDER};
+    color: ${({ theme }) => theme.LIGHT};
     border: none;
   }
 `;
