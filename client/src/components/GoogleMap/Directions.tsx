@@ -23,7 +23,7 @@ const Directions: FC<Props> = ({ origin, destination, setDirections, directions 
   };
 
   useEffect(() => {
-    if (count.current === 2) count.current = 0;
+    if (count.current >= 2) count.current = 0;
   }, [origin.lat, origin.lng, destination.lat, destination.lng]);
 
   const directionsCallback = (
