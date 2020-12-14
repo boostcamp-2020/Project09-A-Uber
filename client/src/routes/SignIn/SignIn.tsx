@@ -37,6 +37,8 @@ const SignIn: FC = () => {
   const [password, , onChangePassword] = useChange('');
   const [signinMutation, { loading }] = useMutation<Signin>(SIGNIN, {
     onCompleted: ({ signin }) => {
+      message.config({ maxCount: 1 });
+
       if (signin.result === 'success') {
         message.success({
           content: Message.SucceedSignin,
