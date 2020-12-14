@@ -24,7 +24,7 @@ const StyledHeaderWithBack = styled(Header)`
 const HeaderWithBack: FC<Props> = ({ onClick, className = 'white-header' }) => (
   <StyledHeaderWithBack className={className} hasSider>
     <Space align="center">
-      <LeftOutlined onClick={onClick} />
+      <LeftOutlined onClick={onClick} data-testID="back-button" />
     </Space>
   </StyledHeaderWithBack>
 );
