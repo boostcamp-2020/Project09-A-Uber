@@ -37,6 +37,8 @@ const SignIn: FC = () => {
   const [password, , onChangePassword] = useChange('');
   const [signinMutation, { loading }] = useMutation<Signin>(SIGNIN, {
     onCompleted: ({ signin }) => {
+      message.config({ maxCount: 1 });
+
       if (signin.result === 'success') {
         message.success({
           content: Message.SucceedSignin,
@@ -96,7 +98,13 @@ const SignIn: FC = () => {
         </Row>
         <Row gutter={antdRowGutterOption}>
           <Col span={24}>
-            <Input type="text" placeholder="아이디" value={email} onChange={onChangeEmail} />
+            <Input
+              type="text"
+              placeholder="아이디"
+              value={email}
+              onChange={onChangeEmail}
+              data-testID="email-input"
+            />
           </Col>
           <Col span={24}>
             <Input
@@ -104,6 +112,7 @@ const SignIn: FC = () => {
               placeholder="패스워드"
               value={password}
               onChange={onChangePassword}
+              data-testID="password-input"
             />
           </Col>
           <Col>
@@ -121,7 +130,7 @@ const SignIn: FC = () => {
             </Button>
           </Col>
           <Col span={24}>
-            <Button onClick={onClickSignup} block>
+            <Button onClick={onClickSignup} block data-testID="signup-button">
               회원가입
             </Button>
           </Col>
