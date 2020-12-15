@@ -85,14 +85,19 @@ const WaitingDriver = () => {
         lat: subscriptionData.data?.subDriverLocation.coordinates[0] as number,
         lng: subscriptionData.data?.subDriverLocation.coordinates[1] as number,
       };
+
       setDriverLocation(driverNewLocation);
-      const diffDistance = directions?.routes[0].legs[0].distance.value;
-      if (!didCloseModal && userOrigin && diffDistance !== undefined && diffDistance <= 500) {
-        Modal.info(modalItem as ModalFuncProps);
-        setDidCloseModal(true);
-      }
     },
   });
+
+  useEffect(() => {
+    const diffDistance = directions?.routes[0].legs[0].distance.value;
+
+    if (!didCloseModal && userOrigin && diffDistance !== undefined && diffDistance <= 500) {
+      Modal.info(modalItem as ModalFuncProps);
+      setDidCloseModal(true);
+    }
+  }, [directions]);
 
   useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId: id },
