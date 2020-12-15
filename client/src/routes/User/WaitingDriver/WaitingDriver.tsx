@@ -20,7 +20,6 @@ import {
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';
 import useChatNotifycation from '@hooks/useChatNotifycation';
-import { calcLocationDistance } from '@utils/calcLocationDistance';
 import { InitialState } from '@reducers/.';
 import { ModalFuncProps } from 'antd/lib/modal/Modal';
 import { Message } from '@/utils/client-message';
