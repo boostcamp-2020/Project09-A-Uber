@@ -50,8 +50,8 @@ const WaitingDriver = () => {
       title: Message.DriverAjacent,
       content: (
         <>
-          <div>{`${Message.CarType} : ${carInfo.carNumber}`}</div>
-          <div>{`${Message.CarNumber} : ${carInfo.carType}`}</div>
+          <div>{`${Message.CarType} : ${carInfo.carType}`}</div>
+          <div>{`${Message.CarNumber} : ${carInfo.carNumber}`}</div>
         </>
       ),
       centered: true,
