@@ -24,6 +24,7 @@ import { calcLocationDistance } from '@utils/calcLocationDistance';
 import { InitialState } from '@reducers/.';
 import { ModalFuncProps } from 'antd/lib/modal/Modal';
 import { Message } from '@/utils/client-message';
+import { carTypeMapperToKor } from '@/utils/carTypeMapperToKor';
 
 const StyledRow = styled(Row)`
   height: 100%;
@@ -50,7 +51,7 @@ const WaitingDriver = () => {
       title: Message.DriverAjacent,
       content: (
         <>
-          <div>{`${Message.CarType} : ${carInfo.carType}`}</div>
+          <div>{`${Message.CarType} : ${carTypeMapperToKor(carInfo.carType)}`}</div>
           <div>{`${Message.CarNumber} : ${carInfo.carNumber}`}</div>
         </>
       ),
