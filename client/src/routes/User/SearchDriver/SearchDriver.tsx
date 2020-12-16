@@ -14,6 +14,7 @@ import { useCustomQuery, useCustomMutation } from '@hooks/useApollo';
 import { addCarInfo } from '@reducers/order';
 import { Message } from '@utils/client-message';
 import { ArgsProps } from 'antd/lib/notification';
+import { carTypeMapperToKor } from '@utils/carTypeMapperToKor';
 
 const StyledSearchDriver = styled.div`
   height: 100%;
@@ -97,8 +98,8 @@ const SearchDriver: FC = () => {
       message: Message.DriverMatchingCompolete,
       description: (
         <>
-          <div>{`${Message.CarType} : ${carInfoData.carNumber}`}</div>
-          <div>{`${Message.CarNumber} : ${carInfoData.carType}`}</div>
+          <div>{`${Message.CarType} : ${carTypeMapperToKor(carInfoData.carType)}`}</div>
+          <div>{`${Message.CarNumber} : ${carInfoData.carNumber}`}</div>
         </>
       ),
     };

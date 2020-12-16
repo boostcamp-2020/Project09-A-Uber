@@ -20,10 +20,10 @@ import {
 import { OrderCallStatus } from '@/types/orderCallStatus';
 import { useCustomQuery } from '@hooks/useApollo';
 import useChatNotifycation from '@hooks/useChatNotifycation';
-import { calcLocationDistance } from '@utils/calcLocationDistance';
 import { InitialState } from '@reducers/.';
 import { ModalFuncProps } from 'antd/lib/modal/Modal';
 import { Message } from '@/utils/client-message';
+import { carTypeMapperToKor } from '@/utils/carTypeMapperToKor';
 
 const StyledRow = styled(Row)`
   height: 100%;
@@ -50,8 +50,8 @@ const WaitingDriver = () => {
       title: Message.DriverAjacent,
       content: (
         <>
-          <div>{`${Message.CarType} : ${carInfo.carNumber}`}</div>
-          <div>{`${Message.CarNumber} : ${carInfo.carType}`}</div>
+          <div>{`${Message.CarType} : ${carTypeMapperToKor(carInfo.carType)}`}</div>
+          <div>{`${Message.CarNumber} : ${carInfo.carNumber}`}</div>
         </>
       ),
       centered: true,
@@ -85,14 +85,19 @@ const WaitingDriver = () => {
         lat: subscriptionData.data?.subDriverLocation.coordinates[0] as number,
         lng: subscriptionData.data?.subDriverLocation.coordinates[1] as number,
       };
+
       setDriverLocation(driverNewLocation);
-      const diffDistance = directions?.routes[0].legs[0].distance.value;
-      if (!didCloseModal && userOrigin && diffDistance !== undefined && diffDistance <= 500) {
-        Modal.info(modalItem as ModalFuncProps);
-        setDidCloseModal(true);
-      }
     },
   });
+
+  useEffect(() => {
+    const diffDistance = directions?.routes[0].legs[0].distance.value;
+
+    if (!didCloseModal && userOrigin && diffDistance !== undefined && diffDistance <= 500) {
+      Modal.info(modalItem as ModalFuncProps);
+      setDidCloseModal(true);
+    }
+  }, [directions]);
 
   useSubscription<SubOrderCallStatus>(SUB_ORDER_CALL_STATUS, {
     variables: { orderId: id },
