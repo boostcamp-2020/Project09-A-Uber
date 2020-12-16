@@ -1,6 +1,14 @@
+# 🚕 프로젝트 소개 🚕
+
+> 저희 프로젝트는 우버의 **택시 호출 기능**을 클론한 서비스이며 서비스명은 **이키택**(🙈이거 키면 나랑 택시 타는 거다?🙈) 입니다.
+> 이키택은 **GraphQL** 을 활용하여 실시간 위치 공유, 채팅, 알림 서비스를 구현했습니다.
+
+<br />
+
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/49899406/99350122-fac60980-28e0-11eb-837b-0119d3c34836.png" alt="logo" />
+    <img src="https://i.imgur.com/0THCKg9.png" alt="logo" />
 </div>
+
 <br/>
 
 ### 💁🏻 Wiki
@@ -12,12 +20,7 @@
 
 <br/>
 
-# 🚖 프로젝트 소개
-
-> 저희 프로젝트는 우버의 **택시 호출 기능**을 클론한 서비스이며 서비스명은 **이키택**(🙈이거 키면 나랑 택시 타는 거다?🙈) 입니다.
-> 이키택은 **GraphQL** 을 활용하여 실시간 위치 공유, 채팅, 알림 서비스를 구현했습니다.
-
-### 주요 기능
+## 👨🏻‍🏫 주요 기능 👩🏻‍🏫
 
 **⏰ 알림 서비스**
 
@@ -36,22 +39,46 @@
 - 드라이버와 사용자 간의 실시간 채팅
 - 채팅방에 접속하지 않아도 메시지 수신을 확인할 수 있는 알람기능
 
-  **🌎 위치검색 및 경로 표시**
+**🌎 위치검색 및 경로 표시**
 
 - Google Place API를 활용한 출발지 도착지 위치 검색
 - Google Map Direction을 활용한 출발지 목적지 이동 경로 표시
 
-### 🤹‍♂ Tech Stack
+<br />
 
-우리는 프로젝트를 진행하며 다음과 같은 기술 스택을 사용했습니다. 😁
+## 🤹‍♂ Tech Stack
 
-![tech-stack](https://user-images.githubusercontent.com/52775389/102004371-6de16500-3d53-11eb-8118-82135dc8dbdd.png)
+저희는 프로젝트를 진행하며 다음과 같은 기술 스택을 사용했습니다. 😁
 
-### 🔨 Web Architecture
+<div align="center" style="text-align: center;">
+    <img align="center" style="width: 450px;" src="https://i.imgur.com/cixeDOO.png" alt="logo" />
+</div>
 
-우리의 웹 서비스는 다음과 같은 구조로 동작하고 있습니다. 😚
+<br />
 
-![Web Architecture](https://user-images.githubusercontent.com/52775389/102004383-82bdf880-3d53-11eb-9aee-7cbdcb96a3de.png)
+## 🔨 Web Architecture
+
+저희의 웹 서비스는 다음과 같은 구조로 동작하고 있습니다. 😚
+
+<div align="center" style="text-align: center;">
+    <img align="center" style="width: 450px;" src="https://user-images.githubusercontent.com/52775389/102004383-82bdf880-3d53-11eb-9aee-7cbdcb96a3de.png" alt="logo" />
+</div>
+
+<br />
+
+## 💪 우리가 도전한 기술
+
+> ❝ 서비스를 구현하면서 저희가 겪었던 기술적인 어려움, 그리고 어려움을 해결해 나가는 과정과 저희가 도전했던 핵심 기술들을 소개해드립니다. ❞
+
+### [🔒 GraphQL에서의 권한 인증](https://www.notion.so/Graphql-631cfef39a96448d9385ea1f75a98ce5)
+
+### [⏳ 토큰 재발급 Custom Hooks](https://www.notion.so/Custom-Hook-dfae1045230f400092b1e35f6459cbcc)
+
+### [⚡ Subscription을 이용한 실시간 통신](https://www.notion.so/Subscription-0a9a3e8d233b4fb98889eb3130dff8a3)
+
+### [🧪 Jest, Cypress를 이용한 테스트](https://www.notion.so/Cypress-Jest-33978ed3783b49aebab5cd79706a1e52)
+
+<br />
 
 ### 🙈 IKEYTAX 팀원 🙈
 
