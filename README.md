@@ -5,9 +5,9 @@
 
 <br />
 
-<div align="center">
-    <img src="https://i.imgur.com/0THCKg9.png" alt="logo" />
-</div>
+<p align="center">
+    <img src="https://i.imgur.com/0THCKg9.png" width="700px" alt="logo" />
+</p>
 
 <br/>
 
@@ -50,9 +50,9 @@
 
 저희는 프로젝트를 진행하며 다음과 같은 기술 스택을 사용했습니다. 😁
 
-<div align="center" style="text-align: center;">
-    <img align="center" style="width: 450px;" src="https://i.imgur.com/cixeDOO.png" alt="logo" />
-</div>
+<p align="center">
+    <img align="center" width="600px" src="https://i.imgur.com/cixeDOO.png" alt="logo" />
+</p>
 
 <br />
 
@@ -60,9 +60,9 @@
 
 저희의 웹 서비스는 다음과 같은 구조로 동작하고 있습니다. 😚
 
-<div align="center" style="text-align: center;">
-    <img align="center" style="width: 450px;" src="https://user-images.githubusercontent.com/52775389/102004383-82bdf880-3d53-11eb-9aee-7cbdcb96a3de.png" alt="logo" />
-</div>
+<p align="center">
+    <img align="center" width="600px" src="https://user-images.githubusercontent.com/52775389/102004383-82bdf880-3d53-11eb-9aee-7cbdcb96a3de.png" alt="logo" />
+</p>
 
 <br />
 
