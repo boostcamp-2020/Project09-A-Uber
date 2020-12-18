@@ -22,6 +22,12 @@
 
 <br/>
 
+### 👨🏻‍💻 데모영상
+
+[![Video Label](http://img.youtube.com/vi/U46kffiEf1U/0.jpg)](https://youtu.be/U46kffiEf1U)
+
+<br/>
+
 ## 👨🏻‍🏫 주요 기능 👩🏻‍🏫
 
 **⏰ 알림 서비스**
