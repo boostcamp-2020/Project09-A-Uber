@@ -78,13 +78,15 @@
 
 > ❝ 서비스를 구현하면서 저희가 겪었던 기술적인 어려움, 그리고 어려움을 해결해 나가는 과정과 저희가 도전했던 핵심 기술들을 소개해드립니다. ❞
 
-### [🔒 GraphQL에서의 권한 인증](https://www.notion.so/Graphql-631cfef39a96448d9385ea1f75a98ce5)
+### [🔒 GraphQL에서의 권한 인증](https://github.com/boostcamp-2020/Project09-A-Uber/wiki/Graphql-%EC%97%90%EC%84%9C-%EC%9D%B8%EC%A6%9D%EC%B2%98%EB%A6%AC)
 
-### [⏳ 토큰 재발급 Custom Hooks](https://www.notion.so/Custom-Hook-dfae1045230f400092b1e35f6459cbcc)
+### [🔒 IKEYTAX 토큰인증 전략](https://github.com/boostcamp-2020/Project09-A-Uber/wiki/IKEYTAX-%ED%86%A0%ED%81%B0-%EC%9D%B8%EC%A6%9D-%EC%A0%84%EB%9E%B5)
 
-### [⚡ Subscription을 이용한 실시간 통신](https://www.notion.so/Subscription-0a9a3e8d233b4fb98889eb3130dff8a3)
+### [⏳ 토큰 재발급 Custom Hooks](https://github.com/boostcamp-2020/Project09-A-Uber/wiki/Custom-Hook%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%86%A0%ED%81%B0-%EC%9E%AC%EB%B0%9C%EA%B8%89-%E2%8F%B3)
 
-### [🧪 Jest, Cypress를 이용한 테스트](https://www.notion.so/Cypress-Jest-33978ed3783b49aebab5cd79706a1e52)
+### [⚡ Subscription을 이용한 실시간 통신](https://github.com/boostcamp-2020/Project09-A-Uber/wiki/Graphql-Subscription-%E2%9A%A1)
+
+### [🧪 Jest, Cypress를 이용한 테스트](https://github.com/boostcamp-2020/Project09-A-Uber/wiki/Cypress-%EC%99%80-Jest-%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%F0%9F%A7%AA)
 
 <br />
 
